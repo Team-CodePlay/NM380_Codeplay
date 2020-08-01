@@ -6,6 +6,9 @@ import android.os.Bundle;
 
 import com.codeplay.geoplay.R;
 
+/**
+ * Holds two fragments. VideoListFragment and SettingsFragment.
+ */
 public class MainActivity extends AppCompatActivity {
 
 	@Override

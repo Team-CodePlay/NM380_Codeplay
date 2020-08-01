@@ -6,6 +6,9 @@ import android.os.Bundle;
 
 import com.codeplay.geoplay.R;
 
+/**
+ * For map and video playback, info and sharing.
+ */
 public class PlaybackActivity extends AppCompatActivity {
 
 	@Override
