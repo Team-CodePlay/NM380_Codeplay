@@ -61,7 +61,7 @@ const MultiMap = (props) => {
         defaultZoom={15}
         // defaultCenter={{ lat: 14, lng: 71 }}
       >
-        <MakeMarkers markerPoints={markerPoints} parent="MultiMap" />
+        <MakeMarkers markerPoints={markerPoints} data={props.data} parent="MultiMap" />
       </GoogleMap>
     );
   };
