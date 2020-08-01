@@ -4,7 +4,7 @@
     <PreferenceCategory app:title="Video Settings">
 
         <ListPreference
-            android:icon="@drawable/ic_bitrate"
+            android:icon="@drawable/bitrate"
             app:defaultValue="1000000"
             app:entries="@array/bitrate_entries"
             app:entryValues="@array/bitrate_values"
@@ -13,26 +13,26 @@
             app:useSimpleSummaryProvider="true" />
 
         <EditTextPreference
-            android:icon="@drawable/ic_folder"
+            android:icon="@drawable/folder"
             app:key="Enter Path"
             app:title="File Storage Location"
             app:useSimpleSummaryProvider="true" />
 
-        <ListPreference
-            android:icon="@drawable/ic_camera_switch"
-            app:defaultValue="rear"
-            app:entries="@array/camera_mode"
-            app:entryValues="@array/camera_mode_values"
-            app:key="camera"
-            app:title="Select Camera Mode"
-            app:useSimpleSummaryProvider="true" />
+<!--        <ListPreference-->
+<!--            android:icon="@drawable/camera_switch"-->
+<!--            app:defaultValue="rear"-->
+<!--            app:entries="@array/camera_mode"-->
+<!--            app:entryValues="@array/camera_mode_values"-->
+<!--            app:key="camera"-->
+<!--            app:title="Select Camera Mode"-->
+<!--            app:useSimpleSummaryProvider="true" />-->
 
     </PreferenceCategory>
 
     <PreferenceCategory app:title="Power Settings">
 
         <ListPreference
-            android:icon="@drawable/ic_power"
+            android:icon="@drawable/power"
             app:defaultValue="medium"
             app:entries="@array/battery_consumption"
             app:entryValues="@array/battery_consumption_values"
@@ -42,20 +42,40 @@
 
         <SwitchPreferenceCompat
             android:defaultValue="false"
-            android:icon="@drawable/ic_night_mode"
+            android:icon="@drawable/night_mode"
             android:key="display_mode"
             android:title="Dark Mode" />
 
     </PreferenceCategory>
 
+    <PreferenceCategory app:title="App Settings">
+        <ListPreference
+            app:defaultValue="english"
+            android:icon="@drawable/translate_language"
+            app:entries="@array/language_entries"
+            app:entryValues="@array/language_values"
+            app:key="english"
+            app:title="App Language"
+            app:useSimpleSummaryProvider="true" />
+
+        <ListPreference
+            app:defaultValue="wifi"
+            android:icon="@drawable/upload"
+            app:entries="@array/upload_entries"
+            app:entryValues="@array/upload_values"
+            app:key="wifi"
+            app:title="Upload Settings"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="Other">
 
         <Preference
-            android:icon="@drawable/ic_help"
+            android:icon="@drawable/help"
             android:key="help"
             android:title="Help" />
         <Preference
-            android:icon="@drawable/ic_information"
+            android:icon="@drawable/information"
             android:key="about"
             android:title="About Application" />
 

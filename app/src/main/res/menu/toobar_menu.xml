@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/toggle_view"
-        android:icon="@drawable/ic_menu"
+        android:icon="@drawable/menu"
         android:title="@string/toggle_view"
         app:showAsAction="never" />
 
