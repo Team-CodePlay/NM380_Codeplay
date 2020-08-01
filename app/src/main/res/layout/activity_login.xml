@@ -54,7 +54,8 @@
             android:hint="@string/phone_placeholder"
             android:inputType="phone"
             android:textAlignment="center"
-            android:textColor="@color/colorPrimaryText" />
+            android:textColor="@color/colorPrimaryText"
+            android:textColorHint="@color/colorHintText" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -75,7 +76,7 @@
             android:elevation="10dp"
             android:letterSpacing="0.2"
             android:text="@string/send_otp"
-            android:textColor="#FFFFFF"
+            android:textColor="#232323"
             android:textSize="20sp" />
 
     </LinearLayout>

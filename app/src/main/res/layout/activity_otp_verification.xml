@@ -4,169 +4,166 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.OtpVerificationActivity">
+    tools:context=".activity.OtpVerificationActivity"
+    android:background="@color/colorPrimaryDark"
+    android:paddingTop="50dp">
 
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/first_ll"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#1976D2"
-        android:paddingTop="50dp">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/first_ll"
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:orientation="vertical">
+            android:gravity="center"
+            android:text="@string/verification_code"
+            android:textColor="#FFFFFF"
+            android:textSize="25sp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/verification_code"
-                android:textColor="#FFFFFF"
-                android:textSize="25sp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/check_verification_note"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:text="@string/check_verification_note"
-                android:textColor="#FFFFFF"
-                android:textSize="15sp" />
+    </LinearLayout>
 
-        </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/second_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/first_ll"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/first_ll"
             android:layout_centerInParent="true"
-            android:layout_marginTop="60dp"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal">
+            android:gravity="center"
+            tools:ignore="UselessParent">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
+            <EditText
+                android:id="@+id/et_1"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="8dp"
+                android:autofillHints=""
+                android:background="@color/colorPrimaryLight"
                 android:gravity="center"
-                tools:ignore="UselessParent">
+                android:hint="@string/hint"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-                <EditText
-                    android:hint="@string/hint"
-                    android:id="@+id/et_1"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginEnd="8dp"
-                    android:autofillHints=""
-                    android:background="@color/colorPrimaryLight"
-                    android:gravity="center"
-                    android:inputType="number"
-                    android:maxLength="1"
-                    android:textColor="@color/colorPrimaryText"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+            <EditText
+                android:id="@+id/et_2"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="8dp"
+                android:layout_toEndOf="@+id/et_1"
+                android:autofillHints=""
+                android:background="@color/colorPrimaryLight"
+                android:gravity="center"
+                android:hint="@string/hint"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-                <EditText
-                    android:hint="@string/hint"
-                    android:id="@+id/et_2"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_toEndOf="@+id/et_1"
-                    android:autofillHints=""
-                    android:background="@color/colorPrimaryLight"
-                    android:gravity="center"
-                    android:inputType="number"
-                    android:maxLength="1"
-                    android:textColor="@color/colorPrimaryText"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+            <EditText
+                android:id="@+id/et_3"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="8dp"
+                android:layout_toEndOf="@+id/et_2"
+                android:autofillHints=""
+                android:background="@color/colorPrimaryLight"
+                android:gravity="center"
+                android:hint="@string/hint"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-                <EditText
-                    android:hint="@string/hint"
-                    android:id="@+id/et_3"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_toEndOf="@+id/et_2"
-                    android:autofillHints=""
-                    android:background="@color/colorPrimaryLight"
-                    android:gravity="center"
-                    android:inputType="number"
-                    android:maxLength="1"
-                    android:textColor="@color/colorPrimaryText"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+            <EditText
+                android:id="@+id/et_4"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="8dp"
+                android:layout_toEndOf="@+id/et_3"
+                android:autofillHints=""
+                android:background="@color/colorPrimaryLight"
+                android:gravity="center"
+                android:hint="@string/hint"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-                <EditText
-                    android:hint="@string/hint"
-                    android:id="@+id/et_4"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_toEndOf="@+id/et_3"
-                    android:autofillHints=""
-                    android:background="@color/colorPrimaryLight"
-                    android:gravity="center"
-                    android:inputType="number"
-                    android:maxLength="1"
-                    android:textColor="@color/colorPrimaryText"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+            <EditText
+                android:id="@+id/et_5"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="8dp"
+                android:layout_toEndOf="@+id/et_4"
+                android:autofillHints=""
+                android:background="@color/colorPrimaryLight"
+                android:gravity="center"
+                android:hint="@string/hint"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-                <EditText
-                    android:hint="@string/hint"
-                    android:id="@+id/et_5"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_toEndOf="@+id/et_4"
-                    android:autofillHints=""
-                    android:background="@color/colorPrimaryLight"
-                    android:gravity="center"
-                    android:inputType="number"
-                    android:maxLength="1"
-                    android:textColor="@color/colorPrimaryText"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <EditText
-                    android:hint="@string/hint"
-                    android:id="@+id/et_6"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_toEndOf="@+id/et_5"
-                    android:autofillHints=""
-                    android:background="@color/colorPrimaryLight"
-                    android:gravity="center"
-                    android:inputType="number"
-                    android:maxLength="1"
-                    android:textColor="@color/colorPrimaryText"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-            </RelativeLayout>
+            <EditText
+                android:id="@+id/et_6"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="8dp"
+                android:layout_toEndOf="@+id/et_5"
+                android:autofillHints=""
+                android:background="@color/colorPrimaryLight"
+                android:gravity="center"
+                android:hint="@string/hint"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
         </RelativeLayout>
 
-        <Button
-            android:id="@+id/send_otp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginHorizontal="50dp"
-            android:layout_marginTop="260dp"
-            android:background="@drawable/button"
-            android:elevation="10dp"
-            android:letterSpacing="0.2"
-            android:text="@string/verify"
-            android:textColor="#FFFFFF"
-            android:textSize="20sp" />
-
     </RelativeLayout>
+
+    <Button
+        android:id="@+id/send_otp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/second_ll"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginTop="60dp"
+        android:background="@drawable/button"
+        android:elevation="10dp"
+        android:letterSpacing="0.2"
+        android:text="@string/verify"
+        android:textColor="#232323"
+        android:textSize="20sp" />
+
 
 </RelativeLayout>
