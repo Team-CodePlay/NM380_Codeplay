@@ -4,7 +4,10 @@ package com.codeplay.geoplay.activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.SwitchPreferenceCompat;
 
 import com.codeplay.geoplay.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,6 +24,32 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
             startActivity(intent);
 
             return true;
+        });
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        SwitchPreferenceCompat display_mode = findPreference("display_mode");
+        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+            getActivity().setTheme(R.style.AppTheme_AppBarOverlay);
+            System.out.println("ON");
+            display_mode.setChecked(true);
+        } else {
+            getActivity().setTheme(R.style.AppTheme);
+            System.out.println("OFF");
+            display_mode.setChecked(false);
+
+        }
+
+        display_mode.setOnPreferenceChangeListener((preference, newValue) -> {
+            if (display_mode.isChecked()) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                return false;
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                return true;
+            }
         });
     }
 }
