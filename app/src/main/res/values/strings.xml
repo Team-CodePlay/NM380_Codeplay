@@ -15,4 +15,6 @@
     <string name="duration">Duration</string>
     <string name="location">Location</string>
     <string name="toggle_view">Toggle View</string>
+    <string name="speed">Speed</string>
+    <string name="tracking">Tracking</string>
 </resources>

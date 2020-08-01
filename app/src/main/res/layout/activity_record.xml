@@ -1,25 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activity.RecordActivity">
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="#000"
+	tools:context=".activity.RecordActivity">
 
-	<fragment
+	<RelativeLayout
+		android:id="@+id/relativeLayout"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:id="@+id/cameraFragment"
-		android:layout_above="@id/map"
-		android:layout_alignParentStart="true"
-		android:name="com.codeplay.geoplay.activity.CameraFragment"/>
+		android:layout_height="match_parent">
 
-	<fragment
+		<fragment
+			android:id="@+id/cameraFragment"
+			android:name="com.codeplay.geoplay.activity.CameraFragment"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_alignParentStart="true"
+			android:layout_alignParentBottom="true" />
+
+		<TextView
+			android:id="@+id/lblSpeed"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentStart="true"
+			android:layout_marginStart="15dp"
+			android:layout_marginTop="5dp"
+			android:padding="4dp"
+			android:text="@string/speed"
+			android:textColor="@color/lb"
+			android:textSize="16sp"
+			android:visibility="gone" />
+
+		<ImageView
+			android:id="@+id/recording_indicator"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentTop="true"
+			android:layout_marginStart="140dp"
+			android:layout_marginTop="11dp"
+			android:visibility="gone"
+			app:srcCompat="@drawable/recording_indicator" />
+
+	</RelativeLayout>
+
+	<LinearLayout
+		android:id="@+id/bottom_sheet"
 		android:layout_width="match_parent"
-		android:layout_height="300dp"
-		android:id="@+id/map"
-		android:layout_alignParentBottom="true"
-		tools:context=".activity.RecordActivity"
-		android:name="com.google.android.gms.maps.SupportMapFragment" />
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		app:behavior_hideable="false"
+		app:behavior_peekHeight="50dp"
+		app:layout_behavior="com.codeplay.geoplay.ui.LockBottomSheetBehaviour">
 
-</RelativeLayout>
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="50dp"
+			android:layout_gravity="center"
+			android:background="@drawable/pull_up"
+			android:padding="8dp"
+			android:text="@string/tracking"
+			android:textAlignment="center"
+			android:textColor="@color/colorPrimary"
+			android:textSize="18sp"
+			android:textStyle="bold" />
+
+
+		<fragment
+			android:id="@+id/map"
+			android:name="com.google.android.gms.maps.SupportMapFragment"
+			android:layout_width="match_parent"
+			android:layout_height="400dp"
+			tools:context=".activity.RecordActivity" />
+
+	</LinearLayout>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+
