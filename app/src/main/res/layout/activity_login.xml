@@ -9,8 +9,8 @@
         android:id="@+id/first_layout"
         android:layout_width="match_parent"
         android:layout_height="350dp"
+        android:layout_alignParentTop="true"
         android:background="@color/colorPrimary"
-        android:elevation="10dp"
         android:gravity="center">
 
         <ImageView
@@ -18,7 +18,7 @@
             android:layout_width="300dp"
             android:layout_height="300dp"
             android:layout_gravity="center"
-            android:background="@drawable/ic_logo_stadium_light"
+            android:background="@drawable/logo_stadium_light"
             android:contentDescription="@string/logo"
             android:elevation="10dp" />
 
@@ -29,6 +29,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/first_layout"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorBackground"
+        android:elevation="10dp"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:paddingLeft="15dp"
@@ -39,25 +42,30 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="@string/logo_title"
-            android:textColor="#000000"
+            android:textColor="@color/colorPrimaryText"
             android:textSize="40sp" />
 
         <EditText
+            android:id="@+id/phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="20dp"
-            android:hint="@string/phone_placeholder"
-            android:textColor="#828282"
             android:autofillHints="Enter Phone Number"
-            android:inputType="phone" />
+            android:hint="@string/phone_placeholder"
+            android:inputType="phone"
+            android:textSize="20sp"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimaryText"
+            android:textColorHint="@color/colorHintText" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:gravity="center"
-            android:text="@string/send_otp_note" />
+            android:text="@string/send_otp_note"
+            android:textColor="@color/colorPrimaryText" />
 
         <Button
             android:id="@+id/send_otp"
@@ -70,9 +78,18 @@
             android:elevation="10dp"
             android:letterSpacing="0.2"
             android:text="@string/send_otp"
-            android:textColor="#FFFFFF"
+            android:textColor="#232323"
             android:textSize="20sp" />
 
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progress_circular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="20dp"
+        android:progressTint="@color/colorAccent"
+        android:visibility="gone" />
 
 </RelativeLayout>
