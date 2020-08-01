@@ -1,14 +1,27 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import MultiMap from "./components/MultiMap/MultiMap";
 import Header from "./components/layouts/Header";
-import data from "./data/dummy.json";
+import Spinner from "./components/utils/Spinner";
+import firebase from './components/utils/firebase';
 
 function App() {
+  const [data, setData] = useState();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const videosRef = firebase
+        .database()
+        .ref("videos");
+      setData((await videosRef.once("value")).val());
+    };
+    fetchData();
+  }, []);
+
   return (
     <div className="App">
       <Header />
-      <MultiMap data = {data}/>
+      {data ? <MultiMap data={data} /> : <Spinner />}
     </div>
   );
 }
