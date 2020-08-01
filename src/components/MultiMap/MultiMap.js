@@ -12,17 +12,6 @@ const MultiMap = (props) => {
   const [markerPoints, setMarkerPoints] = useState();
 
   useEffect(() => {
-    // var temp = [];
-    // // Iterate over Data to build mapData
-    // Object.keys(rawData).forEach((user) => {
-    //   Object.keys(data[user]).forEach((video) => {
-    //     data[user][video]["username"] = user;
-    //     data[user][video]["videoname"] = video;
-    //     temp.push(data[user][video]);
-    //   });
-    //   setMapData(temp);
-    // });
-
     // Gets all Start and end point of paths to place markers on
     const tempMarkerPoints = [];
 
@@ -62,6 +51,7 @@ const MultiMap = (props) => {
         // defaultCenter={{ lat: 14, lng: 71 }}
       >
         <MakeMarkers markerPoints={markerPoints} data={props.data} parent="MultiMap" />
+        
       </GoogleMap>
     );
   };
