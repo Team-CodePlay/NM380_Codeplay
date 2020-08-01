@@ -7,6 +7,9 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 @Entity(tableName = "geotag")
 public class GeoTag {
 
@@ -31,5 +34,21 @@ public class GeoTag {
 	public GeoTag(Double latitude, Double longitude) {
 		this.latitude = latitude;
 		this.longitude = longitude;
+	}
+
+	@Ignore
+	public JSONObject toJson() {
+		JSONObject jsonObject = new JSONObject();
+		try {
+			jsonObject.put("latitude", latitude);
+			jsonObject.put("longitude", longitude);
+			jsonObject.put("video_time", videoTime);
+			jsonObject.put("speed", speed);
+			jsonObject.put("timestamp", timestamp);
+			jsonObject.put("bearing", bearing);
+		} catch (JSONException err) {
+			Log.d("Error", err.toString());
+		}
+		return jsonObject;
 	}
 }

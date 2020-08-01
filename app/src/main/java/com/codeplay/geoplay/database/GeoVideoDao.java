@@ -1,5 +1,6 @@
 package com.codeplay.geoplay.database;
 
+import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
@@ -12,6 +13,7 @@ import com.codeplay.geoplay.model.VideoWithTag;
 
 import java.util.List;
 
+@Dao
 public interface GeoVideoDao {
 	@Query("SELECT * FROM geovideo")
 	List<GeoVideo> getAll();

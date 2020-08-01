@@ -26,9 +26,13 @@ import com.codeplay.geoplay.camera.AfterSaveCallback;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.io.File;
+import java.util.Timer;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 public class CameraFragment extends Fragment {
 
@@ -44,6 +48,12 @@ public class CameraFragment extends Fragment {
 
 	private Executor videoServiceExecutor;
 	private Executor videoTimeServiceExecutor;
+	private ScheduledExecutorService timerScheduledExecutor;
+	private ScheduledFuture<?> timeFuture;
+	private Long startTime;
+
+	// TODO: 02-08-2020 add resolutions and camera switch
+
 
 	public CameraFragment(){
 		super(R.layout.fragment_camera);
@@ -60,6 +70,7 @@ public class CameraFragment extends Fragment {
 
 		videoServiceExecutor = Executors.newSingleThreadExecutor();
 		videoTimeServiceExecutor = Executors.newSingleThreadExecutor();
+		timerScheduledExecutor = Executors.newSingleThreadScheduledExecutor();
 
 		previewView.post(this::setUpCamera);
 
@@ -160,6 +171,22 @@ public class CameraFragment extends Fragment {
 			}
 		});
 
+		startTime = System.currentTimeMillis();
+
+
+		timeFuture = timerScheduledExecutor.scheduleAtFixedRate(() -> {
+			new Handler(Looper.getMainLooper()).post(() -> {
+				long difference = System.currentTimeMillis() - startTime;
+
+				int secs = (int) (difference / 1000);
+				int mins = secs / 60;
+				secs = secs % 60;
+				if (lblTime != null) {
+					lblTime.setText(String.format("%02d:%02d", mins, secs));
+				}
+			});
+		}, 0, 1, TimeUnit.SECONDS);
+
 	}
 
 	@SuppressLint("RestrictedApi")
@@ -167,5 +194,16 @@ public class CameraFragment extends Fragment {
 		Log.d(TAG, "stopRecording: ");
 		videoCapture.stopRecording();
 	}
+
+
+	/**
+	 * for the location callback task. this get's added in the geotag data
+	 *
+	 * @return current video's time
+	 */
+	public long getCurrentTime() {
+		return System.currentTimeMillis() - startTime;
+	}
+
 
 }
