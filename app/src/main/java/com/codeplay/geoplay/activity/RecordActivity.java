@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
@@ -12,7 +13,6 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -37,16 +37,12 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.JointType;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import java.io.File;
-import java.security.Permission;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -147,7 +143,9 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 	}
 
 
-	private void afterSave(File videoFile) {
+	private void saveMetaData(File videoFile) {
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+
 		Toast.makeText(RecordActivity.this, "File saved at: " + videoFile.toString(), Toast.LENGTH_SHORT).show();
 		Log.d(TAG, "afterSave: Save path: " + videoFile.toString());
 
@@ -185,6 +183,13 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 	@SuppressLint("MissingPermission")
 	private void startRecording() {
 		if (!isRecording) {
+			int currentOrientation = getResources().getConfiguration().orientation;
+			if (currentOrientation == Configuration.ORIENTATION_LANDSCAPE) {
+				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+			} else {
+				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+			}
+
 			geoTags.clear();
 
 			startTime = System.currentTimeMillis();
@@ -192,7 +197,7 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 					.jointType(JointType.ROUND)
 					.width(10);
 
-			cameraFragment.startRecording(this::afterSave);
+			cameraFragment.startRecording(this::saveMetaData);
 
 			locationProviderClient.requestLocationUpdates(
 					// TODO: 09-07-2020 change priority according to preferences
@@ -208,9 +213,9 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 	private void stopRecording() {
 		if (isRecording) {
 			locationProviderClient.removeLocationUpdates(locationCallback);
-
 			cameraFragment.stopRecording();
 			isRecording = false;
+			setResult(RESULT_OK);
 		}
 	}
 
@@ -248,14 +253,6 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 			geoTags.add(geoTag);
 		}
 	};
-
-	@Override
-	public void onBackPressed() {
-		if (isRecording) {
-			stopRecording();
-		}
-		super.onBackPressed();
-	}
 
 	private void setUpBottomSheet() {
 		behavior.setAllowUserDragging(false);
@@ -297,6 +294,14 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 				PermissionUtil.showPermissionsRationale(RecordActivity.this);
 			}
 		}
+	}
+
+	@Override
+	public void onBackPressed() {
+		if (isRecording) {
+			stopRecording();
+		}
+		super.onBackPressed();
 	}
 
 	@Override

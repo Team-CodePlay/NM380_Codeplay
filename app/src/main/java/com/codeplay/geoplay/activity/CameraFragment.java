@@ -77,6 +77,7 @@ public class CameraFragment extends Fragment {
 	};
 	private int selectedResolution = 0;
 
+	// TODO: 02-08-2020 add tap to focus
 
 
 	public CameraFragment(){
