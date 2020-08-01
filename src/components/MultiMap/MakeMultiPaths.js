@@ -84,16 +84,26 @@ const MakeMultiPaths = (props) => {
           cardsArray.push(
             <Card key={pathKey} border="primary" style={{ margin: '10px', width: '18rem', borderLeft: '1px solid', borderRadius: '0.5rem' }}>
               <Card.Body>
-                <Card.Title>Path {path.metaName}</Card.Title>
+                <Card.Title>Path{path.videoname}</Card.Title>
                 <Card.Text>
-                  <strong>User : {path.userName}</strong>
+                  <strong>User :</strong> {path.username}
                   <br />
                   <strong>Data Collection Time :</strong>{" "}
                   {Date(path.video_start_time * 1000)}
                   <br />
                   <strong>Video Duration :</strong> {path.duration}
                 </Card.Text>
-                <Button style={{ margin: "0.25rem" }} variant="primary">See Path</Button>
+
+                <Button style={{ margin: "0.25rem" }} onClick={()=>{
+                    pathClicked(path);
+                    window.scrollTo({
+                        top: 0,
+                        behavior: "smooth"
+                    });
+                }} variant="primary">
+                        See Path
+                </Button>
+
                 <Button style={{ margin: "0.25rem" }} variant="primary">Watch Video</Button>
                 <DropdownButton
                   style={{ margin: "0.25rem" }}

@@ -91,6 +91,8 @@ export default function MakeMarkers(props) {
             <div>
               <h5>Marker Point</h5>
               <p>
+                <strong>Path : </strong>
+                {selectedPath.videoname}<br/>
                 <strong>UserName : </strong>
                 {selectedPath.username}<br/>
                 <strong>Record Date : </strong>
