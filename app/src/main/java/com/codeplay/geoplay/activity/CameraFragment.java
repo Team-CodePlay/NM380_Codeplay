@@ -1,19 +1,25 @@
 package com.codeplay.geoplay.activity;
 
 import android.annotation.SuppressLint;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.util.Size;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.camera.core.Camera;
 import androidx.camera.core.CameraSelector;
+import androidx.camera.core.CameraX;
 import androidx.camera.core.Preview;
 import androidx.camera.core.VideoCapture;
 import androidx.camera.lifecycle.ProcessCameraProvider;
@@ -52,7 +58,25 @@ public class CameraFragment extends Fragment {
 	private ScheduledFuture<?> timeFuture;
 	private Long startTime;
 
-	// TODO: 02-08-2020 add resolutions and camera switch
+	private Boolean cameraSwitchAvailable;
+	private Integer lensFacing;
+
+	/**
+	 * static list of available resolutions
+	 */
+	private Size[] availableResolutions = new Size[]{
+			new Size(1920, 1080), // 16:9
+			new Size(1280, 720),
+			new Size(854, 480),
+			new Size(640, 360),
+			new Size(426, 240),
+			new Size(1600, 1200), // 4:3
+			new Size(1280, 960),
+			new Size(800, 600),
+			new Size(640, 480),
+	};
+	private int selectedResolution = 0;
+
 
 
 	public CameraFragment(){
@@ -68,11 +92,36 @@ public class CameraFragment extends Fragment {
 		lblTime = view.findViewById(R.id.lblTime);
 		previewView = view.findViewById(R.id.previewView);
 
+		btnCameraSwitch.setOnClickListener(v -> {
+			if (lensFacing == CameraSelector.LENS_FACING_BACK) {
+				lensFacing = CameraSelector.LENS_FACING_FRONT;
+			} else {
+				lensFacing = CameraSelector.LENS_FACING_BACK;
+			}
+			previewView.post(this::setUpCamera);
+			Log.d(TAG, "onViewCreated: Lens changed");
+		});
+
+		btnResolution.setOnClickListener(v -> {
+			AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
+			ListAdapter listAdapter = new ArrayAdapter<>(getContext(), android.R.layout.select_dialog_singlechoice, availableResolutions);
+			adb.setSingleChoiceItems(listAdapter, selectedResolution, (dialog, which) -> {
+				selectedResolution = which;
+				btnResolution.setText(availableResolutions[selectedResolution].toString());
+				dialog.dismiss();
+				previewView.post(this::setUpCamera);
+			});
+			adb.setNegativeButton("Cancel", null);
+			adb.setTitle("Which one?");
+			adb.show();
+		});
+
 		videoServiceExecutor = Executors.newSingleThreadExecutor();
 		videoTimeServiceExecutor = Executors.newSingleThreadExecutor();
 		timerScheduledExecutor = Executors.newSingleThreadScheduledExecutor();
 
 		previewView.post(this::setUpCamera);
+		btnResolution.setText(availableResolutions[selectedResolution].toString());
 
 	}
 
@@ -86,16 +135,41 @@ public class CameraFragment extends Fragment {
 			try {
 				ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
 
-				CameraSelector cameraSelector = new CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build();
+				if (lensFacing == null) {
+					if (CameraX.hasCamera(CameraSelector.DEFAULT_BACK_CAMERA) && CameraX.hasCamera(CameraSelector.DEFAULT_FRONT_CAMERA)) {
+						cameraSwitchAvailable = true;
+						btnCameraSwitch.setVisibility(View.VISIBLE);
+					} else {
+						cameraSwitchAvailable = false;
+						btnCameraSwitch.setVisibility(View.GONE);
+					}
+					lensFacing = CameraSelector.LENS_FACING_BACK;
+				}
+
+				Size tempSize;
+				if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+					tempSize = availableResolutions[selectedResolution];
+				} else {
+					tempSize = new Size(
+							availableResolutions[selectedResolution].getHeight(),
+							availableResolutions[selectedResolution].getWidth()
+					);
+				}
+
+
+				CameraSelector cameraSelector = new CameraSelector.Builder().requireLensFacing(lensFacing).build();
+
 
 				videoCapture = new VideoCapture.Builder()
 						.setTargetRotation(previewView.getDisplay().getRotation())
+						.setTargetResolution(tempSize)
 						.setCameraSelector(cameraSelector)
 						.build();
 
 				// sets up the preview
 				Preview preview = new Preview.Builder()
 						.setTargetRotation(previewView.getDisplay().getRotation())
+						.setTargetResolution(tempSize)
 						.setCameraSelector(cameraSelector)
 						.build();
 
@@ -142,6 +216,10 @@ public class CameraFragment extends Fragment {
 
 	@SuppressLint("RestrictedApi")
 	public void startRecording(AfterSaveCallback afterSaveCallback){
+
+		btnCameraSwitch.setVisibility(View.GONE);
+		btnResolution.setVisibility(View.GONE);
+
 		File folder = getMp4Directory();
 		if(!folder.exists()){
 			folder.mkdirs();
@@ -193,7 +271,15 @@ public class CameraFragment extends Fragment {
 	public void stopRecording(){
 		Log.d(TAG, "stopRecording: ");
 		videoCapture.stopRecording();
-		// TODO: 02-08-2020 stop timer
+		if(timeFuture != null){
+			timeFuture.cancel(true);
+		}
+		lblTime.setText(String.format("%02d:%02d", 0, 0));
+		if (cameraSwitchAvailable) {
+			btnCameraSwitch.setVisibility(View.VISIBLE);
+		}
+		btnResolution.setVisibility(View.VISIBLE);
+
 	}
 
 
