@@ -4,8 +4,17 @@ import {
     GoogleMap,
     withScriptjs,
 } from "react-google-maps";
+import data from '../../data/dummy.json';
 
 const MultiMap = () => {
+
+    console.log(data);
+
+    Object.keys(data).forEach(user => {
+        Object.keys(data[user]).forEach(video => {
+            console.log(user, video);
+        });
+    });
 
     const MapWithPaths = () => {
         return (
@@ -20,7 +29,7 @@ const MultiMap = () => {
 
     return (
         <MyMap
-            googleMapURL={"https://maps.googleapis.com/maps/api/js?key="+process.env.REACT_APP_GOOGLE_MAPS_OLD_API_KEY+"&v=3.exp&libraries=geometry,drawing,places"}
+            googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_OLD_API_KEY}&v=3.exp&libraries=geometry,drawing,places`}
             loadingElement={<div style={{ height: `100%` }} />}
             containerElement={<div style={{ height: `60vh` }} />}
             mapElement={<div style={{ height: `100%` }} />}
