@@ -7,14 +7,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.codeplay.geoplay.R;
 import com.codeplay.geoplay.model.GeoVideo;
 
+import java.io.File;
 import java.text.CharacterIterator;
 import java.text.SimpleDateFormat;
 import java.text.StringCharacterIterator;
@@ -90,6 +94,23 @@ public class GeoVideoAdapter extends RecyclerView.Adapter<GeoVideoAdapter.GeoVid
 
 	@Override
 	public void onBindViewHolder(@NonNull GeoVideoViewHolder holder, int position) {
+		holder.vidTitle.setText(new File(TitleGenerator(dataset.get(position).videoStartTime)+".mp4").getName());
+		if (!toggleCard) {
+			holder.date.setText(new File(TimestampConverter(dataset.get(position).videoStartTime)).getName());
+			holder.size.setText(new File(ByteConverter(dataset.get(position).size)).getName());
+			holder.duration.setText(new File(SecondsConverter(dataset.get(position).duration)).getName());
+			holder.location.setText(new File((dataset.get(position).startLocation.latitude.toString() + " , " + dataset.get(position).startLocation.longitude.toString())).getName());
+		}
+		if (dataset.get(position).isUploaded){
+			holder.uploaded.setVisibility(View.VISIBLE);
+		}
+		Glide.with(holder.itemView.getContext())
+				.load(Uri.fromFile(new File(dataset.get(position).videoPath)))
+				.centerCrop()
+				.into(holder.snapshot);
+
+		holder.itemView.setOnClickListener(v -> {onClickListener.onClick(dataset.get(position));});
+
 
 	}
 
@@ -133,13 +154,14 @@ public class GeoVideoAdapter extends RecyclerView.Adapter<GeoVideoAdapter.GeoVid
 		this.onUploadListener = onUploadListener;
 	}
 
+
 	public interface OnDeleteListener{
 		void onDelete(GeoVideo geoVideo);
 	}
 	public interface OnUploadListener{
-		void onDelete(GeoVideo geoVideo);
+		void onUpload(GeoVideo geoVideo);
 	}
 	public interface OnClickListener{
-		void onDelete(GeoVideo geoVideo);
+		void onClick(GeoVideo geoVideo);
 	}
 }
