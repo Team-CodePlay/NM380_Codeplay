@@ -1,7 +1,8 @@
 /* global google */
 import React, { useState, useEffect } from "react";
-import { Polyline, lineSymbol } from "react-google-maps";
+import { InfoWindow, Polyline, lineSymbol } from "react-google-maps";
 import { Card, Button, CardGroup, DropdownButton, Dropdown } from "react-bootstrap";
+import { kmlStart1, kmlStart2, kmlEnd } from '../utils/kmlUtil';
 
 // Calculates distance between lat lng
 const haversine_distance = (mk1, mk2) => {
@@ -27,16 +28,12 @@ const haversine_distance = (mk1, mk2) => {
 };
 
 const MakeMultiPaths = (props) => {
-  //   const [selectedMarker, setselectedMarker] = useState();
+  const [selectedPoint, setselectedPoint] = useState();
   const [mapData, setMapData] = useState();
-  //   const [selectedPath, setselectedPath] = useState();
+  const [selectedPath, setselectedPath] = useState();
 
   // @todo : Add more colors
   const color = ["blue", "green", "red", "yellow"];
-  let clr = 0;
-
-  // Path Id
-  var pathKey = 0;
 
   useEffect(() => {
     var temp = [];
@@ -49,20 +46,18 @@ const MakeMultiPaths = (props) => {
       });
       setMapData(temp);
     });
-  }, []);
 
-  //   useEffect(() => {
-  //     const listener = (e) => {
-  //       if (e.key === "Escape") {
-  //         setselectedMarker(null);
-  //         setselectedPath(null);
-  //       }
-  //     };
-  //     window.addEventListener("keydown", listener);
-  //     return () => {
-  //       window.removeEventListener("keydown", listener);
-  //     };
-  //   }, []);
+    const listener = (e) => {
+      if (e.key === "Escape") {
+        setselectedPath(null);
+        setselectedPoint(null);
+      }
+    };
+    window.addEventListener("keydown", listener);
+    return () => {
+      window.removeEventListener("keydown", listener);
+    };
+  }, []);
 
   const createPathPoints = (geotags, start, end) => {
     var pathpoints = [];
@@ -72,12 +67,45 @@ const MakeMultiPaths = (props) => {
     return pathpoints;
   };
 
+  const pathClicked = (path) => {
+    setselectedPath(path);
+  };
+
+  const exportToKml = (path,action) => {
+    var kmlData = kmlStart1 + path.videoname + kmlStart2;
+
+    path.geotags.map(pt => {
+        kmlData += `
+        <Placemark>
+            <styleUrl>#hiker-icon</styleUrl>
+            <TimeStamp>1595088201781</TimeStamp>
+            <Point>
+                <coordinates>${pt.lng},${pt.lat}</coordinates>
+            </Point>
+        </Placemark>
+        `;
+    });
+
+    kmlData += kmlEnd;
+
+    const element = document.createElement("a");
+    const file = new Blob([kmlData], { type: 'text/kml' });
+    element.href = URL.createObjectURL(file);
+    if (action === "download") {
+        element.download = `${path.videoname}.kml`;
+    } else if (action === "view") {
+        element.target = "_blank";
+    }
+    document.body.appendChild(element); // Mozilla
+    element.click();
+};
+
   if (mapData !== undefined) {
     let cardsArray = [];
     return (
       <div>
         {mapData.map((path, pathKey) => {
-          var thisColor = color[clr++ % color.length];
+          var thisColor = color[pathKey % color.length];
           var pathpoints = createPathPoints(
             path.geotags,
             path.start_location,
@@ -86,16 +114,26 @@ const MakeMultiPaths = (props) => {
           cardsArray.push(
             <Card key={pathKey} border="primary" style={{ margin: '10px', width: '18rem', borderLeft: '1px solid', borderRadius: '0.5rem' }}>
               <Card.Body>
-                <Card.Title>Path {path.metaName}</Card.Title>
+                <Card.Title>Path{path.videoname}</Card.Title>
                 <Card.Text>
-                  <strong>User : {path.userName}</strong>
+                  <strong>User :</strong> {path.username}
                   <br />
                   <strong>Data Collection Time :</strong>{" "}
                   {Date(path.video_start_time * 1000)}
                   <br />
                   <strong>Video Duration :</strong> {path.duration}
                 </Card.Text>
-                <Button style={{ margin: "0.25rem" }} variant="primary">See Path</Button>
+
+                <Button style={{ margin: "0.25rem" }} onClick={()=>{
+                    pathClicked(path);
+                    window.scrollTo({
+                        top: 0,
+                        behavior: "smooth"
+                    });
+                }} variant="primary">
+                        See Path
+                </Button>
+
                 <Button style={{ margin: "0.25rem" }} variant="primary">Watch Video</Button>
                 <DropdownButton
                   style={{ margin: "0.25rem" }}
@@ -105,12 +143,14 @@ const MakeMultiPaths = (props) => {
                   <Dropdown.Item
                     id={"view" + pathKey}
                     variant="light"
+                    onClick={()=>exportToKml(path,"view")}
                   >
                     View KML
                       </Dropdown.Item>
                   <Dropdown.Item
                     id={"download" + pathKey}
                     variant="light"
+                    onClick={()=>exportToKml(path,"download")}
                   >
                     Download KML
                       </Dropdown.Item>
@@ -125,7 +165,7 @@ const MakeMultiPaths = (props) => {
               geodesic={true}
               options={{
                 strokeColor: thisColor,
-                strokeOpacity: 0.6,
+                strokeOpacity: 0.8,
                 strokeWeight: 8,
                 icons: [
                   {
@@ -134,6 +174,31 @@ const MakeMultiPaths = (props) => {
                     repeat: "20px",
                   },
                 ],
+              }}
+              onClick={(resp) => {
+                pathClicked(path);
+
+                var latlng = {
+                  lat: resp.latLng.lat(),
+                  lng: resp.latLng.lng(),
+                };
+
+                // finds nearest point in data to the clicked point : can be optimized with better search algo
+                let minDist = 99999999;
+                let markPt = { lat: 0, lng: 0 };
+                path.geotags.map((point) => {
+                  var dist = haversine_distance(latlng, {
+                    lat: point.lat,
+                    lng: point.lng,
+                  });
+                  if (dist < minDist) {
+                    minDist = dist;
+                    markPt = point;
+                  }
+                });
+
+                // sets the mearest point to plot marker
+                setselectedPoint(markPt);
               }}
             />
           );
@@ -174,10 +239,81 @@ const MakeMultiPaths = (props) => {
             </Card.Body>
           </Card>
         </CardGroup>
+
+        {selectedPoint && (
+          <InfoWindow
+            onCloseClick={() => {
+              setselectedPoint(null);
+            }}
+            position={{
+              lat: selectedPoint.lat,
+              lng: selectedPoint.lng,
+            }}
+          >
+            <div>
+              <p>
+                <strong>Vehicle Speed : </strong>
+                {selectedPoint.speed}
+                <br />
+                <strong>Video Timestamp : </strong>
+                {selectedPoint.video_time / 1000} Seconds
+                <br />
+                <strong>Recoding Time : </strong>
+                {Date(selectedPoint.timestamp * 1000)}
+              </p>
+            </div>
+          </InfoWindow>
+        )}
+
+        {selectedPath && (
+          <Polyline
+            path={createPathPoints(
+              selectedPath.geotags,
+              selectedPath.start_location,
+              selectedPath.end_location
+            )}
+            key="Highlighted Path"
+            geodesic={true}
+            options={{
+              strokeColors: "black",
+              strokeOpacity: 1,
+              strokeWeight: 8,
+              icons: [
+                {
+                  icon: lineSymbol,
+                  offset: "0",
+                  repeat: "20px",
+                },
+              ],
+            }}
+            onClick={(resp) => {
+
+              var latlng = {
+                lat: resp.latLng.lat(),
+                lng: resp.latLng.lng(),
+              };
+
+              // finds nearest point in data to the clicked point : can be optimized with better search algo
+              let minDist = 99999999;
+              let markPt = { lat: 0, lng: 0 };
+              selectedPath.geotags.map((point) => {
+                var dist = haversine_distance(latlng, {
+                  lat: point.lat,
+                  lng: point.lng,
+                });
+                if (dist < minDist) {
+                  minDist = dist;
+                  markPt = point;
+                }
+              });
+
+              // sets the mearest point to plot marker
+              setselectedPoint(markPt);
+            }}
+          />
+        )}
       </div>
     );
-
-
   }
   return <div></div>;
 };

@@ -7,6 +7,8 @@ export default function MakeMarkers(props) {
   const [selectedMarker, setselectedMarker] = useState();
   const [mapData, setMapData] = useState();
 
+  const startEndChoice = ["S","E"]
+
   useEffect(() => {
     var temp = [];
     // Iterate over Data to build mapData
@@ -61,14 +63,15 @@ export default function MakeMarkers(props) {
             <Marker
               key={markerId}
               position={point}
-              icon={{
-                url:
-                  `https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=${Math.floor(markerId / 2)}|FE6256|000000`,
-              }}
+              animation = {google.maps.Animation.DROP}
+              label={startEndChoice[markerId%2] + Math.floor(markerId / 2)}
+              // icon={{
+              //   url:
+              //     `https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=${startEndChoice[markerId%2]}${Math.floor(markerId / 2)}|FE6256|000000`,
+              // }}
               onClick={() => {
                 setselectedPath(mapData[Math.floor(markerId++ / 2)]);
                 setselectedMarker(point);
-                console.log(selectedPath);
               }}
             />
           );
@@ -86,11 +89,12 @@ export default function MakeMarkers(props) {
             }}
           >
             <div>
+              <h5>Marker Point</h5>
               <p>
+                <strong>Path : </strong>
+                {selectedPath.videoname}<br/>
                 <strong>UserName : </strong>
-                {selectedPath.username}
-              </p>
-              <p>
+                {selectedPath.username}<br/>
                 <strong>Record Date : </strong>
                 {Date(selectedPath.video * 1000)}
               </p>
