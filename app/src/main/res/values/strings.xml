@@ -24,4 +24,6 @@
     <string name="check_verification_note">Please type the verification code sent\nto</string>
     <string name="verify">VERIFY</string>
     <string name="hint">number</string>
+    <string name="speed">Speed</string>
+    <string name="tracking">Tracking</string>
 </resources>
