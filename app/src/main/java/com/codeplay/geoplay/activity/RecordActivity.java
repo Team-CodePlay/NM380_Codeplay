@@ -3,9 +3,11 @@ package com.codeplay.geoplay.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,6 +20,11 @@ import android.widget.Toast;
 import com.codeplay.geoplay.R;
 import com.codeplay.geoplay.ui.LockBottomSheetBehaviour;
 import com.codeplay.geoplay.util.PermissionUtil;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -40,6 +47,7 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 
 	private GoogleMap mMap;
 	private CameraFragment cameraFragment;
+	private FusedLocationProviderClient locationProviderClient;
 
 	private ImageView btnStart;
 	private ImageView btnStop;
@@ -61,20 +69,25 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 		lblSpeed = findViewById(R.id.lblSpeed);
 		btnStart = findViewById(R.id.btnStart);
 		btnStop = findViewById(R.id.btnStop);
-		btnStart.setOnClickListener(this::startRecording);
-		btnStop.setOnClickListener(this::stopRecording);
 		cameraFragment = (CameraFragment) getSupportFragmentManager().findFragmentById(R.id.cameraFragment);
+
+		btnStart.setOnClickListener(v -> {
+			v.setVisibility(View.GONE);
+			btnStop.setVisibility(View.VISIBLE);
+			startRecording();
+		});
+		btnStop.setOnClickListener(v -> {
+			v.setVisibility(View.GONE);
+			btnStart.setVisibility(View.VISIBLE);
+			stopRecording();
+		});
 
 		behavior = (LockBottomSheetBehaviour) LockBottomSheetBehaviour.from(findViewById(R.id.bottom_sheet));
 		setUpBottomSheet();
 
 
 		if (PermissionUtil.areAllPermissionsGranted(RecordActivity.this)) {
-
-			SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-					.findFragmentById(R.id.map);
-			mapFragment.getMapAsync(this);
-
+			setUpMap();
 		} else {
 			PermissionUtil.requestAllPermissions(RecordActivity.this);
 		}
@@ -83,14 +96,32 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 		cameraFragment = (CameraFragment) getSupportFragmentManager().findFragmentById(R.id.cameraFragment);
 	}
 
+	private void setUpMap(){
+		locationProviderClient = LocationServices.getFusedLocationProviderClient(RecordActivity.this);
+		SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+				.findFragmentById(R.id.map);
+		mapFragment.getMapAsync(this);
+	}
+
+	@SuppressLint("MissingPermission")
 	@Override
 	public void onMapReady(GoogleMap googleMap) {
 		mMap = googleMap;
 
-		// Add a marker in Sydney and move the camera
-		LatLng sydney = new LatLng(-34, 151);
-		mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-		mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+		if (PermissionUtil.areAllPermissionsGranted(RecordActivity.this)) {
+			mMap.clear();
+			mMap.setMyLocationEnabled(true);
+
+			locationProviderClient.getLastLocation().addOnSuccessListener(location -> {
+				if (location != null) {
+					mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+							new LatLng(location.getLatitude(), location.getLongitude()),
+							15
+					));
+				}
+			});
+
+		}
 	}
 
 	private void afterSave(File videoFile) {
@@ -98,32 +129,43 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 		Log.d(TAG, "afterSave: Save path: " + videoFile.toString());
 	}
 
-	private void startRecording(View view) {
+	@SuppressLint("MissingPermission")
+	private void startRecording() {
 		if (!isRecording) {
-			if (view != null) {
-				view.setVisibility(View.GONE);
-				btnStop.setVisibility(View.VISIBLE);
-			}
 			cameraFragment.startRecording(this::afterSave);
+
+			locationProviderClient.requestLocationUpdates(
+					// TODO: 09-07-2020 change priority according to preferences
+					new LocationRequest().setInterval(1000).setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY),
+					locationCallback,
+					Looper.getMainLooper()
+			).addOnCanceledListener(() -> Log.d(TAG, "location: cancelled"));
+
 			isRecording = true;
 		}
 	}
 
-	private void stopRecording(View view) {
+	private void stopRecording() {
 		if (isRecording) {
-			if (view != null) {
-				view.setVisibility(View.GONE);
-				btnStart.setVisibility(View.VISIBLE);
-			}
+			locationProviderClient.removeLocationUpdates(locationCallback);
+
 			cameraFragment.stopRecording();
 			isRecording = false;
 		}
 	}
 
+	private LocationCallback locationCallback = new LocationCallback(){
+		@Override
+		public void onLocationResult(LocationResult locationResult) {
+			super.onLocationResult(locationResult);
+			Log.d(TAG, "onLocationResult: " + locationResult.getLastLocation().toString());
+		}
+	};
+
 	@Override
 	public void onBackPressed() {
 		if (isRecording) {
-			stopRecording(null);
+			stopRecording();
 		}
 		super.onBackPressed();
 	}
@@ -161,11 +203,25 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 		if(requestCode == PermissionUtil.PERMISSION_REQUEST_CODE){
 			if(PermissionUtil.areAllPermissionsGranted(RecordActivity.this)){
-				SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-						.findFragmentById(R.id.map);
-				mapFragment.getMapAsync(this);
+				setUpMap();
 			}
 			// TODO: 01-08-2020 show permission rationale
 		}
+	}
+
+	@Override
+	protected void onPause() {
+		if (isRecording) {
+			stopRecording();
+		}
+		super.onPause();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		isRecording = false;
+		btnStart.setVisibility(View.VISIBLE);
+		btnStop.setVisibility(View.GONE);
 	}
 }

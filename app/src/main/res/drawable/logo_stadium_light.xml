@@ -7,7 +7,7 @@
         android:fillColor="#00000000"
         android:pathData="M720.17,601.9c40.84,-58.49 72.82,-121.21 72.82,-196.14C792.98,241.92 661.83,109.1 500.05,109.1S207.11,241.92 207.11,405.77c0,96.97 48.88,163.76 104.45,237.33l185.64,247c3.35,4.41 64.45,-78.15 69.64,-84.76q35.15,-45.6 69.64,-91.71C663.76,676.66 693.89,640.39 720.17,601.9Z"
         android:strokeWidth="35"
-        android:strokeColor="#fff"
+        android:strokeColor="#232323"
         android:strokeLineCap="round"
         android:strokeLineJoin="round" />
     <path
