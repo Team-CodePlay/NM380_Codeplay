@@ -1,7 +1,9 @@
 package com.codeplay.geoplay.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -109,9 +111,27 @@ public class GeoVideoAdapter extends RecyclerView.Adapter<GeoVideoAdapter.GeoVid
 				.centerCrop()
 				.into(holder.snapshot);
 
-		holder.itemView.setOnClickListener(v -> {onClickListener.onClick(dataset.get(position));});
-
-
+		holder.itemView.setOnClickListener(v -> onClickListener.onClick(dataset.get(position)));
+		PopupMenu popup = new PopupMenu(context, holder.optionsIconText);
+		popup.inflate(R.menu.video_context);
+		popup.setOnMenuItemClickListener(item -> {
+			switch (item.getItemId()) {
+				case R.id.delete:
+					onDeleteListener.onDelete(dataset.get(position));
+					return true;
+				case R.id.upload:
+					onUploadListener.onUpload(dataset.get(position));
+					return true;
+				default:
+					return false;
+			}
+		});
+		//displaying the popup
+		holder.itemView.setOnLongClickListener(v -> {
+			popup.show();
+			return true;
+		});
+		holder.optionsIconText.setOnClickListener(v -> popup.show());
 	}
 
 	@Override
@@ -140,6 +160,7 @@ public class GeoVideoAdapter extends RecyclerView.Adapter<GeoVideoAdapter.GeoVid
 			location = itemView.findViewById(R.id.location);
 			uploaded = itemView.findViewById(R.id.upload_icon);
 		}
+
 	}
 
 	public void setOnClickListener(OnClickListener onClickListener) {
@@ -164,4 +185,6 @@ public class GeoVideoAdapter extends RecyclerView.Adapter<GeoVideoAdapter.GeoVid
 	public interface OnClickListener{
 		void onClick(GeoVideo geoVideo);
 	}
+
+
 }

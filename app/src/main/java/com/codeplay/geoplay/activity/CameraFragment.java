@@ -193,6 +193,7 @@ public class CameraFragment extends Fragment {
 	public void stopRecording(){
 		Log.d(TAG, "stopRecording: ");
 		videoCapture.stopRecording();
+		// TODO: 02-08-2020 stop timer
 	}
 
 

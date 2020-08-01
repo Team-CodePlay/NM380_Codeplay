@@ -7,6 +7,8 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -36,6 +38,15 @@ public class GeoTag {
 		this.longitude = longitude;
 	}
 
+	public GeoTag(JSONObject jsonObject){
+		latitude = jsonObject.optDouble("latitude");
+		longitude = jsonObject.optDouble("longitude");
+		videoTime = jsonObject.optLong("video_time");
+		speed = jsonObject.optInt("speed");
+		timestamp = jsonObject.optLong("timestamp");
+		bearing = jsonObject.optInt("bearing");
+	}
+
 	@Ignore
 	public JSONObject toJson() {
 		JSONObject jsonObject = new JSONObject();
@@ -50,5 +61,9 @@ public class GeoTag {
 			Log.d("Error", err.toString());
 		}
 		return jsonObject;
+	}
+
+	public LatLng getLatLng() {
+		return new LatLng(latitude, longitude);
 	}
 }

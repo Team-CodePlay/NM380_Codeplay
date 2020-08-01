@@ -10,12 +10,16 @@ import org.json.JSONException;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import static com.codeplay.geoplay.util.GeoTagUtil.getGeoTagJson;
+import static com.codeplay.geoplay.util.GeoTagUtil.readFromJsonString;
 
 public class VideoUtil {
+
+	private static final String TAG = "VideoUtil";
 
 	public static void writeMetaData(File videoFile, List<GeoTag> geoTags){
 		MetadataEditor mediaMeta = null;
@@ -26,10 +30,6 @@ public class VideoUtil {
 		}
 		Map<String, MetaValue> keyedMeta = mediaMeta.getKeyedMeta();
 		if (keyedMeta != null) {
-			System.out.println("Keyed metadata:");
-			for (Map.Entry<String, MetaValue> entry : keyedMeta.entrySet()) {
-				System.out.println(entry.getKey() + ": " + entry.getValue());
-			}
 			try {
 				keyedMeta.put("locations", MetaValue.createString(getGeoTagJson(geoTags)));
 			} catch (JSONException e) {
@@ -42,6 +42,25 @@ public class VideoUtil {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static List<GeoTag> readMetaData(String videoPath){
+		List<GeoTag> geoTags = new ArrayList<>();
+		MetadataEditor mediaMeta = null;
+		try {
+			mediaMeta = MetadataEditor.createFrom(new File(videoPath));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		Map<String, MetaValue> keyedMeta = mediaMeta.getKeyedMeta();
+		if (keyedMeta != null) {
+			for (Map.Entry<String, MetaValue> entry : keyedMeta.entrySet()) {
+				if (entry.getKey().equals("locations")) {
+					geoTags = readFromJsonString(entry.getValue().getString());
+				}
+			}
+		}
+		return geoTags;
 	}
 
 }

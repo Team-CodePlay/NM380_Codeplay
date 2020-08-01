@@ -218,7 +218,6 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 		@Override
 		public void onLocationResult(LocationResult locationResult) {
 			super.onLocationResult(locationResult);
-			Log.d(TAG, "onLocationResult: " + locationResult.getLastLocation().toString());
 			Location location = locationResult.getLastLocation();
 			LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
