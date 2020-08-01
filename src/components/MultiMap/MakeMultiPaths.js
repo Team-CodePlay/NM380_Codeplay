@@ -82,25 +82,23 @@ const MakeMultiPaths = (props) => {
             path.end_location
           ); 
           return (
-            <div>
-              <Polyline
-                path={pathpoints}
-                key={pathKey}
-                geodesic={true}
-                options={{
-                  strokeColor: thisColor,
-                  strokeOpacity: 0.6,
-                  strokeWeight: 8,
-                  icons: [
-                    {
-                      icon: lineSymbol,
-                      offset: "0",
-                      repeat: "20px",
-                    },
-                  ],
-                }}
-              />
-            </div>
+            <Polyline
+              path={pathpoints}
+              key={pathKey}
+              geodesic={true}
+              options={{
+                strokeColor: thisColor,
+                strokeOpacity: 0.6,
+                strokeWeight: 8,
+                icons: [
+                  {
+                    icon: lineSymbol,
+                    offset: "0",
+                    repeat: "20px",
+                  },
+                ],
+              }}
+            />
           );
         })}
       </div>
