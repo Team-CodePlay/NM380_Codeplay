@@ -19,7 +19,6 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 
     private GoogleMap mMap;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
