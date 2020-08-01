@@ -1,6 +1,13 @@
 /* global google */
 import React, { useState, useEffect } from "react";
-import { Polyline, lineSymbol } from "react-google-maps";
+import { Marker, InfoWindow, Polyline, lineSymbol } from "react-google-maps";
+import {
+  Card,
+  Button,
+  CardGroup,
+  DropdownButton,
+  Dropdown,
+} from "react-bootstrap";
 
 // Calculates distance between lat lng
 const haversine_distance = (mk1, mk2) => {
@@ -26,16 +33,12 @@ const haversine_distance = (mk1, mk2) => {
 };
 
 const MakeMultiPaths = (props) => {
-  //   const [selectedMarker, setselectedMarker] = useState();
+  const [selectedPoint, setselectedPoint] = useState();
   const [mapData, setMapData] = useState();
-  //   const [selectedPath, setselectedPath] = useState();
+  const [selectedPath, setselectedPath] = useState();
 
   // @todo : Add more colors
   const color = ["blue", "green", "red", "yellow"];
-  let clr = 0;
-
-  // Path Id
-  var pathKey = 0;
 
   useEffect(() => {
     var temp = [];
@@ -48,20 +51,18 @@ const MakeMultiPaths = (props) => {
       });
       setMapData(temp);
     });
-  }, []);
 
-  //   useEffect(() => {
-  //     const listener = (e) => {
-  //       if (e.key === "Escape") {
-  //         setselectedMarker(null);
-  //         setselectedPath(null);
-  //       }
-  //     };
-  //     window.addEventListener("keydown", listener);
-  //     return () => {
-  //       window.removeEventListener("keydown", listener);
-  //     };
-  //   }, []);
+    const listener = (e) => {
+      if (e.key === "Escape") {
+        setselectedPath(null);
+        setselectedPoint(null);
+      }
+    };
+    window.addEventListener("keydown", listener);
+    return () => {
+      window.removeEventListener("keydown", listener);
+    };
+  }, []);
 
   const createPathPoints = (geotags, start, end) => {
     var pathpoints = [];
@@ -71,16 +72,20 @@ const MakeMultiPaths = (props) => {
     return pathpoints;
   };
 
+  const pathClicked = (path) => {
+    setselectedPath(path);
+  };
+
   if (mapData !== undefined) {
     return (
       <div>
         {mapData.map((path, pathKey) => {
-          var thisColor = color[clr++ % color.length];
+          var thisColor = color[pathKey % color.length];
           var pathpoints = createPathPoints(
             path.geotags,
             path.start_location,
             path.end_location
-          ); 
+          );
           return (
             <div>
               <Polyline
@@ -89,7 +94,7 @@ const MakeMultiPaths = (props) => {
                 geodesic={true}
                 options={{
                   strokeColor: thisColor,
-                  strokeOpacity: 0.6,
+                  strokeOpacity: 0.8,
                   strokeWeight: 8,
                   icons: [
                     {
@@ -99,14 +104,110 @@ const MakeMultiPaths = (props) => {
                     },
                   ],
                 }}
+                onClick={(resp) => {
+                  pathClicked(path);
+
+                  var latlng = {
+                    lat: resp.latLng.lat(),
+                    lng: resp.latLng.lng(),
+                  };
+
+                  // finds nearest point in data to the clicked point : can be optimized with better search algo
+                  let minDist = 99999999;
+                  let markPt = { lat: 0, lng: 0 };
+                  path.geotags.map((point) => {
+                    var dist = haversine_distance(latlng, {
+                      lat: point.lat,
+                      lng: point.lng,
+                    });
+                    if (dist < minDist) {
+                      minDist = dist;
+                      markPt = point;
+                    }
+                  });
+
+                  // sets the mearest point to plot marker
+                  setselectedPoint(markPt);
+                }}
               />
             </div>
           );
         })}
+
+        {selectedPoint && (
+          <InfoWindow
+            onCloseClick={() => {
+              setselectedPoint(null);
+            }}
+            position={{
+              lat: selectedPoint.lat,
+              lng: selectedPoint.lng,
+            }}
+          >
+            <div>
+              <p>
+                <strong>Vehicle Speed : </strong>
+                {selectedPoint.speed}
+                <br />
+                <strong>Video Timestamp : </strong>
+                {selectedPoint.video_time / 1000} Seconds
+                <br />
+                <strong>Recoding Time : </strong>
+                {Date(selectedPoint.timestamp * 1000)}
+              </p>
+            </div>
+          </InfoWindow>
+        )}
+
+        {selectedPath && (
+          <Polyline
+            path={createPathPoints(
+              selectedPath.geotags,
+              selectedPath.start_location,
+              selectedPath.end_location
+            )}
+            key="Highlighted Path"
+            geodesic={true}
+            options={{
+              strokeColors: "black",
+              strokeOpacity: 1,
+              strokeWeight: 8,
+              icons: [
+                {
+                  icon: lineSymbol,
+                  offset: "0",
+                  repeat: "20px",
+                },
+              ],
+            }}
+            onClick={(resp) => {
+
+              var latlng = {
+                lat: resp.latLng.lat(),
+                lng: resp.latLng.lng(),
+              };
+
+              // finds nearest point in data to the clicked point : can be optimized with better search algo
+              let minDist = 99999999;
+              let markPt = { lat: 0, lng: 0 };
+              selectedPath.geotags.map((point) => {
+                var dist = haversine_distance(latlng, {
+                  lat: point.lat,
+                  lng: point.lng,
+                });
+                if (dist < minDist) {
+                  minDist = dist;
+                  markPt = point;
+                }
+              });
+
+              // sets the mearest point to plot marker
+              setselectedPoint(markPt);
+            }}
+          />
+        )}
       </div>
     );
-
-
   }
   return <div></div>;
 };
