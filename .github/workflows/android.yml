@@ -24,11 +24,6 @@ jobs:
         GOOGLE_SERVICES: ${{ secrets.GOOGLE_SERVICES }}
       run: echo $GOOGLE_SERVICES > app/google-services.json
 
-    - name: Decode maps api key
-      env:
-        GOOGLE_MAPS_KEY: ${{ secrets.GOOGLE_MAPS_KEY }}
-      run: echo $GOOGLE_MAPS_KEY > app/src/main/res/values/google_maps_api.xml
-
     - name: Build debug APK
       run: ./gradlew assembleDebug --stacktrace
 
