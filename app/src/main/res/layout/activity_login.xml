@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.LoginActivity">
+
+    <LinearLayout
+        android:id="@+id/first_layout"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:background="@color/colorPrimary"
+        android:elevation="10dp"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_logo_stadium_light"
+            android:contentDescription="@string/logo"
+            android:elevation="10dp" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/first_layout"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/logo_title"
+            android:textColor="#000000"
+            android:textSize="40sp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="20dp"
+            android:hint="@string/phone_placeholder"
+            android:textColor="#828282"
+            android:autofillHints="Enter Phone Number"
+            android:inputType="phone" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="@string/send_otp_note" />
+
+        <Button
+            android:id="@+id/send_otp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/button"
+            android:elevation="10dp"
+            android:letterSpacing="0.2"
+            android:text="@string/send_otp"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

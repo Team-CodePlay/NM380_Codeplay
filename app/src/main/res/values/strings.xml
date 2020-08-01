@@ -15,6 +15,15 @@
     <string name="duration">Duration</string>
     <string name="location">Location</string>
     <string name="toggle_view">Toggle View</string>
+    <string name="send_otp">SEND OTP</string>
+    <string name="send_otp_note">We will send you a One time SMS message\nCarrier rates may apply</string>
+    <string name="logo">Logo</string>
+    <string name="logo_title">GEOPLAY</string>
+    <string name="phone_placeholder">Your Phone Number</string>
+    <string name="verification_code">Verification Code</string>
+    <string name="check_verification_note">Please type the verification code sent\nto</string>
+    <string name="verify">VERIFY</string>
+    <string name="hint">number</string>
     <string name="speed">Speed</string>
     <string name="tracking">Tracking</string>
 </resources>
