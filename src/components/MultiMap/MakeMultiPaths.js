@@ -140,6 +140,39 @@ const MakeMultiPaths = (props) => {
         })}
         <CardGroup>
           {cardsArray}
+          <Card key={10} border="primary" style={{ margin: '10px', width: '18rem', borderLeft: '1px solid', borderRadius: '0.5rem' }}>
+            <Card.Body>
+              <Card.Title>Path 10</Card.Title>
+              <Card.Text>
+                <strong>User : 5</strong>
+                <br />
+                <strong>Data Collection Time :</strong>{" "}
+                {new Date(100 * 1000).toLocaleDateString('en-GB')}
+                <br />
+                <strong>Video Duration :</strong> 10
+              </Card.Text>
+              <Button style={{ margin: "0.25rem" }} variant="primary">See Path</Button>
+              <Button style={{ margin: "0.25rem" }} variant="primary">Watch Video</Button>
+              <DropdownButton
+                style={{ margin: "0.25rem" }}
+                variant="success"
+                title="Export To KML"
+              >
+                <Dropdown.Item
+                  id={"view" + 10}
+                  variant="light"
+                >
+                  View KML
+                      </Dropdown.Item>
+                <Dropdown.Item
+                  id={"download" + 10}
+                  variant="light"
+                >
+                  Download KML
+                      </Dropdown.Item>
+              </DropdownButton>
+            </Card.Body>
+          </Card>
         </CardGroup>
       </div>
     );
