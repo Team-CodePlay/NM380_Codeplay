@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 import MultiMap from "./components/MultiMap/MultiMap";
-import Header from "./components/MultiMap/layouts/Header";
+import Header from "./components/layouts/Header";
 
 function App() {
   return (
