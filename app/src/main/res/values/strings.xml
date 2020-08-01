@@ -6,4 +6,12 @@
     <string name="uploading_files">Uploading files</string>
     <string name="resolution">Resolution</string>
     <string name="_00_00">00:00</string>
+    <string name="options_icon_string">⋮</string>
+    <string name="video_thumbnail">Video thumbnail</string>
+    <string name="indicates_file_uploaded_to_cloud">Indicates file uploaded to cloud</string>
+    <string name="title">Title</string>
+    <string name="date">Date</string>
+    <string name="size">Size</string>
+    <string name="duration">Duration</string>
+    <string name="location">Location</string>
 </resources>
