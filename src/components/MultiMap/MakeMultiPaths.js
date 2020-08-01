@@ -1,6 +1,7 @@
 /* global google */
 import React, { useState, useEffect } from "react";
 import { Polyline, lineSymbol } from "react-google-maps";
+import { Card, Button, CardGroup, DropdownButton, Dropdown } from "react-bootstrap";
 
 // Calculates distance between lat lng
 const haversine_distance = (mk1, mk2) => {
@@ -16,10 +17,10 @@ const haversine_distance = (mk1, mk2) => {
     Math.asin(
       Math.sqrt(
         Math.sin(difflat / 2) * Math.sin(difflat / 2) +
-          Math.cos(rlat1) *
-            Math.cos(rlat2) *
-            Math.sin(difflon / 2) *
-            Math.sin(difflon / 2)
+        Math.cos(rlat1) *
+        Math.cos(rlat2) *
+        Math.sin(difflon / 2) *
+        Math.sin(difflon / 2)
       )
     );
   return d;
@@ -72,6 +73,7 @@ const MakeMultiPaths = (props) => {
   };
 
   if (mapData !== undefined) {
+    let cardsArray = [];
     return (
       <div>
         {mapData.map((path, pathKey) => {
@@ -80,7 +82,42 @@ const MakeMultiPaths = (props) => {
             path.geotags,
             path.start_location,
             path.end_location
-          ); 
+          );
+          cardsArray.push(
+            <Card key={pathKey} border="primary" style={{ margin: '10px', width: '18rem', borderLeft: '1px solid', borderRadius: '0.5rem' }}>
+              <Card.Body>
+                <Card.Title>Path {path.metaName}</Card.Title>
+                <Card.Text>
+                  <strong>User : {path.userName}</strong>
+                  <br />
+                  <strong>Data Collection Time :</strong>{" "}
+                  {Date(path.video_start_time * 1000)}
+                  <br />
+                  <strong>Video Duration :</strong> {path.duration}
+                </Card.Text>
+                <Button style={{ margin: "0.25rem" }} variant="primary">See Path</Button>
+                <Button style={{ margin: "0.25rem" }} variant="primary">Watch Video</Button>
+                <DropdownButton
+                  style={{ margin: "0.25rem" }}
+                  variant="success"
+                  title="Export To KML"
+                >
+                  <Dropdown.Item
+                    id={"view" + pathKey}
+                    variant="light"
+                  >
+                    View KML
+                      </Dropdown.Item>
+                  <Dropdown.Item
+                    id={"download" + pathKey}
+                    variant="light"
+                  >
+                    Download KML
+                      </Dropdown.Item>
+                </DropdownButton>
+              </Card.Body>
+            </Card>
+          );
           return (
             <Polyline
               path={pathpoints}
@@ -101,6 +138,9 @@ const MakeMultiPaths = (props) => {
             />
           );
         })}
+        <CardGroup>
+          {cardsArray}
+        </CardGroup>
       </div>
     );
 
