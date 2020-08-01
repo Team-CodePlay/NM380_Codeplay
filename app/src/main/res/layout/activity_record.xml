@@ -17,6 +17,7 @@
 			android:name="com.codeplay.geoplay.activity.CameraFragment"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
+			android:layout_marginBottom="45dp"
 			android:layout_alignParentStart="true"
 			android:layout_alignParentBottom="true" />
 
@@ -51,8 +52,30 @@
 		android:layout_height="wrap_content"
 		android:orientation="vertical"
 		app:behavior_hideable="false"
-		app:behavior_peekHeight="50dp"
+		app:behavior_peekHeight="125dp"
 		app:layout_behavior="com.codeplay.geoplay.ui.LockBottomSheetBehaviour">
+
+		<ImageView
+			android:id="@+id/btnStart"
+			android:layout_width="60dp"
+			android:layout_height="60dp"
+			android:layout_marginBottom="15dp"
+			android:layout_gravity="center"
+			android:src="@drawable/start_record"
+			app:layout_anchor="@+id/bottom_sheet"
+			app:layout_anchorGravity="top|end"/>
+
+		<ImageView
+			android:id="@+id/btnStop"
+			android:layout_width="60dp"
+			android:layout_height="60dp"
+			android:layout_gravity="center"
+			android:layout_marginBottom="15dp"
+			android:elevation="10dp"
+			android:src="@drawable/stop_record"
+			android:visibility="gone"
+			app:layout_anchor="@+id/bottom_sheet"
+			app:layout_anchorGravity="top|end"/>
 
 		<TextView
 			android:layout_width="match_parent"
