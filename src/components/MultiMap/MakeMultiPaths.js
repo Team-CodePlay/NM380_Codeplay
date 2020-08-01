@@ -71,11 +71,11 @@ const MakeMultiPaths = (props) => {
     setselectedPath(path);
   };
 
-  const exportToKml = (path,action) => {
+  const exportToKml = (path, action) => {
     var kmlData = kmlStart1 + path.videoname + kmlStart2;
 
     path.geotags.map(pt => {
-        kmlData += `
+      kmlData += `
         <Placemark>
             <styleUrl>#hiker-icon</styleUrl>
             <TimeStamp>1595088201781</TimeStamp>
@@ -92,13 +92,13 @@ const MakeMultiPaths = (props) => {
     const file = new Blob([kmlData], { type: 'text/kml' });
     element.href = URL.createObjectURL(file);
     if (action === "download") {
-        element.download = `${path.videoname}.kml`;
+      element.download = `${path.videoname}.kml`;
     } else if (action === "view") {
-        element.target = "_blank";
+      element.target = "_blank";
     }
     document.body.appendChild(element); // Mozilla
     element.click();
-};
+  };
 
   if (mapData !== undefined) {
     let cardsArray = [];
@@ -119,19 +119,19 @@ const MakeMultiPaths = (props) => {
                   <strong>User :</strong> {path.username}
                   <br />
                   <strong>Data Collection Time :</strong>{" "}
-                  {Date(path.video_start_time * 1000)}
+                  {new Date().toLocaleDateString('en-GB')}
                   <br />
                   <strong>Video Duration :</strong> {path.duration}
                 </Card.Text>
 
-                <Button style={{ margin: "0.25rem" }} onClick={()=>{
-                    pathClicked(path);
-                    window.scrollTo({
-                        top: 0,
-                        behavior: "smooth"
-                    });
+                <Button style={{ margin: "0.25rem" }} onClick={() => {
+                  pathClicked(path);
+                  window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                  });
                 }} variant="primary">
-                        See Path
+                  See Path
                 </Button>
 
                 <Button style={{ margin: "0.25rem" }} variant="primary">Watch Video</Button>
@@ -143,14 +143,14 @@ const MakeMultiPaths = (props) => {
                   <Dropdown.Item
                     id={"view" + pathKey}
                     variant="light"
-                    onClick={()=>exportToKml(path,"view")}
+                    onClick={() => exportToKml(path, "view")}
                   >
                     View KML
                       </Dropdown.Item>
                   <Dropdown.Item
                     id={"download" + pathKey}
                     variant="light"
-                    onClick={()=>exportToKml(path,"download")}
+                    onClick={() => exportToKml(path, "download")}
                   >
                     Download KML
                       </Dropdown.Item>
