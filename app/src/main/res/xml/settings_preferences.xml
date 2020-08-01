@@ -78,6 +78,11 @@
             android:icon="@drawable/information"
             android:key="about"
             android:title="About Application" />
+        <Preference
+            android:title="Logout"
+            android:key="logout"
+            android:icon="@drawable/ic_logout"
+            />
 
     </PreferenceCategory>
 </PreferenceScreen>

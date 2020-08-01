@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codeplay.geoplay.R;
@@ -31,7 +32,6 @@ public class OtpVerificationActivity extends AppCompatActivity {
     private EditText otpDigit5;
     private EditText otpDigit6;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,11 +46,15 @@ public class OtpVerificationActivity extends AppCompatActivity {
         otpDigit5 = findViewById(R.id.et_5);
         otpDigit6 = findViewById(R.id.et_6);
 
+        TextView checkVerificationCode = findViewById(R.id.check_verification_note);
 
         mAuth = FirebaseAuth.getInstance();
 
         String phonenumber = getIntent().getStringExtra("phonenumber");
         sendVerificationCode(phonenumber);
+
+        checkVerificationCode.setText("Please type the verification code sent\nto " + phonenumber);
+
 
         findViewById(R.id.verify).setOnClickListener(v -> {
             otp.append(otpDigit1.getText().toString().trim());
@@ -81,6 +85,7 @@ public class OtpVerificationActivity extends AppCompatActivity {
     private void signInWithCredential(PhoneAuthCredential credential) {
         mAuth.signInWithCredential(credential).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
+                Toast.makeText(OtpVerificationActivity.this, "Verified Successfully!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(OtpVerificationActivity.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);

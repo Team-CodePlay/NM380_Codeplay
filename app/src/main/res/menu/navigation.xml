@@ -4,16 +4,16 @@
     <item
         android:id="@+id/nav_library"
         android:icon="@drawable/library"
-        android:title="@string/library"/>
+        android:title="@string/library" />
 
     <item
         android:id="@+id/nav_record"
         android:icon="@drawable/video_camera"
-        android:title="@string/record"/>
+        android:title="@string/record" />
 
     <item
         android:id="@+id/nav_settings"
         android:icon="@drawable/settings"
-        android:title="@string/settings"/>
+        android:title="@string/settings" />
 
 </menu>

@@ -54,6 +54,7 @@
             android:autofillHints="Enter Phone Number"
             android:hint="@string/phone_placeholder"
             android:inputType="phone"
+            android:textSize="20sp"
             android:textAlignment="center"
             android:textColor="@color/colorPrimaryText"
             android:textColorHint="@color/colorHintText" />
