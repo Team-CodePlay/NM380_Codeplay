@@ -10,7 +10,7 @@ const MultiMap = () => {
 
     // const [mapData, setMapData] = useState(null);
 
-    var mapData = []
+    var mapData = [];
 
     // Iterate over Data to build mapData
     Object.keys(data).forEach(user => {
