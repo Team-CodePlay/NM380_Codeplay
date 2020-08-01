@@ -9,7 +9,7 @@
             app:entries="@array/bitrate_entries"
             app:entryValues="@array/bitrate_values"
             app:key="bitrate"
-            app:title="@string/change_bitrate"
+            app:title="Change Bitrate"
             app:useSimpleSummaryProvider="true" />
 
         <EditTextPreference
