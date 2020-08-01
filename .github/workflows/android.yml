@@ -21,7 +21,7 @@ jobs:
     
     - name: Decode google-services.json
       env:
-        FIREBASE_CONFIG: ${{ secrets.GOOGLE_SERVICES }}
+        GOOGLE_SERVICES: ${{ secrets.GOOGLE_SERVICES }}
       run: echo $GOOGLE_SERVICES > app/google-services.json
 
     - name: Decode maps api key
