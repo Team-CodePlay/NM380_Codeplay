@@ -35,8 +35,6 @@ const MultiMap = (props) => {
     });
   }, []);
 
-  console.log("markerPoints" + markerPoints);
-
   // Create Map Bounds makes sure all points in markerPoints are visible in map ie sets zoom accordingly
   const fitBounds = (map) => {
     flagToFitBound = 1;
@@ -44,7 +42,6 @@ const MultiMap = (props) => {
     markerPoints.map((pt) => {
       bounds.extend(pt);
     });
-    console.log(markerPoints);
     map.fitBounds(bounds);
   };
 
@@ -52,7 +49,6 @@ const MultiMap = (props) => {
     return (
       <GoogleMap
         ref={(map) => {
-          console.log("Map " + map);
           if (
             (map != null) &
             (flagToFitBound === 0) &
