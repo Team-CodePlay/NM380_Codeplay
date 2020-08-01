@@ -118,7 +118,7 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 		backgoundExecutor = Executors.newSingleThreadExecutor();
 	}
 
-	private void setUpMap(){
+	private void setUpMap() {
 		locationProviderClient = LocationServices.getFusedLocationProviderClient(RecordActivity.this);
 		SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.map);
@@ -159,16 +159,16 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 			geoVideo.videoPath = videoFile.getPath();
 
 			geoVideo.videoStartTime = startTime;
-			geoVideo.duration = (int)(System.currentTimeMillis() - startTime)/1000;
+			geoVideo.duration = (int) (System.currentTimeMillis() - startTime) / 1000;
 			geoVideo.size = videoFile.length();
-			if(!geoTags.isEmpty()) {
+			if (!geoTags.isEmpty()) {
 				geoVideo.startLocation = new GeoVideo.Location(
 						geoTags.get(0).latitude,
 						geoTags.get(0).longitude
 				);
 				geoVideo.endLocation = new GeoVideo.Location(
-						geoTags.get(geoTags.size()-1).latitude,
-						geoTags.get(geoTags.size()-1).longitude
+						geoTags.get(geoTags.size() - 1).latitude,
+						geoTags.get(geoTags.size() - 1).longitude
 				);
 			}
 			int videoId = (int) AppDatabase.getInstance(RecordActivity.this).geoVideoDao().insert(geoVideo);
@@ -176,7 +176,7 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 			for (int i = 0; i < geoTags.size(); i++) {
 				geoTags.get(i).videoId = videoId;
 			}
-			if(!geoTags.isEmpty())
+			if (!geoTags.isEmpty())
 				AppDatabase.getInstance(RecordActivity.this).geoVideoDao().insertTags(geoTags);
 		});
 
@@ -214,7 +214,7 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 		}
 	}
 
-	private LocationCallback locationCallback = new LocationCallback(){
+	private LocationCallback locationCallback = new LocationCallback() {
 		@Override
 		public void onLocationResult(LocationResult locationResult) {
 			super.onLocationResult(locationResult);
@@ -290,11 +290,13 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 	@Override
 	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-		if(requestCode == PermissionUtil.PERMISSION_REQUEST_CODE){
-			if(PermissionUtil.areAllPermissionsGranted(RecordActivity.this)){
+		if (requestCode == PermissionUtil.PERMISSION_REQUEST_CODE) {
+			if (PermissionUtil.areAllPermissionsGranted(RecordActivity.this)) {
 				setUpMap();
+			} else {
+				Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
+				PermissionUtil.showPermissionsRationale(RecordActivity.this);
 			}
-			// TODO: 01-08-2020 show permission rationale
 		}
 	}
 

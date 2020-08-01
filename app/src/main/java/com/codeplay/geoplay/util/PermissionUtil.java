@@ -6,8 +6,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import com.codeplay.geoplay.activity.MainActivity;
 
 public class PermissionUtil {
 
@@ -39,4 +42,17 @@ public class PermissionUtil {
 		ActivityCompat.requestPermissions(activity, REQUIRED_PERMISSIONS, PERMISSION_REQUEST_CODE);
 	}
 
+	public static void showPermissionsRationale(Activity activity) {
+		AlertDialog.Builder adb = new AlertDialog.Builder(activity)
+				.setTitle("Grant all permissions")
+				.setMessage("You would need to grant all permissions to be able to use this app")
+				.setPositiveButton("Ok", (dialog, which) -> {
+					requestAllPermissions(activity);
+				})
+				.setCancelable(false)
+				.setNegativeButton("No", (dialog, which) -> {
+					activity.finish();
+				});
+		adb.create().show();
+	}
 }
