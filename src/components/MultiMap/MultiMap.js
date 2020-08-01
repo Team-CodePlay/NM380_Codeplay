@@ -8,20 +8,30 @@ import data from '../../data/dummy.json';
 
 const MultiMap = () => {
 
-    console.log(data);
+    // const [mapData, setMapData] = useState(null);
 
+    var mapData = []
+
+    // Iterate over Data to build mapData
     Object.keys(data).forEach(user => {
         Object.keys(data[user]).forEach(video => {
-            console.log(user, video);
+            data[user][video]['username'] = user;
+            data[user][video]['videoname'] = video;
+            mapData.push(data[user][video]);
         });
     });
+
+    // setMapData(temp)
+    console.log(mapData);
 
     const MapWithPaths = () => {
         return (
             <GoogleMap
                 defaultZoom={15}
                 defaultCenter={{ lat: 19.23, lng: 72.85 }}
-            ></GoogleMap>
+            >
+
+            </GoogleMap>
         );
     };
 
