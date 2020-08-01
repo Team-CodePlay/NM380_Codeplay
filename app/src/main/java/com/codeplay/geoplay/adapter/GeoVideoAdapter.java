@@ -15,7 +15,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.codeplay.geoplay.R;
 import com.codeplay.geoplay.model.GeoVideo;
 
+import java.text.CharacterIterator;
+import java.text.SimpleDateFormat;
+import java.text.StringCharacterIterator;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class GeoVideoAdapter extends RecyclerView.Adapter<GeoVideoAdapter.GeoVideoViewHolder> {
 
@@ -49,6 +55,37 @@ public class GeoVideoAdapter extends RecyclerView.Adapter<GeoVideoAdapter.GeoVid
 		}
 		return new GeoVideoViewHolder(LayoutInflater.from(parent.getContext())
 				.inflate(R.layout.row_video_large_thumbnail, parent, false));
+	}
+
+	public static String ByteConverter(long bytes) {
+		if (-1000 < bytes && bytes < 1000) {
+			return bytes + " B";
+		}
+		CharacterIterator ci = new StringCharacterIterator("KMGTPE");
+		while (bytes <= -999_950 || bytes >= 999_950) {
+			bytes /= 1000;
+			ci.next();
+		}
+		return String.format("%.1f %cB", bytes / 1000.0, ci.current());
+	}
+
+	public static String SecondsConverter(long duration) {
+		return String.format("%02d:%02d:%02d",
+				TimeUnit.SECONDS.toHours(duration),
+				TimeUnit.SECONDS.toMinutes(duration) - TimeUnit.HOURS.toMinutes(TimeUnit.SECONDS.toHours(duration)),
+				duration - TimeUnit.MINUTES.toSeconds(TimeUnit.SECONDS.toMinutes(duration) - TimeUnit.HOURS.toMinutes(TimeUnit.SECONDS.toHours(duration))));
+	}
+
+	public static String TimestampConverter(Long timestamp) {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, yyyy", Locale.US);
+		Date resultdate = new Date(timestamp);
+		return sdf.format(resultdate);
+	}
+
+	public static String TitleGenerator(Long timestamp) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd-hhmm", Locale.US);
+		Date resultdate = new Date(timestamp);
+		return sdf.format(resultdate);
 	}
 
 	@Override
