@@ -1,13 +1,7 @@
 /* global google */
 import React, { useState, useEffect } from "react";
-import { Marker, InfoWindow, Polyline, lineSymbol } from "react-google-maps";
-import {
-  Card,
-  Button,
-  CardGroup,
-  DropdownButton,
-  Dropdown,
-} from "react-bootstrap";
+import { InfoWindow, Polyline, lineSymbol } from "react-google-maps";
+import { Card, Button, CardGroup, DropdownButton, Dropdown } from "react-bootstrap";
 
 // Calculates distance between lat lng
 const haversine_distance = (mk1, mk2) => {
@@ -23,10 +17,10 @@ const haversine_distance = (mk1, mk2) => {
     Math.asin(
       Math.sqrt(
         Math.sin(difflat / 2) * Math.sin(difflat / 2) +
-          Math.cos(rlat1) *
-            Math.cos(rlat2) *
-            Math.sin(difflon / 2) *
-            Math.sin(difflon / 2)
+        Math.cos(rlat1) *
+        Math.cos(rlat2) *
+        Math.sin(difflon / 2) *
+        Math.sin(difflon / 2)
       )
     );
   return d;
@@ -77,6 +71,7 @@ const MakeMultiPaths = (props) => {
   };
 
   if (mapData !== undefined) {
+    let cardsArray = [];
     return (
       <div>
         {mapData.map((path, pathKey) => {
@@ -86,53 +81,89 @@ const MakeMultiPaths = (props) => {
             path.start_location,
             path.end_location
           );
+          cardsArray.push(
+            <Card key={pathKey} border="primary" style={{ margin: '10px', width: '18rem', borderLeft: '1px solid', borderRadius: '0.5rem' }}>
+              <Card.Body>
+                <Card.Title>Path {path.metaName}</Card.Title>
+                <Card.Text>
+                  <strong>User : {path.userName}</strong>
+                  <br />
+                  <strong>Data Collection Time :</strong>{" "}
+                  {Date(path.video_start_time * 1000)}
+                  <br />
+                  <strong>Video Duration :</strong> {path.duration}
+                </Card.Text>
+                <Button style={{ margin: "0.25rem" }} variant="primary">See Path</Button>
+                <Button style={{ margin: "0.25rem" }} variant="primary">Watch Video</Button>
+                <DropdownButton
+                  style={{ margin: "0.25rem" }}
+                  variant="success"
+                  title="Export To KML"
+                >
+                  <Dropdown.Item
+                    id={"view" + pathKey}
+                    variant="light"
+                  >
+                    View KML
+                      </Dropdown.Item>
+                  <Dropdown.Item
+                    id={"download" + pathKey}
+                    variant="light"
+                  >
+                    Download KML
+                      </Dropdown.Item>
+                </DropdownButton>
+              </Card.Body>
+            </Card>
+          );
           return (
-            <div>
-              <Polyline
-                path={pathpoints}
-                key={pathKey}
-                geodesic={true}
-                options={{
-                  strokeColor: thisColor,
-                  strokeOpacity: 0.8,
-                  strokeWeight: 8,
-                  icons: [
-                    {
-                      icon: lineSymbol,
-                      offset: "0",
-                      repeat: "20px",
-                    },
-                  ],
-                }}
-                onClick={(resp) => {
-                  pathClicked(path);
+            <Polyline
+              path={pathpoints}
+              key={pathKey}
+              geodesic={true}
+              options={{
+                strokeColor: thisColor,
+                strokeOpacity: 0.8,
+                strokeWeight: 8,
+                icons: [
+                  {
+                    icon: lineSymbol,
+                    offset: "0",
+                    repeat: "20px",
+                  },
+                ],
+              }}
+              onClick={(resp) => {
+                pathClicked(path);
 
-                  var latlng = {
-                    lat: resp.latLng.lat(),
-                    lng: resp.latLng.lng(),
-                  };
+                var latlng = {
+                  lat: resp.latLng.lat(),
+                  lng: resp.latLng.lng(),
+                };
 
-                  // finds nearest point in data to the clicked point : can be optimized with better search algo
-                  let minDist = 99999999;
-                  let markPt = { lat: 0, lng: 0 };
-                  path.geotags.map((point) => {
-                    var dist = haversine_distance(latlng, {
-                      lat: point.lat,
-                      lng: point.lng,
-                    });
-                    if (dist < minDist) {
-                      minDist = dist;
-                      markPt = point;
-                    }
+                // finds nearest point in data to the clicked point : can be optimized with better search algo
+                let minDist = 99999999;
+                let markPt = { lat: 0, lng: 0 };
+                path.geotags.map((point) => {
+                  var dist = haversine_distance(latlng, {
+                    lat: point.lat,
+                    lng: point.lng,
                   });
+                  if (dist < minDist) {
+                    minDist = dist;
+                    markPt = point;
+                  }
+                });
 
-                  // sets the mearest point to plot marker
-                  setselectedPoint(markPt);
-                }}
-              />
-            </div>
+                // sets the mearest point to plot marker
+                setselectedPoint(markPt);
+              }}
+            />
           );
         })}
+        <CardGroup>
+          {cardsArray}
+        </CardGroup>
 
         {selectedPoint && (
           <InfoWindow
