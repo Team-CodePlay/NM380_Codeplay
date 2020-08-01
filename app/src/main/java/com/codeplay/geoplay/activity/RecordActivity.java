@@ -6,6 +6,9 @@ import android.os.Bundle;
 
 import com.codeplay.geoplay.R;
 
+/**
+ * For location and video recording
+ */
 public class RecordActivity extends AppCompatActivity {
 
     @Override
