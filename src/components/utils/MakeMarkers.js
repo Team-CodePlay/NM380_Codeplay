@@ -63,9 +63,7 @@ export default function MakeMarkers(props) {
               position={point}
               icon={{
                 url:
-                  "https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=" +
-                  Math.floor(markerId / 2) +
-                  "|FE6256|000000",
+                  `https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=${Math.floor(markerId / 2)}|FE6256|000000`,
               }}
               onClick={() => {
                 setselectedPath(mapData[Math.floor(markerId++ / 2)]);
@@ -79,8 +77,8 @@ export default function MakeMarkers(props) {
         {selectedPath && selectedMarker && (
           <InfoWindow
             onCloseClick={() => {
-              setselectedPath();
-              setselectedMarker();
+              setselectedPath(null);
+              setselectedMarker(null);
             }}
             position={{
               lat: selectedMarker.lat + 0.0001,
@@ -93,7 +91,7 @@ export default function MakeMarkers(props) {
                 {selectedPath.username}
               </p>
               <p>
-                <strong>Recording Date : </strong>
+                <strong>Record Date : </strong>
                 {Date(selectedPath.video * 1000)}
               </p>
             </div>

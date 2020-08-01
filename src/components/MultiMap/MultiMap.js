@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { withGoogleMap, GoogleMap, withScriptjs } from "react-google-maps";
 import data from "../../data/dummy.json";
 import MakeMarkers from "../utils/MakeMarkers";
+import MakeMultiPaths from "./MakeMultiPaths";
 
 var flagToFitBound = 0;
 
@@ -50,8 +51,12 @@ const MultiMap = (props) => {
         defaultZoom={15}
         // defaultCenter={{ lat: 14, lng: 71 }}
       >
-        <MakeMarkers markerPoints={markerPoints} data={props.data} parent="MultiMap" />
-        
+        <MakeMarkers
+          markerPoints={markerPoints}
+          data={props.data}
+          parent="MultiMap"
+        />
+        <MakeMultiPaths markerPoints={markerPoints} data={props.data} />
       </GoogleMap>
     );
   };
