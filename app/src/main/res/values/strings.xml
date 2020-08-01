@@ -4,4 +4,6 @@
     <string name="record">Record</string>
     <string name="settings">Settings</string>
     <string name="uploading_files">Uploading files</string>
+    <string name="change_bitrate">Change Bitrate</string>
+
 </resources>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory>
+
+        <ListPreference
+            android:icon="@drawable/ic_bitrate"
+            app:defaultValue="1000000"
+            app:entries="@array/bitrate_entries"
+            app:entryValues="@array/bitrate_values"
+            app:key="bitrate"
+            app:title="@string/change_bitrate"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            android:icon="@drawable/ic_folder"
+            app:key="Enter Path"
+            app:title="File Storage Location"
+            app:useSimpleSummaryProvider="true" />
+
+        <ListPreference
+            android:icon="@drawable/ic_camera_switch"
+            app:defaultValue="rear"
+            app:entries="@array/camera_mode"
+            app:entryValues="@array/camera_mode_values"
+            app:key="camera"
+            app:title="Select Camera Mode"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="Power Settings">
+
+        <ListPreference
+            android:icon="@drawable/ic_power"
+            app:defaultValue="medium"
+            app:entries="@array/battery_consumption"
+            app:entryValues="@array/battery_consumption_values"
+            app:key="medium"
+            app:title="Select Power Mode"
+            app:useSimpleSummaryProvider="true" />
+
+        <SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:icon="@drawable/ic_night_mode"
+            android:key="display_mode"
+            android:title="Dark Mode" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Other">
+
+        <Preference
+            android:icon="@drawable/ic_help"
+            android:key="help"
+            android:title="Help" />
+        <Preference
+            android:icon="@drawable/ic_information"
+            android:key="about"
+            android:title="About Application" />
+
+    </PreferenceCategory>
+</PreferenceScreen>
