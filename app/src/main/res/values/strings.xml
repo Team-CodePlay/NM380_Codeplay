@@ -1,3 +1,7 @@
 <resources>
 	<string name="app_name">GeoPlay</string>
+    <string name="library">Library</string>
+    <string name="record">Record</string>
+    <string name="settings">Settings</string>
+    <string name="uploading_files">Uploading files</string>
 </resources>
