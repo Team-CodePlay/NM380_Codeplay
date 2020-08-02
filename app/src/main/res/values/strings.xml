@@ -43,4 +43,19 @@
     <string name="longitude">Longitude</string>
     <string name="datetime">DateTime</string>
     <string name="bearing">Bearing</string>
+    <string name="map_settings">Map Settings</string>
+    <string name="custom_map">Custom Map</string>
+    <string name="custom_map_string">Custom Map String</string>
+    <string name="choose_map">Choose Map</string>
+    <string name="wifi">Upload over WiFi only</string>
+    <string name="both">Upload over WiFi and Mobile data</string>
+    <string name="google_maps">Google Maps</string>
+    <string name="bing_maps">Bing Maps</string>
+    <string name="osm_maps">OSM Maps</string>
+    <string name="front_camera">Front</string>
+    <string name="rear_camera">Rear</string>
+    <string name="english_lang">English</string>
+    <string name="hindi_lang">Hindi</string>
+    <string name="gujarati_lang">Gujarati</string>
+    <string name="marathi_lang">Marathi</string>
 </resources>

@@ -32,4 +32,19 @@
     <string name="power_settings">પાવર સેટિંગ્સ</string>
     <string name="video_settings">વિડિઓ સેટિંગ્સ</string>
     <string name="app_settings">એપ્લિકેશન સેટિંગ્સ</string>
+    <string name="map_settings">નકશો સેટિંગ્સ</string>
+    <string name="custom_map">તમારો પોતાનો નકશો</string>
+    <string name="custom_map_string">તમારા પોતાના શબ્દમાળા નકશો</string>
+    <string name="choose_map">નકશો પસંદ કરો</string>
+    <string name="wifi">ફક્ત વાઇફાઇ પર અપલોડ કરો</string>
+    <string name="both">વાઇફાઇ અને મોબાઇલ ડેટા બંને પર અપલોડ કરો</string>
+    <string name="google_maps">ગૂગલ મેપ્સ</string>
+    <string name="bing_maps">બિંગ મેપ્સ</string>
+    <string name="osm_maps">ઓએસએમ મેપ્સ</string>
+    <string name="front_camera">ફ્રન્ટ કેમેરો</string>
+    <string name="rear_camera">પાછળનો કેમેરો</string>
+    <string name="english_lang">અંગ્રેજી</string>
+    <string name="hindi_lang">હિન્દી</string>
+    <string name="gujarati_lang">ગુજરાતી</string>
+    <string name="marathi_lang">મરાઠી</string>
 </resources>

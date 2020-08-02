@@ -20,9 +20,9 @@
     </string-array>
 
     <string-array name="map_entries">
-        <item>Google Maps</item>
-        <item>Bing Maps</item>
-        <item>OSM Maps</item>
+        <item>@string/google_maps</item>
+        <item>@string/bing_maps</item>
+        <item>@string/osm_maps</item>
     </string-array>
 
     <string-array name="map_values">
@@ -32,22 +32,22 @@
     </string-array>
 
     <string-array name="language_entries">
-        <item>English</item>
-        <item>Hindi</item>
-        <item>Marathi</item>
-        <item>Gujarati</item>
+        <item>@string/english_lang</item>
+        <item>@string/hindi_lang</item>
+        <item>@string/gujarati_lang</item>
+        <item>@string/marathi_lang</item>
     </string-array>
 
     <string-array name="language_values">
         <item>en</item>
         <item>hi</item>
-        <item>mr</item>
         <item>gu</item>
+        <item>mr</item>
     </string-array>
 
     <string-array name="upload_entries">
-        <item>Upload over WiFi only</item>
-        <item>Upload over WiFi and Mobile data</item>
+        <item>@string/wifi</item>
+        <item>@string/both</item>
     </string-array>
 
     <string-array name="upload_values">
@@ -56,8 +56,8 @@
     </string-array>
 
     <string-array name="camera_mode">
-        <item>Front</item>
-        <item>Rear</item>
+        <item>@string/front_camera</item>
+        <item>@string/rear_camera</item>
     </string-array>
 
     <string-array name="camera_mode_values">
