@@ -35,6 +35,8 @@ public class MainActivity extends ActivityBase {
 
 	int currentFragment = 0;
 
+	private Menu menu;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -54,6 +56,7 @@ public class MainActivity extends ActivityBase {
 					switch (menuItem.getItemId()) {
 						case R.id.nav_library:
 							if (currentFragment != 0) {
+								unHideMenu();
 								getSupportFragmentManager().beginTransaction()
 										.replace(R.id.container, new VideoListFragment())
 										.commit();
@@ -68,6 +71,7 @@ public class MainActivity extends ActivityBase {
 
 						case R.id.nav_settings: //1
 							if (currentFragment != 1) {
+								hideMenu();
 								getSupportFragmentManager().beginTransaction()
 										.replace(R.id.container, new PreferencesFragment())
 										.commit();
@@ -95,11 +99,24 @@ public class MainActivity extends ActivityBase {
 		}
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.toobar_menu, menu);
-		return true;
+	private void unHideMenu(){
+//		for (int i = 0; i < menu.size(); i++) {
+//			menu.getItem(i).setVisible(true);
+//		}
 	}
+
+	private void hideMenu() {
+//		for (int i = 0; i < menu.size(); i++) {
+//			menu.getItem(i).setVisible(false);
+//		}
+	}
+
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) {
+//		getMenuInflater().inflate(R.menu.toobar_menu, menu);
+//		this.menu = menu;
+//		return super.onCreateOptionsMenu(menu);
+//	}
 
 	@Override
 	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

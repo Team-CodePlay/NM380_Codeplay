@@ -38,19 +38,20 @@ public class GeoVideoAdapter extends RecyclerView.Adapter<GeoVideoAdapter.GeoVid
 	private OnUploadListener onUploadListener;
 
 
-	public GeoVideoAdapter(Context context, List<GeoVideo> dataset) {
+	private static final int detailedVideoCard = 1;
+	private static final int largeThumbnailVideoCard = 0;
+	public int viewType;
+
+	public GeoVideoAdapter(Context context, List<GeoVideo> dataset, int viewType) {
 		this.context = context;
 		this.dataset = dataset;
 		datasetFull = new ArrayList<>(dataset);
+		this.viewType = viewType;
 	}
-
-	private static final int detailedVideoCard = 1;
-	private static final int largeThumbnailVideoCard = 0;
-	public boolean toggleCard = false;
 
 	@Override
 	public int getItemViewType(int position) {
-		return toggleCard? largeThumbnailVideoCard: detailedVideoCard;
+		return viewType;
 	}
 
 	@NonNull
@@ -76,6 +77,8 @@ public class GeoVideoAdapter extends RecyclerView.Adapter<GeoVideoAdapter.GeoVid
 		return String.format("%.1f %cB", bytes / 1000.0, ci.current());
 	}
 
+
+	// TODO: 03-08-2020 maybe something that gives output like 10 secs, 25mins, 1hour 2mins 
 	public static String SecondsConverter(long duration) {
 		return String.format("%02d:%02d:%02d",
 				TimeUnit.SECONDS.toHours(duration),
@@ -89,16 +92,10 @@ public class GeoVideoAdapter extends RecyclerView.Adapter<GeoVideoAdapter.GeoVid
 		return sdf.format(resultdate);
 	}
 
-	public static String TitleGenerator(Long timestamp) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd-HHmm", Locale.US);
-		Date resultdate = new Date(timestamp);
-		return sdf.format(resultdate);
-	}
-
 	@Override
 	public void onBindViewHolder(@NonNull GeoVideoViewHolder holder, int position) {
-		holder.vidTitle.setText(new File(TitleGenerator(dataset.get(position).videoStartTime)+".mp4").getName());
-		if (!toggleCard) {
+		holder.vidTitle.setText(new File(dataset.get(position).videoPath).getName());
+		if (holder.getItemViewType() == detailedVideoCard) {
 			holder.date.setText(new File(TimestampConverter(dataset.get(position).videoStartTime)).getName());
 			holder.size.setText(new File(ByteConverter(dataset.get(position).size)).getName());
 			holder.duration.setText(new File(SecondsConverter(dataset.get(position).duration)).getName());
@@ -205,7 +202,7 @@ public class GeoVideoAdapter extends RecyclerView.Adapter<GeoVideoAdapter.GeoVid
 				String filterPattern = constraint.toString().toLowerCase().trim();
 
 				for (GeoVideo geoVideo : datasetFull) {
-					if (TitleGenerator(geoVideo.videoStartTime).toLowerCase().contains(filterPattern) ||
+					if ((new File(geoVideo.videoPath).getName()).toLowerCase().contains(filterPattern) ||
 							TimestampConverter(geoVideo.videoStartTime).toLowerCase().contains(filterPattern)) {
 						filteredList.add(geoVideo);
 					}

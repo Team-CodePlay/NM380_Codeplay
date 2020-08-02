@@ -2,6 +2,9 @@ package com.codeplay.geoplay.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -43,6 +46,8 @@ public class VideoListFragment extends Fragment {
 	private GeoVideoAdapter videoAdapter;
 	List<GeoVideo> videos = new ArrayList<>();
 
+	private int viewType = 0;
+
 	public VideoListFragment(){
 		super(R.layout.fragment_video_list);
 	}
@@ -50,6 +55,8 @@ public class VideoListFragment extends Fragment {
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+
+		setHasOptionsMenu(true);
 
 		lstVideos = view.findViewById(R.id.lstVideos);
 		lstVideos.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -76,7 +83,7 @@ public class VideoListFragment extends Fragment {
 	private void refresh() {
 		getVideoList();
 
-		videoAdapter = new GeoVideoAdapter(getContext(), videos);
+		videoAdapter = new GeoVideoAdapter(getContext(), videos, viewType);
 		videoAdapter.setOnClickListener(video -> {
 			Intent intent = new Intent(getActivity(), PlaybackActivity.class);
 			intent.putExtra("geovideo_path", video.videoPath);
@@ -168,5 +175,23 @@ public class VideoListFragment extends Fragment {
 				refresh();
 			}
 		}
+	}
+
+	@Override
+	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+		inflater.inflate(R.menu.toobar_menu, menu);
+		super.onCreateOptionsMenu(menu, inflater);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+		int id = item.getItemId();
+		switch (id) {
+			case R.id.toggle_view:
+				viewType = viewType ^ 1;
+				refresh();
+				return true;
+		}
+		return super.onOptionsItemSelected(item); // important line
 	}
 }
