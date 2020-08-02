@@ -1,51 +1,77 @@
-import React, { useState } from 'react';
-import {
-    withGoogleMap,
-    GoogleMap,
-    withScriptjs,
-} from "react-google-maps";
-import data from '../../data/dummy.json';
+/* global google */
+import React, { useState, useEffect } from "react";
+import { withGoogleMap, GoogleMap, withScriptjs } from "react-google-maps";
+import data from "../../data/dummy.json";
+import MakeMarkers from "../utils/MakeMarkers";
+import MakeMultiPaths from "./MakeMultiPaths";
 
-const MultiMap = () => {
+var flagToFitBound = 0;
 
-    // const [mapData, setMapData] = useState(null);
+const MultiMap = (props) => {
+  const [rawData, setRawData] = useState(props.data);
+  //   const [mapData, setMapData] = useState();
+  const [markerPoints, setMarkerPoints] = useState();
 
-    var mapData = [];
+  useEffect(() => {
+    // Gets all Start and end point of paths to place markers on
+    const tempMarkerPoints = [];
 
-    // Iterate over Data to build mapData
-    Object.keys(data).forEach(user => {
-        Object.keys(data[user]).forEach(video => {
-            data[user][video]['username'] = user;
-            data[user][video]['videoname'] = video;
-            mapData.push(data[user][video]);
-        });
+    Object.keys(rawData).forEach((user) => {
+      Object.keys(data[user]).forEach((video) => {
+        tempMarkerPoints.push(data[user][video].start_location);
+        tempMarkerPoints.push(data[user][video].end_location);
+      });
+      setMarkerPoints(tempMarkerPoints);
     });
+  }, []);
 
-    // setMapData(temp)
-    console.log(mapData);
+  // Create Map Bounds makes sure all points in markerPoints are visible in map ie sets zoom accordingly
+  const fitBounds = (map) => {
+    flagToFitBound = 1;
+    const bounds = new window.google.maps.LatLngBounds();
+    markerPoints.map((pt) => {
+      bounds.extend(pt);
+    });
+    map.fitBounds(bounds);
+  };
 
-    const MapWithPaths = () => {
-        return (
-            <GoogleMap
-                defaultZoom={15}
-                defaultCenter={{ lat: 19.23, lng: 72.85 }}
-            >
-
-            </GoogleMap>
-        );
-    };
-
-    const MyMap = withScriptjs(withGoogleMap(MapWithPaths));
-
+  const MapWithPaths = () => {
+    console.log('Map rendered')
     return (
-        <MyMap
-            googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_OLD_API_KEY}&v=3.exp&libraries=geometry,drawing,places`}
-            loadingElement={<div style={{ height: `100%` }} />}
-            containerElement={<div style={{ height: `60vh` }} />}
-            mapElement={<div style={{ height: `100%` }} />}
+      <GoogleMap
+        ref={(map) => {
+          if (
+            (map != null) &
+            (flagToFitBound === 0) &
+            (markerPoints !== undefined)
+          ) {
+            fitBounds(map);
+            flagToFitBound = 1;
+          }
+        }}
+        defaultZoom={15}
+        // defaultCenter={{ lat: 14, lng: 71 }}
+      >
+        <MakeMarkers
+          markerPoints={markerPoints}
+          data={props.data}
+          parent="MultiMap"
         />
+        <MakeMultiPaths markerPoints={markerPoints} data={props.data} />
+      </GoogleMap>
     );
-};
+  };
 
+  const MyMap = withScriptjs(withGoogleMap(MapWithPaths));
+
+  return (
+    <MyMap
+      googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_OLD_API_KEY}&v=3.exp&libraries=geometry,drawing,places`}
+      loadingElement={<div style={{ height: `100%` }} />}
+      containerElement={<div style={{ height: `60vh` }} />}
+      mapElement={<div style={{ height: `100%` }} />}
+    />
+  );
+};
 
 export default MultiMap;
