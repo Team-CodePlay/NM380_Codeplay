@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GeoPlay</string>
+    <string name="app_name">Jatayu</string>
     <string name="library">Library</string>
     <string name="record">Record</string>
     <string name="settings">Settings</string>
@@ -18,7 +18,7 @@
     <string name="send_otp">SEND OTP</string>
     <string name="send_otp_note">We will send you a One time SMS message Carrier rates may apply</string>
     <string name="logo">Logo</string>
-    <string name="logo_title">GEOPLAY</string>
+    <string name="logo_title">JATAYU</string>
     <string name="phone_placeholder">Your Phone Number</string>
     <string name="check_verification_note">Please type the verification code sent\nto</string>
     <string name="verify">VERIFY</string>

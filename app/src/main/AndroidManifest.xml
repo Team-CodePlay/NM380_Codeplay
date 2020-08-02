@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.codeplay.geoplay">
+    package="com.codeplay.jatayu">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".AppClass"
+        android:name="com.codeplay.jatayu.AppClass"
         android:allowBackup="true"
         android:icon="@mipmap/ic_logo"
         android:label="@string/app_name"
@@ -21,7 +21,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.codeplay.geoplay.provider"
+            android:authorities="com.codeplay.jatayu.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -30,13 +30,13 @@
         </provider>
 
 
-        <activity android:name=".activity.OtpVerificationActivity">
+        <activity android:name="com.codeplay.jatayu.activity.OtpVerificationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
             </intent-filter>
         </activity>
-        <activity android:name=".activity.LoginActivity">
+        <activity android:name="com.codeplay.jatayu.activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -48,17 +48,17 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_api_key" />
 
-        <activity android:name=".activity.PlaybackActivity">
+        <activity android:name="com.codeplay.jatayu.activity.PlaybackActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.RecordActivity">
+        <activity android:name="com.codeplay.jatayu.activity.RecordActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MainActivity">
+        <activity android:name="com.codeplay.jatayu.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
