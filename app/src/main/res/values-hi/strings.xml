@@ -32,4 +32,19 @@
     <string name="power_settings">बिजली सेटिंग्स</string>
     <string name="video_settings">वीडियो सेटिंग्स</string>
     <string name="app_settings">अँप सेटिंग्स</string>
+    <string name="map_settings">अपना नक्शा सेट करें</string>
+    <string name="custom_map">अपना खुद का नक्शा</string>
+    <string name="custom_map_string">अपने खुद के नक्शे का वर्णन करें</string>
+    <string name="choose_map">नक्शा चुनें</string>
+    <string name="wifi">केवल वाईफाई पर अपलोड करें</string>
+    <string name="both">वाईफाई और मोबाइल डेटा दोनों पर अपलोड करें</string>
+    <string name="google_maps">गूगल मैप्स</string>
+    <string name="bing_maps">बिंग मैप्स</string>
+    <string name="osm_maps">OSM मैप्स</string>
+    <string name="front_camera">सामने का कैमरा</string>
+    <string name="rear_camera">पिछला कैमरा</string>
+    <string name="english_lang">अंग्रेज़ी</string>
+    <string name="hindi_lang">हिन्दी</string>
+    <string name="gujarati_lang">गुजराती</string>
+    <string name="marathi_lang">मराठी</string>
 </resources>

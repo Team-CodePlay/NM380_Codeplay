@@ -29,19 +29,19 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="Map Settings">
+    <PreferenceCategory app:title="@string/map_settings">
 
         <SwitchPreferenceCompat
             app:key="custom_map_switch"
             android:defaultValue="false"
             android:icon="@drawable/ic_custom_map"
-            android:title="Custom Map" />
+            android:title="@string/custom_map" />
 
         <EditTextPreference
             android:key="custom_map_string_input"
             android:icon="@drawable/ic_custom_map_input"
             app:defaultValue="https://maps.wikimedia.org/osm-intl/${z}/${x}/${y}.png"
-            app:title="Custom Map Tile URL"
+            app:title="@string/custom_map_string"
             app:useSimpleSummaryProvider="true" />
 
         <ListPreference
@@ -50,7 +50,7 @@
             app:defaultValue="google"
             app:entries="@array/map_entries"
             app:entryValues="@array/map_values"
-            app:title="Choose Map"
+            app:title="@string/choose_map"
             app:isPreferenceVisible="true"
             app:useSimpleSummaryProvider="true" />
 
