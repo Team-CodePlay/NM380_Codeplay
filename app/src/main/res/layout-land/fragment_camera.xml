@@ -53,7 +53,7 @@
         android:layout_toEndOf="@id/latitude"
         android:background="#4D000000"
         android:padding="3dp"
-        android:text="Longitude"
+        android:text="@string/longitude"
         android:textColor="#FFFFFF"
         android:visibility="gone" />
 
@@ -67,7 +67,7 @@
         android:layout_marginEnd="10dp"
         android:background="#4D000000"
         android:padding="3dp"
-        android:text="Date-Time"
+        android:text="@string/datetime"
         android:textColor="#FFFFFF"
         android:visibility="gone" />
 
@@ -80,7 +80,7 @@
         android:layout_marginTop="15dp"
         android:background="#4D000000"
         android:padding="3dp"
-        android:text="Latitude"
+        android:text="@string/latitude"
         android:textColor="#FFFFFF"
         android:visibility="gone" />
 
@@ -93,7 +93,7 @@
         android:layout_marginTop="5dp"
         android:background="#4D000000"
         android:padding="3dp"
-        android:text="Bearing"
+        android:text="@string/bearing"
         android:textColor="#FFFFFF"
         android:visibility="gone" />
 

@@ -227,7 +227,7 @@ public class PlaybackActivity extends AppCompatActivity implements OnMapReadyCal
 				if (mapUpdateIndex + 1 >= geoTags.size()) {
 					mapUpdateIndex = 0;
 				}
-				lbldatetime.setText(geoTags.get(mapUpdateIndex).videoTime.toString());
+
 				lblspeed.setText(String.format("%d km/hr", new Float(geoTags.get(mapUpdateIndex).speed).intValue()));
 				lbllatitude.setText(String.format("Lat: %f", geoTags.get(mapUpdateIndex).latitude));
 				lbllongitude.setText(String.format("Long: %f", geoTags.get(mapUpdateIndex).longitude));

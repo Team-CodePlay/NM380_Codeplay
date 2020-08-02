@@ -39,4 +39,8 @@
     <string name="power_settings">Power Settings</string>
     <string name="video_settings">Video Settings</string>
     <string name="app_settings">App Settings</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+    <string name="datetime">DateTime</string>
+    <string name="bearing">Bearing</string>
 </resources>
