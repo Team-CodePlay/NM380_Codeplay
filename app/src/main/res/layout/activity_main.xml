@@ -91,6 +91,7 @@
                 android:gravity="center"
                 android:maxLines="2"
                 android:text="0/0"
+                android:id="@+id/lblUploadCount"
                 android:textAlignment="center" />
             <!--            style="?android:attr/progressBarStyleHorizontal"-->
             <ProgressBar

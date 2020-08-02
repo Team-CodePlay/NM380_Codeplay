@@ -22,7 +22,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -36,6 +38,7 @@ public class VideoListFragment extends Fragment {
 
 	private RecyclerView lstVideos;
 	private SearchView searchVideos;
+	private MainActivity mainActivity;
 
 	private GeoVideoAdapter videoAdapter;
 	List<GeoVideo> videos = new ArrayList<>();
@@ -63,6 +66,7 @@ public class VideoListFragment extends Fragment {
 				return false;
 			}
 		});
+		mainActivity = (MainActivity) getActivity();
 		refresh();
 	}
 
@@ -94,6 +98,14 @@ public class VideoListFragment extends Fragment {
 			DatabaseReference videoRef = FirebaseDatabase.getInstance().getReference("videos/"+userId).push();
 			StorageReference fileRef = FirebaseStorage.getInstance().getReference("videos/"+userId).child(videoRef.getKey() + ".mp4");
 
+			mainActivity.progressCard.setVisibility(View.VISIBLE);
+			mainActivity.lblVideoTitle.setText(GeoVideoAdapter.TitleGenerator(video.videoStartTime) + ".mp4");
+			mainActivity.lblUploadCount.setText("");
+			mainActivity.progressBar.setMax(100);
+			mainActivity.progressBar.setProgress(0);
+			mainActivity.lblVideoSize.setText("0 / " + video.size/1024/1024);
+
+
 			fileRef.putFile(FileProvider.getUriForFile(getContext(), "com.codeplay.geoplay.provider", new File(video.videoPath)))
 					.addOnSuccessListener(taskSnapshot -> {
 						Toast.makeText(getContext(), "Success", Toast.LENGTH_SHORT).show();
@@ -112,9 +124,21 @@ public class VideoListFragment extends Fragment {
 							}
 						});
 
+						mainActivity.progressBar.setProgress(100);
+						mainActivity.lblVideoSize.setText("Video uploaded: " + video.size/1024/1024 + " MB");
+
+					})
+					.addOnProgressListener(taskSnapshot -> {
+						mainActivity.progressBar.setProgress((int)(taskSnapshot.getBytesTransferred() * 100 / taskSnapshot.getTotalByteCount()));
+						mainActivity.lblVideoSize.setText(String.format("%d MB / %d MB",
+								taskSnapshot.getBytesTransferred()/1024/1024,
+								taskSnapshot.getTotalByteCount()/1024/1024
+						));
 					})
 					.addOnFailureListener(e -> {
 						Toast.makeText(getContext(), "Error:"+e.getMessage(), Toast.LENGTH_SHORT).show();
+						mainActivity.progressBar.setProgress(0);
+						mainActivity.lblVideoSize.setText("Error occurred when uploading");
 					});
 
 			Toast.makeText(getContext(), "Uploading...", Toast.LENGTH_SHORT).show();

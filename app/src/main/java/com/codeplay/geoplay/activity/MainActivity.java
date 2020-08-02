@@ -7,6 +7,9 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codeplay.geoplay.R;
@@ -20,6 +23,12 @@ public class MainActivity extends AppCompatActivity {
 
 	BottomNavigationView bottomNavigation;
 
+	RelativeLayout progressCard;
+	TextView lblVideoTitle;
+	TextView lblVideoSize;
+	TextView lblUploadCount;
+	ProgressBar progressBar;
+
 	int currentFragment = 0;
 
 	@Override
@@ -28,6 +37,12 @@ public class MainActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_main);
 		Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(myToolbar);
+
+		progressCard = findViewById(R.id.progress_card);
+		lblVideoTitle = findViewById(R.id.lblVideoTitle);
+		lblVideoSize = findViewById(R.id.lblVideoSize);
+		lblUploadCount = findViewById(R.id.lblUploadCount);
+		progressBar = findViewById(R.id.progressBar);
 
 		bottomNavigation = findViewById(R.id.bottom_navigation);
 		BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
@@ -71,11 +86,11 @@ public class MainActivity extends AppCompatActivity {
 		}
 	}
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toobar_menu, menu);
-        return true;
-    }
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.toobar_menu, menu);
+		return true;
+	}
 
 	@Override
 	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
