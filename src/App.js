@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import data from "./data/dummy.json";
 import MultiMap from "./components/MultiMap/MultiMap";
 import Header from "./components/layouts/Header";
 import Spinner from "./components/utils/Spinner";
 import firebase from './components/utils/firebase';
+import Dashboard from './components/Dashboard/Dashboard';
 
 function App() {
   const [data, setData] = useState();
@@ -14,7 +17,7 @@ function App() {
         .database()
         .ref("videos");
       const videosData = (await videosRef.once("value")).val();
-      console.log("Firebase date:");
+      console.log("Firebase data:");
       console.log(videosData);
       setData(videosData);
     };
@@ -22,10 +25,21 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
-      <Header />
-      {data ? <MultiMap data={data} /> : <Spinner />}
-    </div>
+    <div className="App">;
+      <Router>
+        <Header />
+        <Switch>
+          <Route exact path='/'>
+            {data ? <MultiMap data={data} /> : <Spinner />}
+          </Route>
+          <Route path='/player'>
+          </Route>
+          <Route path='/dashboard'>
+            <Dashboard data={data} />
+          </Route>
+        </Switch>
+      </Router>
+    </div >
   );
 }
 

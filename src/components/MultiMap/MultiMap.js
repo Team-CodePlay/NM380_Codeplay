@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { withGoogleMap, GoogleMap, withScriptjs } from "react-google-maps";
 import data from "../../data/dummy.json";
 import MakeMarkers from "../utils/MakeMarkers";
+import MakeMultiPaths from "./MakeMultiPaths";
 
 var flagToFitBound = 0;
 
@@ -12,17 +13,6 @@ const MultiMap = (props) => {
   const [markerPoints, setMarkerPoints] = useState();
 
   useEffect(() => {
-    // var temp = [];
-    // // Iterate over Data to build mapData
-    // Object.keys(rawData).forEach((user) => {
-    //   Object.keys(data[user]).forEach((video) => {
-    //     data[user][video]["username"] = user;
-    //     data[user][video]["videoname"] = video;
-    //     temp.push(data[user][video]);
-    //   });
-    //   setMapData(temp);
-    // });
-
     // Gets all Start and end point of paths to place markers on
     const tempMarkerPoints = [];
 
@@ -46,6 +36,7 @@ const MultiMap = (props) => {
   };
 
   const MapWithPaths = () => {
+    console.log('Map rendered')
     return (
       <GoogleMap
         ref={(map) => {
@@ -61,7 +52,12 @@ const MultiMap = (props) => {
         defaultZoom={15}
         // defaultCenter={{ lat: 14, lng: 71 }}
       >
-        <MakeMarkers markerPoints={markerPoints} parent="MultiMap" />
+        <MakeMarkers
+          markerPoints={markerPoints}
+          data={props.data}
+          parent="MultiMap"
+        />
+        <MakeMultiPaths markerPoints={markerPoints} data={props.data} />
       </GoogleMap>
     );
   };
