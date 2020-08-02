@@ -43,10 +43,7 @@ export default class VideoPlayer extends Component {
     this.MyMap = this.MyMap.bind(this);
     this.fitBounds = this.fitBounds.bind(this);
     this.updateTimeFromMap = this.updateTimeFromMap.bind(this);
-    this.sendStartAdd = this.sendStartAdd.bind(this);
-    this.sendEndAdd = this.sendEndAdd.bind(this);
-    this.startAdd = this.startAdd;
-    this.endAdd = this.endAdd;
+    
   }
 
   componentDidMount() {
@@ -131,14 +128,6 @@ export default class VideoPlayer extends Component {
     this.player.seek(time);
   };
 
-  sendStartAdd = (add) => {
-    this.startAdd = add;
-  };
-
-  sendEndAdd = (add) => {
-    this.endAdd = add;
-  };
-
   // Returns time : loc array
   getTimeLocation = () => {
     const timeloc = [];
@@ -166,9 +155,8 @@ export default class VideoPlayer extends Component {
   // Builds Map Component
   MyMap = withScriptjs(
     withGoogleMap(() => {
-
+      // Marker Position
       const fetchPosition = () => {
-
         if (Math.floor(this.state.player.currentTime) > 0) {
           if (
             this.timeloc[Math.floor(this.state.player.currentTime)] ===
@@ -180,8 +168,10 @@ export default class VideoPlayer extends Component {
 
             let check = 1;
 
-            while(Math.floor(this.state.player.currentTime + check) === undefined ){
-                check +=1
+            while (
+              Math.floor(this.state.player.currentTime + check) === undefined
+            ) {
+              check += 1;
             }
             let next = this.timeloc[
               Math.floor(this.state.player.currentTime + check)
@@ -193,13 +183,18 @@ export default class VideoPlayer extends Component {
             }
 
             // return average loction if time data doesnt exist
+            console.log("return undefined");
             return {
               lat: (prev.lat + next.lat) / 2,
               lng: (prev.lng + next.lng) / 2,
             };
           }
           // return data
-          return this.timeloc[Math.floor(this.state.player.currentTime)];
+          console.log("return defined");
+          return {
+            lat: this.timeloc[Math.floor(this.state.player.currentTime)].lat,
+            lng: this.timeloc[Math.floor(this.state.player.currentTime)].lng,
+          };
         }
         return null;
       };
@@ -208,6 +203,60 @@ export default class VideoPlayer extends Component {
       if (this.markerPoints[0] == undefined) {
         return <div></div>;
       }
+
+      // get marker bearing
+      const fetchBearing = () => {
+        if (Math.floor(this.state.player.currentTime) > 0) {
+          if (
+            this.timeloc[Math.floor(this.state.player.currentTime)] ===
+            undefined
+          ) {
+            let check = 1;
+
+            while (
+              Math.floor(this.state.player.currentTime - check) === undefined
+            ) {
+              check += 1;
+            }
+            if (
+              (Math.floor(this.state.player.currentTime - check) > 0) &
+              (this.timeloc[
+                Math.floor(this.state.player.currentTime) - check
+              ] !==
+                undefined)
+            ) {
+              return parseInt(this.timeloc[
+                Math.floor(this.state.player.currentTime) - check
+              ].bearing);
+            }
+            return parseInt(0);
+          }
+          return parseInt(this.timeloc[Math.floor(this.state.player.currentTime)]
+            .bearing);
+        }
+        return parseInt(0);
+      };
+
+      // Function to return Location Marker
+      const markerLoc = () => {
+        let pos = fetchPosition();
+        let bear = fetchBearing();
+        return (
+          <div>
+          <Marker
+            position={pos}
+            icon={{
+                path: window.google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                scale: 6,
+                fillColor: 'red',
+                fillOpacity: 0.8,
+                strokeWeight: 2,
+                rotation: bear,
+            }}
+          />
+          </div>
+        );
+      };
 
       return (
         <GoogleMap
@@ -228,13 +277,8 @@ export default class VideoPlayer extends Component {
             parent="VideoPlayer"
           />
 
-          {/* GEO LOCTION MARKER */}
-          <Marker
-            position={fetchPosition()}
-            icon={{
-              url: "https://img.icons8.com/doodle/48/000000/street-view.png",
-            }}
-          />
+          {markerLoc()}
+
         </GoogleMap>
       );
     })
