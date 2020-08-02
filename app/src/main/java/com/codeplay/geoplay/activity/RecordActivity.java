@@ -28,6 +28,7 @@ import com.codeplay.geoplay.model.GeoVideo;
 import com.codeplay.geoplay.ui.LockBottomSheetBehaviour;
 import com.codeplay.geoplay.util.GeoTagUtil;
 import com.codeplay.geoplay.util.PermissionUtil;
+import com.codeplay.geoplay.util.TileProviderUtil;
 import com.codeplay.geoplay.util.VideoUtil;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -148,22 +149,8 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 		mMap = googleMap;
 
 		if (PermissionUtil.areAllPermissionsGranted(RecordActivity.this)) {
-			mMap.clear();
-			switch (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
-					.getString("choose_map", "google")) {
-				case "google":
-					break;
-				case "bing":
-					mMap.setMapType(GoogleMap.MAP_TYPE_NONE);
-					TileOverlay tileOverlay1 = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(new BingTileProvider(256, 256)));
-					tileOverlay1.setZIndex(0);
-					break;
-				case "osm":
-					mMap.setMapType(GoogleMap.MAP_TYPE_NONE);
-					TileOverlay tileOverlay2 = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(new OsmTileProvider(256, 256)));
-					tileOverlay2.setZIndex(0);
-					break;
-			}
+
+			TileProviderUtil.setUpTileProvider(RecordActivity.this, mMap);
 
 			mMap.setMyLocationEnabled(true);
 			polyline = mMap.addPolyline(new PolylineOptions().visible(true)

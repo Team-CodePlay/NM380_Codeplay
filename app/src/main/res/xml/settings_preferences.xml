@@ -5,16 +5,16 @@
 
         <ListPreference
             android:icon="@drawable/bitrate"
-            app:defaultValue="1000000"
+            app:defaultValue="2500000"
             app:entries="@array/bitrate_entries"
             app:entryValues="@array/bitrate_values"
             app:key="bitrate"
             app:title="@string/change_bitrate"
             app:useSimpleSummaryProvider="true" />
 
-        <EditTextPreference
+        <Preference
             android:icon="@drawable/folder"
-            app:key="Enter Path"
+            app:key="storage_location"
             app:title="@string/select_file_storage_location"
             app:useSimpleSummaryProvider="true" />
 
@@ -40,8 +40,8 @@
         <EditTextPreference
             android:key="custom_map_string_input"
             android:icon="@drawable/ic_custom_map_input"
-            app:isPreferenceVisible="false"
-            app:title="Custom Map String"
+            app:defaultValue="https://maps.wikimedia.org/osm-intl/${z}/${x}/${y}.png"
+            app:title="Custom Map Tile URL"
             app:useSimpleSummaryProvider="true" />
 
         <ListPreference

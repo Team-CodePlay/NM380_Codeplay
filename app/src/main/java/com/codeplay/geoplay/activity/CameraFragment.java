@@ -8,6 +8,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.util.Size;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
@@ -27,10 +28,14 @@ import androidx.camera.view.PreviewView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.codeplay.geoplay.AppClass;
 import com.codeplay.geoplay.R;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -162,7 +167,7 @@ public class CameraFragment extends Fragment {
 						.setTargetRotation(previewView.getDisplay().getRotation())
 						.setTargetResolution(tempSize)
 						.setCameraSelector(cameraSelector)
-						.setBitRate(2*1024*1024)
+						.setBitRate(AppClass.getSP().getInt("bitrate", 1 * 1024 * 1024))
 						.build();
 
 				// sets up the preview
@@ -202,7 +207,8 @@ public class CameraFragment extends Fragment {
 	 * @return
 	 */
 	private File getMp4Directory(){
-		return getContext().getExternalFilesDir("videos");
+		String folderPath = AppClass.getSP().getString("storage_location", "");
+		return new File(folderPath);
 	}
 
 	/**
@@ -210,7 +216,9 @@ public class CameraFragment extends Fragment {
 	 * @return
 	 */
 	private String getMp4Name(){
-		return System.currentTimeMillis() + ".mp4";
+		SimpleDateFormat sdf = new SimpleDateFormat("GEOVID-yyyyMMdd-HHmmss", Locale.US);
+		Date resultdate = new Date();
+		return sdf.format(resultdate) + ".mp4";
 	}
 
 	@SuppressLint("RestrictedApi")
@@ -223,6 +231,9 @@ public class CameraFragment extends Fragment {
 		if(!folder.exists()){
 			folder.mkdirs();
 		}
+
+		getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
 
 		currentFile = new File(folder, getMp4Name());
 
@@ -278,6 +289,9 @@ public class CameraFragment extends Fragment {
 			btnCameraSwitch.setVisibility(View.VISIBLE);
 		}
 		btnResolution.setVisibility(View.VISIBLE);
+
+		getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
 
 	}
 

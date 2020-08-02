@@ -6,8 +6,8 @@
         <item>0.5 MBPS</item>
         <item>1 MBPS</item>
         <item>2.5 MBPS</item>
-        <item>5 MBPS</item>
-        <item>8 MBPS</item>
+        <item>5 MBPS (do not upload)</item>
+        <item>8 MBPS (do not upload)</item>
     </string-array>
 
     <string-array name="bitrate_values">
