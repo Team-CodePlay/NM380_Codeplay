@@ -7,7 +7,7 @@ import Header from "./components/layouts/Header";
 import Spinner from "./components/utils/Spinner";
 import firebase from './components/utils/firebase';
 import Dashboard from './components/Dashboard/Dashboard';
-import VideoPlayer from "./components/VideoPlayer/VideoPlayer";
+import LoadVideo from "./components/VideoPlayer/LoadVideo";
 import videoData from './data/dummyVideo.json';
 
 function App() {
@@ -34,9 +34,8 @@ function App() {
           <Route exact path='/'>
             {data ? <MultiMap data={data} /> : <Spinner />}
           </Route>
-          <Route path='/player'>
-            <VideoPlayer data={videoData} />
-          </Route>
+          <Route path='/player/:user_id/:video_id/:timestamp' component={LoadVideo} />
+          <Route path='/player/:user_id/:video_id' component={LoadVideo} />
           <Route path='/dashboard'>
             <Dashboard data={data} />
           </Route>
