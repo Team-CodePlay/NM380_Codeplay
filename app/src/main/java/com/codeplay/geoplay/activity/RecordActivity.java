@@ -20,9 +20,12 @@ import android.widget.Toast;
 
 import com.codeplay.geoplay.R;
 import com.codeplay.geoplay.database.AppDatabase;
+import com.codeplay.geoplay.map.BingTileProvider;
+import com.codeplay.geoplay.map.OsmTileProvider;
 import com.codeplay.geoplay.model.GeoTag;
 import com.codeplay.geoplay.model.GeoVideo;
 import com.codeplay.geoplay.ui.LockBottomSheetBehaviour;
+import com.codeplay.geoplay.util.GeoTagUtil;
 import com.codeplay.geoplay.util.PermissionUtil;
 import com.codeplay.geoplay.util.VideoUtil;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -37,7 +40,10 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.JointType;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.maps.model.TileOverlay;
+import com.google.android.gms.maps.model.TileOverlayOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import java.io.File;
@@ -79,7 +85,7 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 	private ExecutorService backgoundExecutor;
 	private Future backgoundExecutorFuture;
 	List<GeoTag> geoTags = new ArrayList<>();
-	private PolylineOptions options;
+	private Polyline polyline;
 	private Long startTime;
 
 
@@ -131,6 +137,7 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 		locationProviderClient = LocationServices.getFusedLocationProviderClient(RecordActivity.this);
 		SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.map);
+
 		mapFragment.getMapAsync(this);
 	}
 
@@ -141,7 +148,15 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 
 		if (PermissionUtil.areAllPermissionsGranted(RecordActivity.this)) {
 			mMap.clear();
+			mMap.setMapType(GoogleMap.MAP_TYPE_NONE);
+			TileOverlay tileOverlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(new OsmTileProvider(256, 256)));
+//			TileOverlay tileOverlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(new BingTileProvider(256, 256)));
+			tileOverlay.setZIndex(0);
 			mMap.setMyLocationEnabled(true);
+			polyline = mMap.addPolyline(new PolylineOptions().visible(true)
+					.jointType(JointType.ROUND)
+					.zIndex(1)
+					.width(10));
 
 			locationProviderClient.getLastLocation().addOnSuccessListener(location -> {
 				if (location != null) {
@@ -210,11 +225,9 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 			}
 
 			geoTags.clear();
+			polyline.setPoints(new ArrayList<>());
 
 			startTime = System.currentTimeMillis();
-			options = new PolylineOptions().visible(true)
-					.jointType(JointType.ROUND)
-					.width(10);
 
 			cameraFragment.startRecording(this::saveMetaData);
 
@@ -282,11 +295,10 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 			}
 
 			// update the map with the new location
-			mMap.clear();
-			mMap.addCircle(new CircleOptions().center(latLng).visible(true).fillColor(Color.BLACK).radius(4));
-			options.add(latLng);
-			mMap.addPolyline(options);
+//			mMap.addCircle(new CircleOptions().center(latLng).visible(true).fillColor(Color.BLACK).radius(4));
+
 			geoTags.add(geoTag);
+			polyline.setPoints(GeoTagUtil.getLatLngFromList(geoTags));
 		}
 	};
 
