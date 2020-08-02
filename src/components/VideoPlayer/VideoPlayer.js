@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import { Player, ControlBar } from "video-react";
 import { Container, Row, Col } from "react-bootstrap";
-import data from "../../data/dummyVideo.json";
+// import data from "../../data/dummyVideo.json";
 
 import {
     withGoogleMap,
@@ -23,7 +23,7 @@ export default class VideoPlayer extends Component {
     constructor(props, context) {
         super(props, context);
         console.log("Video data");
-        console.log(data);
+        console.log(this.props.data)
         this.state = {
             source: sources.walkingVideo,
         };
@@ -118,8 +118,8 @@ export default class VideoPlayer extends Component {
     // Gets all Start and end point of paths to place markers on
     getMarkerPoints = () => {
         const markerPoints = [];
-        markerPoints.push(data.start_location);
-        markerPoints.push(data.end_location);
+        markerPoints.push(this.props.data.start_location);
+        markerPoints.push(this.props.data.end_location);
         return markerPoints;
     };
 
@@ -142,7 +142,7 @@ export default class VideoPlayer extends Component {
         const timeloc = [];
 
         // Add 1 point per second
-        data.geotags.map((dpoints) => {
+        this.props.data.geotags.map((dpoints) => {
             timeloc[Math.floor(dpoints.video_time / 1000)] = dpoints;
         });
 
@@ -213,7 +213,7 @@ export default class VideoPlayer extends Component {
                     <MakeMarkers markerPoints={this.markerPoints} parent="VideoPlayer" />
 
                     <MakePaths
-                        data={data.geotags}
+                        data={this.props.data.geotags}
                         updateTimeFromMap={this.updateTimeFromMap}
                         time={this.state.player}
                         sendStartAdd={this.sendStartAdd}
@@ -254,12 +254,12 @@ export default class VideoPlayer extends Component {
                             </Player>
                         </Col>
                         <Col lg={6}>
-                            {/* <this.MyMap
+                            <this.MyMap
                                 googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_OLD_API_KEY}&v=3.exp&libraries=geometry,drawing,places`}
                                 loadingElement={<div style={{ height: `100%` }} />}
                                 containerElement={<div style={{ height: `100%` }} />}
                                 mapElement={<div style={{ height: `100%` }} />}
-                            /> */}
+                            />
                         </Col>
                     </Row>
                 </Container>
