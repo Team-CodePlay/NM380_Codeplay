@@ -28,12 +28,9 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.codeplay.geoplay.R;
-import com.codeplay.geoplay.camera.AfterSaveCallback;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.io.File;
-import java.util.Timer;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -67,7 +64,7 @@ public class CameraFragment extends Fragment {
 	private Size[] availableResolutions = new Size[]{
 			new Size(1920, 1080), // 16:9
 			new Size(1280, 720),
-			new Size(854, 480),
+			new Size(854, 480), // default
 			new Size(640, 360),
 			new Size(426, 240),
 			new Size(1600, 1200), // 4:3
@@ -75,7 +72,7 @@ public class CameraFragment extends Fragment {
 			new Size(800, 600),
 			new Size(640, 480),
 	};
-	private int selectedResolution = 0;
+	private int selectedResolution = 2;
 
 	// TODO: 02-08-2020 add tap to focus
 
@@ -113,7 +110,7 @@ public class CameraFragment extends Fragment {
 				previewView.post(this::setUpCamera);
 			});
 			adb.setNegativeButton("Cancel", null);
-			adb.setTitle("Which one?");
+			adb.setTitle("Set resolution");
 			adb.show();
 		});
 
@@ -294,4 +291,7 @@ public class CameraFragment extends Fragment {
 	}
 
 
+	public interface AfterSaveCallback {
+		void afterSave(File videoFile);
+	}
 }

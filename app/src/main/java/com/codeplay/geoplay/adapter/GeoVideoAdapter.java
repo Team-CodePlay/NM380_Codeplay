@@ -101,7 +101,9 @@ public class GeoVideoAdapter extends RecyclerView.Adapter<GeoVideoAdapter.GeoVid
 			holder.date.setText(new File(TimestampConverter(dataset.get(position).videoStartTime)).getName());
 			holder.size.setText(new File(ByteConverter(dataset.get(position).size)).getName());
 			holder.duration.setText(new File(SecondsConverter(dataset.get(position).duration)).getName());
-			holder.location.setText(new File((dataset.get(position).startLocation.latitude.toString() + " , " + dataset.get(position).startLocation.longitude.toString())).getName());
+			if(dataset.get(position).startLocation != null) {
+				holder.location.setText(new File((dataset.get(position).startLocation.latitude.toString() + " , " + dataset.get(position).startLocation.longitude.toString())).getName());
+			}
 		}
 		if (dataset.get(position).isUploaded){
 			holder.uploaded.setVisibility(View.VISIBLE);
