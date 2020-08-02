@@ -7,7 +7,7 @@ export default function MakeMarkers(props) {
   const [selectedMarker, setselectedMarker] = useState();
   const [mapData, setMapData] = useState();
 
-  const startEndChoice = ["S","E"]
+  const startEndChoice = ["S", "E"];
 
   useEffect(() => {
     var temp = [];
@@ -63,8 +63,8 @@ export default function MakeMarkers(props) {
             <Marker
               key={markerId}
               position={point}
-              animation = {google.maps.Animation.DROP}
-              label={startEndChoice[markerId%2] + Math.floor(markerId / 2)}
+              animation={google.maps.Animation.DROP}
+              label={startEndChoice[markerId % 2] + Math.floor(markerId / 2)}
               // icon={{
               //   url:
               //     `https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=${startEndChoice[markerId%2]}${Math.floor(markerId / 2)}|FE6256|000000`,
@@ -92,11 +92,15 @@ export default function MakeMarkers(props) {
               <h5>Marker Point</h5>
               <p>
                 <strong>Path : </strong>
-                {selectedPath.videoname}<br/>
+                {selectedPath.videoname}
+                <br />
                 <strong>UserName : </strong>
-                {selectedPath.username}<br/>
+                {selectedPath.username}
+                <br />
                 <strong>Record Date : </strong>
-                {Date(selectedPath.video * 1000)}
+                {new Date(selectedPath.video_start_time).toLocaleString(
+                  "en-GB"
+                )}
               </p>
             </div>
           </InfoWindow>

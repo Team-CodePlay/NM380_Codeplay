@@ -133,7 +133,7 @@ const MakeMultiPaths = (props) => {
                   <strong>User :</strong> {path.username}
                   <br />
                   <strong>Data Collection Time :</strong>{" "}
-                  {new Date().toLocaleDateString("en-GB")}
+                  {new Date(path.upload_timestamp).toLocaleString("en-GB")}
                   <br />
                   <strong>Video Duration :</strong> {path.duration}
                 </Card.Text>
@@ -287,7 +287,7 @@ const MakeMultiPaths = (props) => {
                 {selectedPoint.video_time / 1000} Seconds
                 <br />
                 <strong>Recoding Time : </strong>
-                {Date(selectedPoint.timestamp * 1000)}
+                {new Date(selectedPoint.timestamp).toLocaleTimeString("en-GB")}
               </p>
               <Button
                 id="viewInWindow"
