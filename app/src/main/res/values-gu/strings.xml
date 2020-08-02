@@ -19,4 +19,17 @@
     <string name="tracking">નકશો બતાવો</string>
     <string name="send_otp_note">અમે તમને વન ટાઇમ એસએમએસ સંદેશ મોકલીશું. પૈસાના દરો લાગુ થઈ શકે છે</string>
     <string name="size">માપ</string>
+    <string name="change_bitrate">બીટરેટ</string>
+    <string name="select_file_storage_location">ફાઇલ સ્ટોરેજ સ્થાન</string>
+    <string name="select_power_mode">પાવર મોડ પસંદ કરો</string>
+    <string name="dark_mode">ડાર્ક મોડ</string>
+    <string name="select_app_language">એપ્લિકેશન ભાષા</string>
+    <string name="upload_settings">અપલોડ સેટિંગ્સ પસંદ કરો</string>
+    <string name="other_settings">અન્ય</string>
+    <string name="help">સહાયતા</string>
+    <string name="about_application">એપ્લિકેશન વિશે</string>
+    <string name="logout">લૉગ આઉટ</string>
+    <string name="power_settings">પાવર સેટિંગ્સ</string>
+    <string name="video_settings">વિડિઓ સેટિંગ્સ</string>
+    <string name="app_settings">એપ્લિકેશન સેટિંગ્સ</string>
 </resources>
