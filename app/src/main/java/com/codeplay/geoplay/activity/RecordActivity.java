@@ -275,7 +275,7 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 				geoTag.speed = (int) (location.getSpeed() * 18 / 5);
 				lblSpeed.setText(String.format("%d km/hr", new Float(geoTag.speed).intValue()));
 				lbllatitude.setText(String.format("Lat: %f", geoTag.latitude));
-				lbllongitude.setText(String.format("Lat: %f", geoTag.longitude));
+				lbllongitude.setText(String.format("Long: %f", geoTag.longitude));
 				lbldatetime.setText(String.format("%s", TimestampConverter(geoTag.timestamp)));
 				lblbearing.setText(String.format("Bearing: %d", geoTag.bearing));
 
