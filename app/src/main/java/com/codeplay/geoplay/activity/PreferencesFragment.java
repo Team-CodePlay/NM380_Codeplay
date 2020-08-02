@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.preference.EditTextPreference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreferenceCompat;
 
@@ -31,6 +32,8 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SwitchPreferenceCompat display_mode = findPreference("display_mode");
+        SwitchPreferenceCompat customMap = findPreference("custom_map_switch");
+        EditTextPreference customMapStringInput = findPreference("custom_map_string_input");
         if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
             getActivity().setTheme(R.style.AppTheme_AppBarOverlay);
             System.out.println("ON");
@@ -50,6 +53,18 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 return true;
             }
+        });
+
+
+        customMap.setOnPreferenceChangeListener((preference, newValue) -> {
+            if(customMap.isChecked()) {
+                customMapStringInput.setVisible(false);
+                customMap.setChecked(true);
+            } else {
+                customMapStringInput.setVisible(true);
+                customMap.setChecked(false);
+            }
+            return true;
         });
     }
 }
