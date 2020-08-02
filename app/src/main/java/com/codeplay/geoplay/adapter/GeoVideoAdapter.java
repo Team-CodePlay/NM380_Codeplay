@@ -90,7 +90,7 @@ public class GeoVideoAdapter extends RecyclerView.Adapter<GeoVideoAdapter.GeoVid
 	}
 
 	public static String TitleGenerator(Long timestamp) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd-hhmm", Locale.US);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd-HHmm", Locale.US);
 		Date resultdate = new Date(timestamp);
 		return sdf.format(resultdate);
 	}
