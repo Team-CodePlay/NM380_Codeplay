@@ -10,13 +10,13 @@ const Header = () => {
         </Navbar.Brand>
         <Navbar.Brand href="/">GeoPlay</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
+        {/* <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
             <NavLink href="/">Home</NavLink>
             <NavLink href="/player">VideoPlayer</NavLink>
             <NavLink href="/dashboard">Dashboard</NavLink>
           </Nav>
-        </Navbar.Collapse>
+        </Navbar.Collapse> */}
       </Navbar>
     </div>
   );
