@@ -16,7 +16,7 @@
     <string name="location">Location</string>
     <string name="toggle_view">Toggle View</string>
     <string name="send_otp">SEND OTP</string>
-    <string name="send_otp_note">We will send you a One time SMS message Carrier rates may apply</string>
+    <string name="send_otp_note">We will send you a One time SMS message. Carrier rates may apply</string>
     <string name="logo">Logo</string>
     <string name="logo_title">JATAYU</string>
     <string name="phone_placeholder">Your Phone Number</string>
@@ -26,4 +26,17 @@
     <string name="speed">Speed</string>
     <string name="tracking">Tracking</string>
     <string name="verification_code">Verification code</string>
+    <string name="change_bitrate">Change Bitrate</string>
+    <string name="select_file_storage_location">File Storage Location</string>
+    <string name="select_power_mode">Select Power Mode</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="select_app_language">App Language</string>
+    <string name="upload_settings">Upload Settings</string>
+    <string name="other_settings">Other</string>
+    <string name="help">Help</string>
+    <string name="about_application">About Application</string>
+    <string name="logout">Logout</string>
+    <string name="power_settings">Power Settings</string>
+    <string name="video_settings">Video Settings</string>
+    <string name="app_settings">App Settings</string>
 </resources>

@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Jatayu</string>
-    <string name="library">" સંગ્રહ"</string>
+    <string name="library">સંગ્રહ</string>
     <string name="settings">સેટિંગ્સ</string>
-    <string name="record">" રેકૉર્દ કરવું"</string>
-    <string name="uploading_files">" ફાઇલો અપલોડ કરી રહ્યા છીએ"</string>
+    <string name="record">રેકૉર્દ કરવું</string>
+    <string name="uploading_files">ફાઇલો અપલોડ કરી રહ્યા છીએ</string>
     <string name="resolution">રેસોલ્યૂશન</string>
     <string name="title">શીર્ષક</string>
-    <string name="date">" તારીખ"</string>
+    <string name="date">તારીખ</string>
     <string name="duration">અવધિ</string>
-    <string name="location">" સ્થાન"</string>
+    <string name="location">સ્થાન</string>
     <string name="send_otp">OTP મોકલો</string>
-    <string name="phone_placeholder">તમારા ફોન નંબર</string>
+    <string name="phone_placeholder">તમારું ફોન નંબર</string>
     <string name="verification_code">ચકાસણી સંજ્ઞા</string>
     <string name="check_verification_note">કૃપા કરીને મોકલેલ ચકાસણી કોડ લખો</string>
-    <string name="verify">" ખરાઈ કરવી"</string>
+    <string name="verify">ચકાસો</string>
     <string name="speed">ગતિ</string>
-    <string name="tracking">" માર્ગ"</string>
-    <string name="send_otp_note">અમે તમને વન ટાઇમ એસએમએસ સંદેશ મોકલીશું કેરીઅર રેટ લાગુ થઈ શકે છે</string>
-    <string name="size">" માપ"</string>
+    <string name="tracking">નકશો બતાવો</string>
+    <string name="send_otp_note">અમે તમને વન ટાઇમ એસએમએસ સંદેશ મોકલીશું. પૈસાના દરો લાગુ થઈ શકે છે</string>
+    <string name="size">માપ</string>
 </resources>

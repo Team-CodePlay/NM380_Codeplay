@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <PreferenceCategory app:title="Video Settings">
+    <PreferenceCategory app:title="@string/video_settings">
 
         <ListPreference
             android:icon="@drawable/bitrate"
@@ -9,27 +9,27 @@
             app:entries="@array/bitrate_entries"
             app:entryValues="@array/bitrate_values"
             app:key="bitrate"
-            app:title="Change Bitrate"
+            app:title="@string/change_bitrate"
             app:useSimpleSummaryProvider="true" />
 
         <EditTextPreference
             android:icon="@drawable/folder"
             app:key="Enter Path"
-            app:title="File Storage Location"
+            app:title="@string/select_file_storage_location"
             app:useSimpleSummaryProvider="true" />
 
-<!--        <ListPreference-->
-<!--            android:icon="@drawable/camera_switch"-->
-<!--            app:defaultValue="rear"-->
-<!--            app:entries="@array/camera_mode"-->
-<!--            app:entryValues="@array/camera_mode_values"-->
-<!--            app:key="camera"-->
-<!--            app:title="Select Camera Mode"-->
-<!--            app:useSimpleSummaryProvider="true" />-->
+        <!--        <ListPreference-->
+        <!--            android:icon="@drawable/camera_switch"-->
+        <!--            app:defaultValue="rear"-->
+        <!--            app:entries="@array/camera_mode"-->
+        <!--            app:entryValues="@array/camera_mode_values"-->
+        <!--            app:key="camera"-->
+        <!--            app:title="Select Camera Mode"-->
+        <!--            app:useSimpleSummaryProvider="true" />-->
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="Power Settings">
+    <PreferenceCategory app:title="@string/power_settings">
 
         <ListPreference
             android:icon="@drawable/power"
@@ -37,52 +37,51 @@
             app:entries="@array/battery_consumption"
             app:entryValues="@array/battery_consumption_values"
             app:key="medium"
-            app:title="Select Power Mode"
+            app:title="@string/select_power_mode"
             app:useSimpleSummaryProvider="true" />
 
         <SwitchPreferenceCompat
             android:defaultValue="false"
             android:icon="@drawable/night_mode"
             android:key="display_mode"
-            android:title="Dark Mode" />
+            android:title="@string/dark_mode" />
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="App Settings">
+    <PreferenceCategory app:title="@string/app_settings">
         <ListPreference
-            app:defaultValue="english"
             android:icon="@drawable/translate_language"
+            app:defaultValue="english"
             app:entries="@array/language_entries"
             app:entryValues="@array/language_values"
             app:key="english"
-            app:title="App Language"
+            app:title="@string/select_app_language"
             app:useSimpleSummaryProvider="true" />
 
         <ListPreference
-            app:defaultValue="wifi"
             android:icon="@drawable/upload"
+            app:defaultValue="wifi"
             app:entries="@array/upload_entries"
             app:entryValues="@array/upload_values"
             app:key="wifi"
-            app:title="Upload Settings"
+            app:title="@string/upload_settings"
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="Other">
+    <PreferenceCategory android:title="@string/other_settings">
 
         <Preference
             android:icon="@drawable/help"
             android:key="help"
-            android:title="Help" />
+            android:title="@string/help" />
         <Preference
             android:icon="@drawable/information"
             android:key="about"
-            android:title="About Application" />
+            android:title="@string/about_application" />
         <Preference
-            android:title="Logout"
-            android:key="logout"
             android:icon="@drawable/ic_logout"
-            />
+            android:key="logout"
+            android:title="@string/logout" />
 
     </PreferenceCategory>
 </PreferenceScreen>
