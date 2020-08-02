@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import { Player, ControlBar } from "video-react";
 import { Container, Row, Col } from "react-bootstrap";
 import firebase from '../utils/firebase';
-// import data from "../../data/dummyVideo.json";
 
 import {
     withGoogleMap,
@@ -11,10 +10,11 @@ import {
     Marker,
     withScriptjs,
 } from "react-google-maps";
-import MakeMarkers from "../utils/MakeMarkers";
-import MakePaths from "../utils/MakePaths";
+import MakeMarkers from "./MakeVideoMarkers";
+import MakePaths from "./MakeVideoPaths";
 
 const sources = {
+    //   bunnyTrailer: "http://media.w3.org/2010/05/bunny/trailer.mp4",
     walkingVideo: "assets/video.mp4",
 };
 
@@ -42,10 +42,6 @@ export default class VideoPlayer extends Component {
         this.MyMap = this.MyMap.bind(this);
         this.fitBounds = this.fitBounds.bind(this);
         this.updateTimeFromMap = this.updateTimeFromMap.bind(this);
-        this.sendStartAdd = this.sendStartAdd.bind(this);
-        this.sendEndAdd = this.sendEndAdd.bind(this);
-        this.startAdd = this.startAdd;
-        this.endAdd = this.endAdd;
     }
 
 
@@ -64,6 +60,7 @@ export default class VideoPlayer extends Component {
         // subscribe state change
         this.player.subscribeToStateChange(this.handleStateChange.bind(this));
         this.loadVideo();
+        this.player.seek(this.props.timestamp);
     }
 
     setMuted(muted) {
@@ -137,18 +134,11 @@ export default class VideoPlayer extends Component {
         return markerPoints;
     };
 
+
     // Update Time From Map
     updateTimeFromMap = (time) => {
         time = Math.floor(time / 1000);
         this.player.seek(time);
-    };
-
-    sendStartAdd = (add) => {
-        this.startAdd = add;
-    };
-
-    sendEndAdd = (add) => {
-        this.endAdd = add;
     };
 
     // Returns time : loc array
@@ -178,6 +168,7 @@ export default class VideoPlayer extends Component {
     // Builds Map Component
     MyMap = withScriptjs(
         withGoogleMap(() => {
+            // Marker Position
             const fetchPosition = () => {
                 if (Math.floor(this.state.player.currentTime) > 0) {
                     if (
@@ -187,8 +178,16 @@ export default class VideoPlayer extends Component {
                         let prev = this.timeloc[
                             Math.floor(this.state.player.currentTime - 1)
                         ];
+
+                        let check = 1;
+
+                        while (
+                            Math.floor(this.state.player.currentTime + check) === undefined
+                        ) {
+                            check += 1;
+                        }
                         let next = this.timeloc[
-                            Math.floor(this.state.player.currentTime + 1)
+                            Math.floor(this.state.player.currentTime + check)
                         ];
 
                         // Time in video exceeds data collected time
@@ -202,17 +201,73 @@ export default class VideoPlayer extends Component {
                             lng: (prev.lng + next.lng) / 2,
                         };
                     }
-
                     // return data
-                    return this.timeloc[Math.floor(this.state.player.currentTime)];
+                    return {
+                        lat: this.timeloc[Math.floor(this.state.player.currentTime)].lat,
+                        lng: this.timeloc[Math.floor(this.state.player.currentTime)].lng,
+                    };
                 }
                 return null;
             };
 
             // if no data is found
-            if (this.markerPoints[0] == undefined) {
+            if (this.markerPoints[0] === undefined) {
                 return <div></div>;
             }
+
+            // get marker bearing
+            const fetchBearing = () => {
+                if (Math.floor(this.state.player.currentTime) > 0) {
+                    if (
+                        this.timeloc[Math.floor(this.state.player.currentTime)] ===
+                        undefined
+                    ) {
+                        let check = 1;
+
+                        while (
+                            Math.floor(this.state.player.currentTime - check) === undefined
+                        ) {
+                            check += 1;
+                        }
+                        if (
+                            (Math.floor(this.state.player.currentTime - check) > 0) &
+                            (this.timeloc[
+                                Math.floor(this.state.player.currentTime) - check
+                            ] !==
+                                undefined)
+                        ) {
+                            return parseInt(this.timeloc[
+                                Math.floor(this.state.player.currentTime) - check
+                            ].bearing);
+                        }
+                        return parseInt(0);
+                    }
+                    return parseInt(this.timeloc[Math.floor(this.state.player.currentTime)]
+                        .bearing);
+                }
+                return parseInt(0);
+            };
+
+            // Function to return Location Marker
+            const markerLoc = () => {
+                let pos = fetchPosition();
+                let bear = fetchBearing();
+                return (
+                    <div>
+                        <Marker
+                            position={pos}
+                            icon={{
+                                path: window.google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                                scale: 6,
+                                fillColor: 'red',
+                                fillOpacity: 0.8,
+                                strokeWeight: 2,
+                                rotation: bear,
+                            }}
+                        />
+                    </div>
+                );
+            };
 
             return (
                 <GoogleMap
@@ -230,18 +285,11 @@ export default class VideoPlayer extends Component {
                         data={this.props.data.geotags}
                         updateTimeFromMap={this.updateTimeFromMap}
                         time={this.state.player}
-                        sendStartAdd={this.sendStartAdd}
-                        sendEndAdd={this.sendEndAdd}
                         parent="VideoPlayer"
                     />
 
-                    {/* GEO LOCTION MARKER */}
-                    <Marker
-                        position={fetchPosition()}
-                        icon={{
-                            url: "https://img.icons8.com/doodle/48/000000/street-view.png",
-                        }}
-                    />
+                    {markerLoc()}
+
                 </GoogleMap>
             );
         })
@@ -268,12 +316,14 @@ export default class VideoPlayer extends Component {
                             </Player>
                         </Col>
                         <Col lg={6}>
-                            {/* <this.MyMap
-                                googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_OLD_API_KEY}&v=3.exp&libraries=geometry,drawing,places`}
-                                loadingElement={<div style={{ height: `100%` }} />}
-                                containerElement={<div style={{ height: `100%` }} />}
-                                mapElement={<div style={{ height: `100%` }} />}
-                            /> */}
+                            {this.state.player &&
+                                <this.MyMap
+                                    googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_OLD_API_KEY}&v=3.exp&libraries=geometry,drawing,places`}
+                                    loadingElement={<div style={{ height: `100%` }} />}
+                                    containerElement={<div style={{ height: `100%` }} />}
+                                    mapElement={<div style={{ height: `100%` }} />}
+                                />
+                            }
                         </Col>
                     </Row>
                 </Container>

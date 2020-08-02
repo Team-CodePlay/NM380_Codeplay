@@ -26,7 +26,7 @@ const LoadVideo = props => {
             {videoData === null ?
                 <Spinner /> :
                 <>
-                    {params.timestamp ? <VideoPlayer timestamp={params.timestamp} data={videoData} /> : <VideoPlayer notime="asdf" data={videoData} />}
+                    {params.timestamp ? <VideoPlayer timestamp={params.timestamp} data={videoData} /> : <VideoPlayer data={videoData} />}
                 </>
             }
         </>

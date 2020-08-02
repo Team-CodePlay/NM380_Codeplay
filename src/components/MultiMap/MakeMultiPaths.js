@@ -8,6 +8,7 @@ import {
   DropdownButton,
   Dropdown,
 } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import { kmlStart1, kmlStart2, kmlEnd } from "../utils/kmlUtil";
 
 // Calculates distance between lat lng
@@ -23,10 +24,10 @@ const haversine_distance = (mk1, mk2) => {
     Math.asin(
       Math.sqrt(
         Math.sin(difflat / 2) * Math.sin(difflat / 2) +
-          Math.cos(rlat1) *
-            Math.cos(rlat2) *
-            Math.sin(difflon / 2) *
-            Math.sin(difflon / 2)
+        Math.cos(rlat1) *
+        Math.cos(rlat2) *
+        Math.sin(difflon / 2) *
+        Math.sin(difflon / 2)
       )
     );
   return d;
@@ -39,7 +40,7 @@ const MakeMultiPaths = (props) => {
   const [videoLink, setvideoLink] = useState();
 
   // @todo : Add more colors
-  const color = ["blue", "green", "red", "yellow"];
+  const color = ["#ff0000", "#2cff00", "blue", "yellow"];
 
   useEffect(() => {
     var temp = [];
@@ -72,6 +73,13 @@ const MakeMultiPaths = (props) => {
     geotags.map((pt) => pathpoints.push({ lat: pt.lat, lng: pt.lng }));
     pathpoints.push(end);
     return pathpoints;
+  };
+
+  // fitBounds zoom
+  const seePath = (path) => {
+    props.zoomOnPath(
+      createPathPoints(path.geotags, path.start_location, path.end_location)
+    );
   };
 
   const pathClicked = (path) => {
@@ -145,7 +153,7 @@ const MakeMultiPaths = (props) => {
                 <Button
                   style={{ margin: "0.25rem" }}
                   onClick={() => {
-                    pathClicked(path);
+                    seePath(path);
                     window.scrollTo({
                       top: 0,
                       behavior: "smooth",
@@ -157,7 +165,12 @@ const MakeMultiPaths = (props) => {
                 </Button>
 
                 <Button style={{ margin: "0.25rem" }} variant="primary">
-                  Watch Video
+                  <Link
+                    to={`/player/${path.username}/${path.videoname}`}
+                    style={{ color: "black" }}
+                  >
+                    Watch Video
+                  </Link>
                 </Button>
                 <DropdownButton
                   style={{ margin: "0.25rem" }}
@@ -230,47 +243,6 @@ const MakeMultiPaths = (props) => {
         })}
         <CardGroup>
           {cardsArray}
-          <Card
-            key={10}
-            border="primary"
-            style={{
-              margin: "10px",
-              width: "18rem",
-              borderLeft: "1px solid",
-              borderRadius: "0.5rem",
-            }}
-          >
-            {/* Dummy Data */}
-            <Card.Body>
-              <Card.Title>Path 10</Card.Title>
-              <Card.Text>
-                <strong>User : 5</strong>
-                <br />
-                <strong>Data Collection Time :</strong>{" "}
-                {new Date(100 * 1000).toLocaleDateString("en-GB")}
-                <br />
-                <strong>Video Duration :</strong> 10
-              </Card.Text>
-              <Button style={{ margin: "0.25rem" }} variant="primary">
-                See Path
-              </Button>
-              <Button style={{ margin: "0.25rem" }} variant="primary">
-                Watch Video
-              </Button>
-              <DropdownButton
-                style={{ margin: "0.25rem" }}
-                variant="success"
-                title="Export To KML"
-              >
-                <Dropdown.Item id={"view" + 10} variant="light">
-                  View KML
-                </Dropdown.Item>
-                <Dropdown.Item id={"download" + 10} variant="light">
-                  Download KML
-                </Dropdown.Item>
-              </DropdownButton>
-            </Card.Body>
-          </Card>
         </CardGroup>
 
         {selectedPoint && selectedPath && (
@@ -298,20 +270,29 @@ const MakeMultiPaths = (props) => {
                 <strong>Video Link : </strong>
                 {videoLink} */}
               </p>
+              <Button>
+
+                <Link
+                  to={`/player/${selectedPath.username}/${selectedPath.videoname}/${selectedPoint.video_time / 1000}`}
+                  style={{ color: "black" }}
+                >
+                  Watch Video From Here
+                </Link>
+              </Button>{" "}
               <Button
                 id="viewInWindow"
                 variant="light"
                 onClick={() => exportToKml(selectedPath, "view")}
               >
                 View KML
-              </Button>
+              </Button>{" "}
               <Button
                 id="downloadInWindow"
                 variant="light"
                 onClick={() => exportToKml(selectedPath, "download")}
               >
                 Download KML
-              </Button>
+              </Button>{" "}
             </div>
           </InfoWindow>
         )}
