@@ -8,6 +8,7 @@ import {
   DropdownButton,
   Dropdown,
 } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import { kmlStart1, kmlStart2, kmlEnd } from "../utils/kmlUtil";
 
 // Calculates distance between lat lng
@@ -39,7 +40,7 @@ const MakeMultiPaths = (props) => {
   const [videoLink, setvideoLink] = useState();
 
   // @todo : Add more colors
-  const color = ["blue", "green", "red", "yellow"];
+  const color = ["#ff0000", "#2cff00", "blue", "yellow"];
 
   useEffect(() => {
     var temp = [];
@@ -76,8 +77,9 @@ const MakeMultiPaths = (props) => {
 
   // fitBounds zoom
   const seePath = (path) => {
-    setselectedPath(path);
-    props.zoomOnPath(createPathPoints(path.geotags,path.start_location,path.end_location));
+    props.zoomOnPath(
+      createPathPoints(path.geotags, path.start_location, path.end_location)
+    );
   };
 
   const pathClicked = (path) => {
@@ -304,20 +306,34 @@ const MakeMultiPaths = (props) => {
                 <strong>Video Link : </strong>
                 {videoLink} */}
               </p>
+              <Button>
+               
+                <Link
+                  onClick={console.log(
+                    `/player/${selectedPath.username}/${
+                      selectedPath.videoname
+                    }/${selectedPoint.video_time / 1000}`
+                  )}
+                  style={{ color: "black" }}
+                >
+                   {/* to={`/player/${selectedPath.username}/${selectedPath.videoname}/${selectedPoint.video_time / 1000}`} */}
+                  Watch Video From Here
+                </Link>
+              </Button>{" "}
               <Button
                 id="viewInWindow"
                 variant="light"
                 onClick={() => exportToKml(selectedPath, "view")}
               >
                 View KML
-              </Button>
+              </Button>{" "}
               <Button
                 id="downloadInWindow"
                 variant="light"
                 onClick={() => exportToKml(selectedPath, "download")}
               >
                 Download KML
-              </Button>
+              </Button>{" "}
             </div>
           </InfoWindow>
         )}
