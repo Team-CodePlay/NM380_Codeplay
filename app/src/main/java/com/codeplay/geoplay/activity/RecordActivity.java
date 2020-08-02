@@ -64,6 +64,7 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 	private ImageView btnStop;
 	private LinearLayout bottomSheet;
 	private TextView lblSpeed;
+	private ImageView rcdIndicator;
 	private LockBottomSheetBehaviour behavior;
 
 	private Boolean isRecording = false;
@@ -86,6 +87,7 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 		lblSpeed = findViewById(R.id.lblSpeed);
 		btnStart = findViewById(R.id.btnStart);
 		btnStop = findViewById(R.id.btnStop);
+		rcdIndicator = findViewById(R.id.recording_indicator);
 		cameraFragment = (CameraFragment) getSupportFragmentManager().findFragmentById(R.id.cameraFragment);
 
 		btnStart.setOnClickListener(v -> {
@@ -183,6 +185,8 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 	@SuppressLint("MissingPermission")
 	private void startRecording() {
 		if (!isRecording) {
+			lblSpeed.setVisibility(View.VISIBLE);
+			rcdIndicator.setVisibility(View.VISIBLE);
 			int currentOrientation = getResources().getConfiguration().orientation;
 			if (currentOrientation == Configuration.ORIENTATION_LANDSCAPE) {
 				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
@@ -212,6 +216,8 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 
 	private void stopRecording() {
 		if (isRecording) {
+			lblSpeed.setVisibility(View.GONE);
+			rcdIndicator.setVisibility(View.GONE);
 			locationProviderClient.removeLocationUpdates(locationCallback);
 			cameraFragment.stopRecording();
 			isRecording = false;

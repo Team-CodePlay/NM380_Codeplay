@@ -18,13 +18,15 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#1976D2"
+        android:background="@color/colorPrimaryDark"
         android:paddingTop="50dp">
 
         <LinearLayout
             android:id="@+id/first_ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
             android:layout_marginTop="30dp"
             android:orientation="vertical">
 
@@ -34,7 +36,7 @@
                 android:gravity="center"
                 android:text="@string/verification_code"
                 android:textColor="#FFFFFF"
-                android:textSize="25sp" />
+                android:textSize="35sp" />
 
             <TextView
                 android:id="@+id/check_verification_note"
@@ -44,39 +46,43 @@
                 android:gravity="center"
                 android:text="@string/check_verification_note"
                 android:textColor="#FFFFFF"
-                android:textSize="15sp" />
+                android:textSize="18sp" />
 
         </LinearLayout>
 
         <RelativeLayout
+            android:id="@+id/second_ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/first_ll"
-            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="60dp"
-            android:gravity="center"
             android:orientation="horizontal">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:gravity="center"
+                android:gravity="center_horizontal"
                 tools:ignore="UselessParent">
 
                 <EditText
                     android:id="@+id/et_1"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginEnd="8dp"
                     android:autofillHints=""
                     android:background="@color/colorPrimaryLight"
                     android:gravity="center"
                     android:inputType="number"
                     android:maxLength="1"
-                    android:textColor="@color/colorPrimaryText"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textColor="#232323"
+                    android:textColorHint="@color/colorHintText"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:focusable="true"
+                    android:nextFocusForward="@id/et_2"
+                    />
 
                 <EditText
                     android:id="@+id/et_2"
@@ -89,9 +95,11 @@
                     android:gravity="center"
                     android:inputType="number"
                     android:maxLength="1"
-                    android:textColor="@color/colorPrimaryText"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textColor="#232323"
+                    android:textColorHint="@color/colorHintText"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:focusable="true" />
 
                 <EditText
                     android:id="@+id/et_3"
@@ -104,9 +112,11 @@
                     android:gravity="center"
                     android:inputType="number"
                     android:maxLength="1"
-                    android:textColor="@color/colorPrimaryText"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textColor="#232323"
+                    android:textColorHint="@color/colorHintText"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:focusable="true" />
 
                 <EditText
                     android:id="@+id/et_4"
@@ -119,9 +129,11 @@
                     android:gravity="center"
                     android:inputType="number"
                     android:maxLength="1"
-                    android:textColor="@color/colorPrimaryText"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textColor="#232323"
+                    android:textColorHint="@color/colorHintText"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:focusable="true"/>
 
                 <EditText
                     android:id="@+id/et_5"
@@ -134,9 +146,11 @@
                     android:gravity="center"
                     android:inputType="number"
                     android:maxLength="1"
-                    android:textColor="@color/colorPrimaryText"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textColor="#232323"
+                    android:textColorHint="@color/colorHintText"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:focusable="true" />
 
                 <EditText
                     android:id="@+id/et_6"
@@ -149,9 +163,11 @@
                     android:gravity="center"
                     android:inputType="number"
                     android:maxLength="1"
-                    android:textColor="@color/colorPrimaryText"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textColor="#232323"
+                    android:textColorHint="@color/colorHintText"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:focusable="true" />
 
             </RelativeLayout>
 
@@ -161,9 +177,10 @@
             android:id="@+id/verify"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/second_ll"
             android:layout_gravity="center"
             android:layout_marginHorizontal="50dp"
-            android:layout_marginTop="260dp"
+            android:layout_marginTop="60dp"
             android:background="@drawable/button"
             android:elevation="10dp"
             android:letterSpacing="0.2"

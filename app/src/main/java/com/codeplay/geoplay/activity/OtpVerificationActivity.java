@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -46,6 +48,99 @@ public class OtpVerificationActivity extends AppCompatActivity {
         otpDigit5 = findViewById(R.id.et_5);
         otpDigit6 = findViewById(R.id.et_6);
 
+        EditText[] edit = {otpDigit1, otpDigit2, otpDigit3, otpDigit4, otpDigit5, otpDigit6};
+
+        otpDigit1.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().length() == 1) {
+                    otpDigit2.requestFocus();
+                }
+            }
+        });
+        otpDigit2.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().length() == 1) {
+                    otpDigit3.requestFocus();
+                }
+            }
+        });
+        otpDigit3.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().length() == 1) {
+                    otpDigit4.requestFocus();
+                }
+            }
+        });
+        otpDigit4.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().length() == 1) {
+                    otpDigit5.requestFocus();
+                }
+            }
+        });
+        otpDigit5.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().length() == 1) {
+                    otpDigit6.requestFocus();
+                }
+            }
+        });
+
         TextView checkVerificationCode = findViewById(R.id.check_verification_note);
 
         mAuth = FirebaseAuth.getInstance();
@@ -75,6 +170,7 @@ public class OtpVerificationActivity extends AppCompatActivity {
             verifyCode(otp.toString());
         });
     }
+
 
     private void verifyCode(String code) {
         progressBar.setVisibility(View.VISIBLE);
@@ -108,6 +204,7 @@ public class OtpVerificationActivity extends AppCompatActivity {
                 mCallBack
         );
     }
+
 
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallBack =
             new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
