@@ -1,0 +1,160 @@
+{
+  "duration": 25,
+  "end_location": {
+    "lat": 19.23904,
+    "lng": 72.85816
+  },
+  "geotags": [
+    {
+      "bearing": 164,
+      "lat": 19.236395,
+      "lng": 72.85642,
+      "speed": 0,
+      "timestamp": 1596102327988,
+      "video_time": 2118
+    },
+    {
+      "bearing": 164,
+      "lat": 19.2362217,
+      "lng": 72.85647,
+      "speed": 139,
+      "timestamp": 1596102328435,
+      "video_time": 2565
+    },
+    {
+      "bearing": 164,
+      "lat": 19.2362217,
+      "lng": 72.85647,
+      "speed": 139,
+      "timestamp": 1596102328943,
+      "video_time": 3073
+    },
+    {
+      "bearing": 164,
+      "lat": 19.2360183,
+      "lng": 72.85653,
+      "speed": 139,
+      "timestamp": 1596102330309,
+      "video_time": 4439
+    },
+    {
+      "bearing": 60,
+      "lat": 19.236175,
+      "lng": 72.856825,
+      "speed": 199,
+      "timestamp": 1596102332155,
+      "video_time": 6285
+    },
+    {
+      "bearing": 60,
+      "lat": 19.2363,
+      "lng": 72.8570617,
+      "speed": 199,
+      "timestamp": 1596102333230,
+      "video_time": 7360
+    },
+    {
+      "bearing": 57,
+      "lat": 19.236515,
+      "lng": 72.8574383,
+      "speed": 199,
+      "timestamp": 1596102334830,
+      "video_time": 8960
+    },
+    {
+      "bearing": 60,
+      "lat": 19.23661,
+      "lng": 72.85761,
+      "speed": 199,
+      "timestamp": 1596102335714,
+      "video_time": 9844
+    },
+    {
+      "bearing": 62,
+      "lat": 19.23668,
+      "lng": 72.85775,
+      "speed": 199,
+      "timestamp": 1596102336159,
+      "video_time": 10289
+    },
+    {
+      "bearing": 4,
+      "lat": 19.23692,
+      "lng": 72.85777,
+      "speed": 212,
+      "timestamp": 1596102337179,
+      "video_time": 11309
+    },
+    {
+      "bearing": 6,
+      "lat": 19.23719,
+      "lng": 72.8578033,
+      "speed": 212,
+      "timestamp": 1596102338211,
+      "video_time": 12341
+    },
+    {
+      "bearing": 3,
+      "lat": 19.23739,
+      "lng": 72.85782,
+      "speed": 212,
+      "timestamp": 1596102339296,
+      "video_time": 13426
+    },
+    {
+      "bearing": 8,
+      "lat": 19.23769,
+      "lng": 72.85786,
+      "speed": 212,
+      "timestamp": 1596102340546,
+      "video_time": 14676
+    },
+    {
+      "bearing": 9,
+      "lat": 19.23795,
+      "lng": 72.85792,
+      "speed": 212,
+      "timestamp": 1596102341796,
+      "video_time": 15926
+    },
+    {
+      "bearing": 10,
+      "lat": 19.2381,
+      "lng": 72.85795,
+      "speed": 212,
+      "timestamp": 1596102342140,
+      "video_time": 16270
+    },
+    {
+      "bearing": 11,
+      "lat": 19.2381,
+      "lng": 72.85795,
+      "speed": 212,
+      "timestamp": 1596102343217,
+      "video_time": 17347
+    },
+    {
+      "bearing": 11,
+      "lat": 19.2383667,
+      "lng": 72.858005,
+      "speed": 212,
+      "timestamp": 1596102344271,
+      "video_time": 18400
+    },
+    {
+      "bearing": 13,
+      "lat": 19.23904,
+      "lng": 72.85816,
+      "speed": 212,
+      "timestamp": 1596102345828,
+      "video_time": 19958
+    }
+  ],
+  "size": 4438360,
+  "start_location": {
+    "lat": 19.236395,
+    "lng": 72.85642
+  },
+  "video_path": "gs://geotaggedvideo-1578585943197.appspot.com/videos/drj5TyMSGOekpmBzw8P4xWmCS043/-MDU6KKb2N0AOGwDoELc.mp4",
+  "video_start_time": 1596102324697
+}
