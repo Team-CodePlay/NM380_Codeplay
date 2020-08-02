@@ -267,7 +267,7 @@ const MakeMultiPaths = (props) => {
           </Card>
         </CardGroup>
 
-        {selectedPoint && (
+        {selectedPoint && selectedPath && (
           <InfoWindow
             onCloseClick={() => {
               setselectedPoint(null);
@@ -288,6 +288,18 @@ const MakeMultiPaths = (props) => {
                 <strong>Recoding Time : </strong>
                 {Date(selectedPoint.timestamp * 1000)}
               </p>
+              <Button id="viewInWindow"
+                    variant="light"
+                    onClick={() => exportToKml(selectedPath, "view")}
+                  >
+                    View KML
+              </Button>
+              <Button id="downloadInWindow"
+                    variant="light"
+                    onClick={() => exportToKml(selectedPath, "download")}
+                  >
+                    Download KML
+              </Button>
             </div>
           </InfoWindow>
         )}

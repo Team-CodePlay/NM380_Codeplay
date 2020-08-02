@@ -36,6 +36,7 @@ const MultiMap = (props) => {
   };
 
   const MapWithPaths = () => {
+    console.log('Map rendered')
     return (
       <GoogleMap
         ref={(map) => {
