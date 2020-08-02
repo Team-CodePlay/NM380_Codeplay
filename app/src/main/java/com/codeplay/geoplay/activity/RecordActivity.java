@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.codeplay.geoplay.AppClass;
 import com.codeplay.geoplay.R;
 import com.codeplay.geoplay.database.AppDatabase;
 import com.codeplay.geoplay.map.BingTileProvider;
@@ -231,9 +232,23 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 
 			cameraFragment.startRecording(this::saveMetaData);
 
+			int locationAccuracy;
+
+			switch(AppClass.getSP().getString("location_accuracy", "medium")){
+				case "high":
+					locationAccuracy = LocationRequest.PRIORITY_HIGH_ACCURACY;
+					break;
+				case "low":
+					locationAccuracy = LocationRequest.PRIORITY_LOW_POWER;
+					break;
+				case "medium":
+				default:
+					locationAccuracy = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY;
+					break;
+			}
+
 			locationProviderClient.requestLocationUpdates(
-					// TODO: 09-07-2020 change priority according to preferences
-					new LocationRequest().setInterval(1000).setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY),
+					new LocationRequest().setInterval(1000).setPriority(locationAccuracy),
 					locationCallback,
 					Looper.getMainLooper()
 			).addOnCanceledListener(() -> Log.d(TAG, "location: cancelled"));

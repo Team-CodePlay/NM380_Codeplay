@@ -63,7 +63,7 @@
             app:defaultValue="medium"
             app:entries="@array/battery_consumption"
             app:entryValues="@array/battery_consumption_values"
-            app:key="medium"
+            app:key="location_accuracy"
             app:title="@string/select_power_mode"
             app:useSimpleSummaryProvider="true" />
 

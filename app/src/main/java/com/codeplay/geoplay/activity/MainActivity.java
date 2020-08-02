@@ -56,7 +56,6 @@ public class MainActivity extends ActivityBase {
 					switch (menuItem.getItemId()) {
 						case R.id.nav_library:
 							if (currentFragment != 0) {
-								unHideMenu();
 								getSupportFragmentManager().beginTransaction()
 										.replace(R.id.container, new VideoListFragment())
 										.commit();
@@ -65,13 +64,17 @@ public class MainActivity extends ActivityBase {
 							return true;
 
 						case R.id.nav_record:
-							Intent j = new Intent(MainActivity.this, RecordActivity.class);
-							startActivity(j);
+							if (getLocationMode(MainActivity.this) == 0) {
+								Toast.makeText(MainActivity.this, "Turn on location services to record geo tagged videos. High accuracy preferred.", Toast.LENGTH_SHORT).show();
+								startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+							}else {
+								Intent j = new Intent(MainActivity.this, RecordActivity.class);
+								startActivity(j);
+							}
 							return false;
 
 						case R.id.nav_settings: //1
 							if (currentFragment != 1) {
-								hideMenu();
 								getSupportFragmentManager().beginTransaction()
 										.replace(R.id.container, new PreferencesFragment())
 										.commit();
@@ -91,32 +94,10 @@ public class MainActivity extends ActivityBase {
 
 		if (!PermissionUtil.areAllPermissionsGranted(MainActivity.this)) {
 			PermissionUtil.requestAllPermissions(MainActivity.this);
-		}else{
-			if (getLocationMode(MainActivity.this) == 0) {
-				Toast.makeText(MainActivity.this, "Turn on location to use this app", Toast.LENGTH_SHORT).show();
-				startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), 2);
-			}
 		}
 	}
 
-	private void unHideMenu(){
-//		for (int i = 0; i < menu.size(); i++) {
-//			menu.getItem(i).setVisible(true);
-//		}
-	}
 
-	private void hideMenu() {
-//		for (int i = 0; i < menu.size(); i++) {
-//			menu.getItem(i).setVisible(false);
-//		}
-	}
-
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//		getMenuInflater().inflate(R.menu.toobar_menu, menu);
-//		this.menu = menu;
-//		return super.onCreateOptionsMenu(menu);
-//	}
 
 	@Override
 	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -126,24 +107,9 @@ public class MainActivity extends ActivityBase {
 				Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
 				PermissionUtil.showPermissionsRationale(MainActivity.this);
 			}
-		} else {
-			if (getLocationMode(MainActivity.this) == 0) {
-				Toast.makeText(MainActivity.this, "Turn on location to use this app", Toast.LENGTH_SHORT).show();
-				startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), 2);
-			}
 		}
 	}
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if(requestCode == 2){
-			if(getLocationMode(MainActivity.this) == 0){
-				Toast.makeText(MainActivity.this, "Turn on location to use this app", Toast.LENGTH_SHORT).show();
-				startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), 2);
-			}
-		}
-	}
 
 	public int getLocationMode(Context context) {
 		try {

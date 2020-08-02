@@ -79,8 +79,6 @@ public class CameraFragment extends Fragment {
 	};
 	private int selectedResolution = 2;
 
-	// TODO: 02-08-2020 add tap to focus
-
 
 	public CameraFragment(){
 		super(R.layout.fragment_camera);

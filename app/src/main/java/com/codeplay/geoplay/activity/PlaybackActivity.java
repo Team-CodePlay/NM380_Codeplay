@@ -403,7 +403,7 @@ public class PlaybackActivity extends AppCompatActivity implements OnMapReadyCal
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 			RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) playerView.getLayoutParams();
 			params.width = ViewGroup.LayoutParams.MATCH_PARENT;
-			params.height = (int) (200 * getApplicationContext().getResources().getDisplayMetrics().density);
+			params.height = (int) (300 * getApplicationContext().getResources().getDisplayMetrics().density);
 			playerView.setLayoutParams(params);
 			exoFullscreen = false;
 		} else {

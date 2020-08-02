@@ -33,8 +33,6 @@ public class OtpVerificationActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progress_circular_2);
 
         otpEditText = findViewById(R.id.et_otp);
-        
-        setUpOptFocus();
 
         TextView checkVerificationCode = findViewById(R.id.check_verification_note);
 
@@ -61,15 +59,13 @@ public class OtpVerificationActivity extends AppCompatActivity {
 
     }
 
-    private void setUpOptFocus() {
-
-    }
-
 
     private void verifyCode(String code) {
         progressBar.setVisibility(View.VISIBLE);
-        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
-        signInWithCredential(credential);
+        if(verificationId != null) {
+            PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
+            signInWithCredential(credential);
+        }
     }
 
     private void signInWithCredential(PhoneAuthCredential credential) {
@@ -129,6 +125,7 @@ public class OtpVerificationActivity extends AppCompatActivity {
                             Toast.LENGTH_LONG).show();
                     e.printStackTrace();
                     progressBar.setVisibility(View.GONE);
+                    finish();
                 }
             };
 }

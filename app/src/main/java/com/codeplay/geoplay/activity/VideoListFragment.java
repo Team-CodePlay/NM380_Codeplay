@@ -106,7 +106,7 @@ public class VideoListFragment extends Fragment {
 			StorageReference fileRef = FirebaseStorage.getInstance().getReference("videos/"+userId).child(videoRef.getKey() + ".mp4");
 
 			mainActivity.progressCard.setVisibility(View.VISIBLE);
-			mainActivity.lblVideoTitle.setText(GeoVideoAdapter.TitleGenerator(video.videoStartTime) + ".mp4");
+			mainActivity.lblVideoTitle.setText(new File(video.videoPath).getName());
 			mainActivity.lblUploadCount.setText("");
 			mainActivity.progressBar.setMax(100);
 			mainActivity.progressBar.setProgress(0);
