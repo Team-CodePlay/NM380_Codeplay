@@ -20,6 +20,7 @@ public class LoginActivity extends AppCompatActivity {
         final EditText phoneEditText = findViewById(R.id.phone);
 
         findViewById(R.id.send_otp).setOnClickListener(v -> {
+
             String number = "+91" + phoneEditText.getText().toString().trim();
 
             if (number.length() < 10) {
