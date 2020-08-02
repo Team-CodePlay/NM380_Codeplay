@@ -23,10 +23,10 @@ const haversine_distance = (mk1, mk2) => {
     Math.asin(
       Math.sqrt(
         Math.sin(difflat / 2) * Math.sin(difflat / 2) +
-        Math.cos(rlat1) *
-        Math.cos(rlat2) *
-        Math.sin(difflon / 2) *
-        Math.sin(difflon / 2)
+          Math.cos(rlat1) *
+            Math.cos(rlat2) *
+            Math.sin(difflon / 2) *
+            Math.sin(difflon / 2)
       )
     );
   return d;
@@ -36,6 +36,7 @@ const MakeMultiPaths = (props) => {
   const [selectedPoint, setselectedPoint] = useState();
   const [mapData, setMapData] = useState();
   const [selectedPath, setselectedPath] = useState();
+  const [videoLink, setvideoLink] = useState();
 
   // @todo : Add more colors
   const color = ["blue", "green", "red", "yellow"];
@@ -56,6 +57,7 @@ const MakeMultiPaths = (props) => {
       if (e.key === "Escape") {
         setselectedPath(null);
         setselectedPoint(null);
+        setvideoLink(null);
       }
     };
     window.addEventListener("keydown", listener);
@@ -136,6 +138,8 @@ const MakeMultiPaths = (props) => {
                   {new Date(path.upload_timestamp).toLocaleString("en-GB")}
                   <br />
                   <strong>Video Duration :</strong> {path.duration}
+                  {/* <br />
+                  <strong>Video Link :</strong> {path.video_path} */}
                 </Card.Text>
 
                 <Button
@@ -218,6 +222,7 @@ const MakeMultiPaths = (props) => {
                 });
 
                 // sets the mearest point to plot marker
+                setvideoLink(path.video_path);
                 setselectedPoint(markPt);
               }}
             />
@@ -272,6 +277,7 @@ const MakeMultiPaths = (props) => {
           <InfoWindow
             onCloseClick={() => {
               setselectedPoint(null);
+              setvideoLink(null);
             }}
             position={{
               lat: selectedPoint.lat,
@@ -288,6 +294,9 @@ const MakeMultiPaths = (props) => {
                 <br />
                 <strong>Recoding Time : </strong>
                 {new Date(selectedPoint.timestamp).toLocaleString("en-GB")}
+                {/* <br />
+                <strong>Video Link : </strong>
+                {videoLink} */}
               </p>
               <Button
                 id="viewInWindow"
