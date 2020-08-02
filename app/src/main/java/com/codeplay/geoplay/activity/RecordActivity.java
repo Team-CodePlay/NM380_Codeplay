@@ -277,7 +277,7 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 				lbllatitude.setText(String.format("Lat: %f", geoTag.latitude));
 				lbllongitude.setText(String.format("Long: %f", geoTag.longitude));
 				lbldatetime.setText(String.format("%s", TimestampConverter(geoTag.timestamp)));
-				lblbearing.setText(String.format("Bearing: %d", geoTag.bearing));
+				lblbearing.setText(String.format("Bearing: %d degrees w.r.t. North", geoTag.bearing));
 
 			}
 
