@@ -318,7 +318,7 @@ export default class VideoPlayer extends Component {
                         <Col lg={6}>
                             {this.state.player &&
                                 <this.MyMap
-                                    googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_OLD_API_KEY}&v=3.exp&libraries=geometry,drawing,places`}
+                                    googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&v=3.exp&libraries=geometry,drawing,places`}
                                     loadingElement={<div style={{ height: `100%` }} />}
                                     containerElement={<div style={{ height: `100%` }} />}
                                     mapElement={<div style={{ height: `100%` }} />}
