@@ -17,9 +17,9 @@ const MultiMap = (props) => {
     const tempMarkerPoints = [];
 
     Object.keys(rawData).forEach((user) => {
-      Object.keys(data[user]).forEach((video) => {
-        tempMarkerPoints.push(data[user][video].start_location);
-        tempMarkerPoints.push(data[user][video].end_location);
+      Object.keys(rawData[user]).forEach((video) => {
+        tempMarkerPoints.push(rawData[user][video].start_location);
+        tempMarkerPoints.push(rawData[user][video].end_location);
       });
       setMarkerPoints(tempMarkerPoints);
     });
@@ -36,7 +36,7 @@ const MultiMap = (props) => {
   };
 
   const MapWithPaths = () => {
-    console.log('Map rendered')
+    console.log("Map rendered");
     return (
       <GoogleMap
         ref={(map) => {
