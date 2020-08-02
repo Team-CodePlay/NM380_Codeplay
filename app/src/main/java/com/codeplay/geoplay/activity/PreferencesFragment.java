@@ -7,11 +7,15 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.EditTextPreference;
+import androidx.preference.ListPreferenceDialogFragmentCompat;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreferenceCompat;
 
 import com.codeplay.geoplay.R;
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.Locale;
 
 public class PreferencesFragment extends PreferenceFragmentCompat {
     @Override
@@ -44,7 +48,6 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
             display_mode.setChecked(false);
 
         }
-
         display_mode.setOnPreferenceChangeListener((preference, newValue) -> {
             if (display_mode.isChecked()) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
@@ -66,5 +69,17 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
             }
             return true;
         });
+
+        // Language selector
+        Preference language = findPreference("language");
+        language.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                getActivity().finish();
+                startActivity(getActivity().getIntent());
+                return true;
+            }
+        });
+
     }
 }

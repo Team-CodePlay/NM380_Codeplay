@@ -78,10 +78,10 @@
     <PreferenceCategory app:title="@string/app_settings">
         <ListPreference
             android:icon="@drawable/translate_language"
-            app:defaultValue="english"
+            app:defaultValue="en"
             app:entries="@array/language_entries"
             app:entryValues="@array/language_values"
-            app:key="english"
+            app:key="language"
             app:title="@string/select_app_language"
             app:useSimpleSummaryProvider="true" />
 

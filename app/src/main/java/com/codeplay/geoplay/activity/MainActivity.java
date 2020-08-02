@@ -19,7 +19,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 /**
  * Holds two fragments. VideoListFragment and SettingsFragment.
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends ActivityBase {
 
 	BottomNavigationView bottomNavigation;
 
