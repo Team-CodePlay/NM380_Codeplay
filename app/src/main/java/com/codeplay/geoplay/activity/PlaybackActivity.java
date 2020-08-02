@@ -1,9 +1,16 @@
 package com.codeplay.geoplay.activity;
 
+import androidx.annotation.DrawableRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -34,9 +41,15 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.JointType;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.io.File;
@@ -78,9 +91,10 @@ public class PlaybackActivity extends AppCompatActivity implements OnMapReadyCal
 	private List<GeoTag> geoTags;
 	private List<LatLng> latLngs;
 
-	PolylineOptions options = new PolylineOptions().visible(true)
-			.jointType(JointType.ROUND)
-			.width(10);
+	Polyline polyline;
+
+	Marker currentLocationMarker;
+
 	boolean exoFullscreen = false;
 	boolean exoPortrait = false;
 	private boolean exoPlayWhenReady = true;
@@ -142,7 +156,7 @@ public class PlaybackActivity extends AppCompatActivity implements OnMapReadyCal
 			geoTags = VideoUtil.readMetaData(videoPath);
 
 			new Handler(Looper.getMainLooper()).post(() -> {
-				options.addAll(GeoTagUtil.getLatLngFromList(geoTags));
+//				options.addAll(GeoTagUtil.getLatLngFromList(geoTags));
 				Date date = new Date(geoTags.get(0).timestamp);
 				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				setTitle(format.format(date));
@@ -191,10 +205,52 @@ public class PlaybackActivity extends AppCompatActivity implements OnMapReadyCal
 		return sdf.format(resultdate);
 	}
 
+	private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
+		Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+		vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+		Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+		Canvas canvas = new Canvas(bitmap);
+		vectorDrawable.draw(canvas);
+		return BitmapDescriptorFactory.fromBitmap(Bitmap.createScaledBitmap(bitmap, 100, 100, false));
+	}
 	/**
 	 * start asynctask to update map
 	 */
 	private void startUpdatingMap() {
+		mMap.clear();
+
+		if(!geoTags.isEmpty()) {
+			mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(geoTags.get(0).getLatLng(), 17f));
+			currentLocationMarker = mMap.addMarker(
+					new MarkerOptions().icon(bitmapDescriptorFromVector(PlaybackActivity.this, R.drawable.navigation))
+							.zIndex(3)
+							.rotation(geoTags.get(0).bearing)
+							.position(geoTags.get(0).getLatLng())
+			);
+			mMap.addCircle(new CircleOptions()
+					.radius(10f)
+					.fillColor(0xff00aa00)
+					.center(geoTags.get(0).getLatLng())
+			);
+		}
+
+		mMap.addPolyline(new PolylineOptions().visible(true)
+				.jointType(JointType.ROUND)
+				.width(20)
+				.color(0xff96bfff)
+				.zIndex(1)
+				.addAll(GeoTagUtil.getLatLngFromList(geoTags))
+		);
+
+
+		polyline = mMap.addPolyline(
+				new PolylineOptions().visible(true)
+				.width(20)
+				.zIndex(2)
+				.color(0xff0064ff)
+		);
+
+
 		mapUpdateIndex = 0;
 		Runnable mapUpdateRunnable = () -> {
 
@@ -214,6 +270,7 @@ public class PlaybackActivity extends AppCompatActivity implements OnMapReadyCal
 					} else if (position <= geoTags.get(i).videoTime && position >= geoTags.get(i - 1).videoTime) {
 						mapUpdateIndex = i;
 						updateMapLocation(geoTags.get(i));
+						polyline.setPoints(GeoTagUtil.getLatLngFromList(geoTags.subList(0, i+1)));
 						break;
 					} else {
 						while (i > 0 && geoTags.get(i - 1).videoTime > position) {
@@ -221,6 +278,7 @@ public class PlaybackActivity extends AppCompatActivity implements OnMapReadyCal
 						}
 						mapUpdateIndex = i;
 						updateMapLocation(geoTags.get(i));
+						polyline.setPoints(GeoTagUtil.getLatLngFromList(geoTags.subList(0, i+1)));
 						break;
 					}
 				}
@@ -251,15 +309,16 @@ public class PlaybackActivity extends AppCompatActivity implements OnMapReadyCal
 	}
 
 	private void updateMapLocation(GeoTag geoTag) {
-		mMap.clear();
-		mMap.addPolyline(options);
 		Date date = new Date(geoTag.timestamp);
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		setTitle(format.format(date));
-		mMap.addMarker(new MarkerOptions().position(geoTags.get(0).getLatLng()).title("A"));
-		mMap.addMarker(new MarkerOptions().position(geoTags.get(geoTags.size() - 1).getLatLng()).title("B"));
-		mMap.addMarker(new MarkerOptions().position(new LatLng(geoTag.latitude, geoTag.longitude)));
-		mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(geoTag.latitude, geoTag.longitude), 15f));
+
+//		mMap.addMarker(new MarkerOptions().position(geoTags.get(0).getLatLng()).title("A"));
+//		mMap.addMarker(new MarkerOptions().position(geoTags.get(geoTags.size() - 1).getLatLng()).title("B"));
+//		mMap.addMarker(new MarkerOptions().position(new LatLng(geoTag.latitude, geoTag.longitude)));
+//		mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(geoTag.latitude, geoTag.longitude), 15f));
+		currentLocationMarker.setPosition(geoTag.getLatLng());
+		currentLocationMarker.setRotation(geoTag.bearing);
 
 	}
 
