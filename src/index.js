@@ -6,6 +6,6 @@ import "video-react/dist/video-react.css";
 import App from "./App";
 
 ReactDOM.render(
-    <App />
-    , document.getElementById("root")
+    <App />,
+    document.getElementById("root")
 );
