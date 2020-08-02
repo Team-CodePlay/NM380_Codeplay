@@ -74,6 +74,12 @@ const MakeMultiPaths = (props) => {
     return pathpoints;
   };
 
+  // fitBounds zoom
+  const seePath = (path) => {
+    setselectedPath(path);
+    props.zoomOnPath(createPathPoints(path.geotags,path.start_location,path.end_location));
+  };
+
   const pathClicked = (path) => {
     setselectedPath(path);
   };
@@ -145,7 +151,7 @@ const MakeMultiPaths = (props) => {
                 <Button
                   style={{ margin: "0.25rem" }}
                   onClick={() => {
-                    pathClicked(path);
+                    seePath(path);
                     window.scrollTo({
                       top: 0,
                       behavior: "smooth",

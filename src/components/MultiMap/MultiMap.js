@@ -5,12 +5,13 @@ import data from "../../data/dummy.json";
 import MakeMarkers from "../utils/MakeMarkers";
 import MakeMultiPaths from "./MakeMultiPaths";
 
-var flagToFitBound = 0;
+// var flagToFitBound = 0;
 
 const MultiMap = (props) => {
   const [rawData, setRawData] = useState(props.data);
   //   const [mapData, setMapData] = useState();
   const [markerPoints, setMarkerPoints] = useState();
+  const [fitb, setfitb] = useState();
 
   useEffect(() => {
     // Gets all Start and end point of paths to place markers on
@@ -22,14 +23,19 @@ const MultiMap = (props) => {
         tempMarkerPoints.push(rawData[user][video].end_location);
       });
       setMarkerPoints(tempMarkerPoints);
+      setfitb(tempMarkerPoints)
     });
   }, []);
 
+  const zoomOnPath = path =>{
+    setfitb(path);
+  }
+
   // Create Map Bounds makes sure all points in markerPoints are visible in map ie sets zoom accordingly
   const fitBounds = (map) => {
-    flagToFitBound = 1;
+    // flagToFitBound = 1;
     const bounds = new window.google.maps.LatLngBounds();
-    markerPoints.map((pt) => {
+    fitb.map((pt) => {
       bounds.extend(pt);
     });
     map.fitBounds(bounds);
@@ -42,11 +48,11 @@ const MultiMap = (props) => {
         ref={(map) => {
           if (
             (map != null) &
-            (flagToFitBound === 0) &
+            // (flagToFitBound === 0) &
             (markerPoints !== undefined)
           ) {
             fitBounds(map);
-            flagToFitBound = 1;
+            // flagToFitBound = 1;
           }
         }}
         defaultZoom={15}
@@ -57,7 +63,7 @@ const MultiMap = (props) => {
           data={props.data}
           parent="MultiMap"
         />
-        <MakeMultiPaths markerPoints={markerPoints} data={props.data} />
+        <MakeMultiPaths zoomOnPath={zoomOnPath} markerPoints={markerPoints} data={props.data} />
       </GoogleMap>
     );
   };
