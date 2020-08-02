@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import { Player, ControlBar } from "video-react";
 import { Container, Row, Col } from "react-bootstrap";
+import firebase from '../utils/firebase';
 // import data from "../../data/dummyVideo.json";
 
 import {
@@ -23,9 +24,9 @@ export default class VideoPlayer extends Component {
     constructor(props, context) {
         super(props, context);
         console.log("Video data");
-        console.log(this.props.data)
+        console.log(this.props.data);
         this.state = {
-            source: sources.walkingVideo,
+            source: "",
         };
 
         this.play = this.play.bind(this);
@@ -47,9 +48,22 @@ export default class VideoPlayer extends Component {
         this.endAdd = this.endAdd;
     }
 
+
+    async loadVideo() {
+        const storage = firebase.storage();
+        const videoReference = storage.refFromURL(this.props.data.video_path);
+        const videoStreamingURL = await videoReference.getDownloadURL();
+        console.log(videoStreamingURL);
+        this.setState({
+            source: videoStreamingURL
+        });
+        this.load();
+    }
+
     componentDidMount() {
         // subscribe state change
         this.player.subscribeToStateChange(this.handleStateChange.bind(this));
+        this.loadVideo();
     }
 
     setMuted(muted) {
@@ -254,12 +268,12 @@ export default class VideoPlayer extends Component {
                             </Player>
                         </Col>
                         <Col lg={6}>
-                            <this.MyMap
+                            {/* <this.MyMap
                                 googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_OLD_API_KEY}&v=3.exp&libraries=geometry,drawing,places`}
                                 loadingElement={<div style={{ height: `100%` }} />}
                                 containerElement={<div style={{ height: `100%` }} />}
                                 mapElement={<div style={{ height: `100%` }} />}
-                            />
+                            /> */}
                         </Col>
                     </Row>
                 </Container>
