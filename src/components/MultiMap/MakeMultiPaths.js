@@ -1,8 +1,14 @@
 /* global google */
 import React, { useState, useEffect } from "react";
 import { InfoWindow, Polyline, lineSymbol } from "react-google-maps";
-import { Card, Button, CardGroup, DropdownButton, Dropdown } from "react-bootstrap";
-import { kmlStart1, kmlStart2, kmlEnd } from '../utils/kmlUtil';
+import {
+  Card,
+  Button,
+  CardGroup,
+  DropdownButton,
+  Dropdown,
+} from "react-bootstrap";
+import { kmlStart1, kmlStart2, kmlEnd } from "../utils/kmlUtil";
 
 // Calculates distance between lat lng
 const haversine_distance = (mk1, mk2) => {
@@ -11,17 +17,16 @@ const haversine_distance = (mk1, mk2) => {
   var rlat2 = mk2.lat * (Math.PI / 180); // Convert degrees to radians
   var difflat = rlat2 - rlat1; // Radian difference (latitudes)
   var difflon = (mk2.lng - mk1.lng) * (Math.PI / 180); // Radian difference (longitudes)
-
   var d =
     2 *
     R *
     Math.asin(
       Math.sqrt(
         Math.sin(difflat / 2) * Math.sin(difflat / 2) +
-        Math.cos(rlat1) *
-        Math.cos(rlat2) *
-        Math.sin(difflon / 2) *
-        Math.sin(difflon / 2)
+          Math.cos(rlat1) *
+            Math.cos(rlat2) *
+            Math.sin(difflon / 2) *
+            Math.sin(difflon / 2)
       )
     );
   return d;
@@ -74,7 +79,7 @@ const MakeMultiPaths = (props) => {
   const exportToKml = (path, action) => {
     var kmlData = kmlStart1 + path.videoname + kmlStart2;
 
-    path.geotags.map(pt => {
+    path.geotags.map((pt) => {
       kmlData += `
         <Placemark>
             <styleUrl>#hiker-icon</styleUrl>
@@ -89,7 +94,7 @@ const MakeMultiPaths = (props) => {
     kmlData += kmlEnd;
 
     const element = document.createElement("a");
-    const file = new Blob([kmlData], { type: 'text/kml' });
+    const file = new Blob([kmlData], { type: "text/kml" });
     element.href = URL.createObjectURL(file);
     if (action === "download") {
       element.download = `${path.videoname}.kml`;
@@ -112,29 +117,44 @@ const MakeMultiPaths = (props) => {
             path.end_location
           );
           cardsArray.push(
-            <Card key={pathKey} border="primary" style={{ margin: '10px', width: '18rem', borderLeft: '1px solid', borderRadius: '0.5rem' }}>
+            <Card
+              key={pathKey}
+              border="primary"
+              style={{
+                margin: "10px",
+                width: "18rem",
+                borderLeft: "1px solid",
+                borderRadius: "0.5rem",
+              }}
+            >
               <Card.Body>
                 <Card.Title>Path{path.videoname}</Card.Title>
                 <Card.Text>
                   <strong>User :</strong> {path.username}
                   <br />
                   <strong>Data Collection Time :</strong>{" "}
-                  {new Date().toLocaleDateString('en-GB')}
+                  {new Date().toLocaleDateString("en-GB")}
                   <br />
                   <strong>Video Duration :</strong> {path.duration}
                 </Card.Text>
 
-                <Button style={{ margin: "0.25rem" }} onClick={() => {
-                  pathClicked(path);
-                  window.scrollTo({
-                    top: 0,
-                    behavior: "smooth"
-                  });
-                }} variant="primary">
+                <Button
+                  style={{ margin: "0.25rem" }}
+                  onClick={() => {
+                    pathClicked(path);
+                    window.scrollTo({
+                      top: 0,
+                      behavior: "smooth",
+                    });
+                  }}
+                  variant="primary"
+                >
                   See Path
                 </Button>
 
-                <Button style={{ margin: "0.25rem" }} variant="primary">Watch Video</Button>
+                <Button style={{ margin: "0.25rem" }} variant="primary">
+                  Watch Video
+                </Button>
                 <DropdownButton
                   style={{ margin: "0.25rem" }}
                   variant="success"
@@ -146,14 +166,14 @@ const MakeMultiPaths = (props) => {
                     onClick={() => exportToKml(path, "view")}
                   >
                     View KML
-                      </Dropdown.Item>
+                  </Dropdown.Item>
                   <Dropdown.Item
                     id={"download" + pathKey}
                     variant="light"
                     onClick={() => exportToKml(path, "download")}
                   >
                     Download KML
-                      </Dropdown.Item>
+                  </Dropdown.Item>
                 </DropdownButton>
               </Card.Body>
             </Card>
@@ -205,36 +225,43 @@ const MakeMultiPaths = (props) => {
         })}
         <CardGroup>
           {cardsArray}
-          <Card key={10} border="primary" style={{ margin: '10px', width: '18rem', borderLeft: '1px solid', borderRadius: '0.5rem' }}>
+          <Card
+            key={10}
+            border="primary"
+            style={{
+              margin: "10px",
+              width: "18rem",
+              borderLeft: "1px solid",
+              borderRadius: "0.5rem",
+            }}
+          >
             <Card.Body>
               <Card.Title>Path 10</Card.Title>
               <Card.Text>
                 <strong>User : 5</strong>
                 <br />
                 <strong>Data Collection Time :</strong>{" "}
-                {new Date(100 * 1000).toLocaleDateString('en-GB')}
+                {new Date(100 * 1000).toLocaleDateString("en-GB")}
                 <br />
                 <strong>Video Duration :</strong> 10
               </Card.Text>
-              <Button style={{ margin: "0.25rem" }} variant="primary">See Path</Button>
-              <Button style={{ margin: "0.25rem" }} variant="primary">Watch Video</Button>
+              <Button style={{ margin: "0.25rem" }} variant="primary">
+                See Path
+              </Button>
+              <Button style={{ margin: "0.25rem" }} variant="primary">
+                Watch Video
+              </Button>
               <DropdownButton
                 style={{ margin: "0.25rem" }}
                 variant="success"
                 title="Export To KML"
               >
-                <Dropdown.Item
-                  id={"view" + 10}
-                  variant="light"
-                >
+                <Dropdown.Item id={"view" + 10} variant="light">
                   View KML
-                      </Dropdown.Item>
-                <Dropdown.Item
-                  id={"download" + 10}
-                  variant="light"
-                >
+                </Dropdown.Item>
+                <Dropdown.Item id={"download" + 10} variant="light">
                   Download KML
-                      </Dropdown.Item>
+                </Dropdown.Item>
               </DropdownButton>
             </Card.Body>
           </Card>
@@ -287,7 +314,6 @@ const MakeMultiPaths = (props) => {
               ],
             }}
             onClick={(resp) => {
-
               var latlng = {
                 lat: resp.latLng.lat(),
                 lng: resp.latLng.lng(),
