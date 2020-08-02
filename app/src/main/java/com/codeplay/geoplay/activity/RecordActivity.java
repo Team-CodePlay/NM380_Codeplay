@@ -245,7 +245,7 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 	}
 
 	public static String TimestampConverter(Long timestamp) {
-		SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm", Locale.US);
+		SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm:ss", Locale.US);
 		Date resultdate = new Date(timestamp);
 		return sdf.format(resultdate);
 	}

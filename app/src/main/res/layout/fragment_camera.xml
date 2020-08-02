@@ -57,7 +57,6 @@
         android:padding="3dp"
         android:text="Latitude"
         android:textColor="#FFFFFF"
-        android:textSize="16sp"
         android:visibility="gone" />
 
     <TextView
@@ -72,7 +71,6 @@
         android:padding="3dp"
         android:text="Longitude"
         android:textColor="#FFFFFF"
-        android:textSize="16sp"
         android:visibility="gone" />
 
     <TextView
@@ -86,7 +84,6 @@
         android:padding="3dp"
         android:text="Date-Time"
         android:textColor="#FFFFFF"
-        android:textSize="16sp"
         android:visibility="gone" />
 
     <TextView
@@ -100,7 +97,6 @@
         android:padding="3dp"
         android:text="Bearing"
         android:textColor="#FFFFFF"
-        android:textSize="16sp"
         android:visibility="gone" />
 
 </RelativeLayout>

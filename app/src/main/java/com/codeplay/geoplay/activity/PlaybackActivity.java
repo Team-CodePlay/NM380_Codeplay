@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codeplay.geoplay.R;
@@ -42,6 +43,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -58,6 +60,11 @@ public class PlaybackActivity extends AppCompatActivity implements OnMapReadyCal
 	private GoogleMap mMap;
 	private PlayerView playerView;
 	private ImageView fullscreenButton;
+	private TextView lbllatitude;
+	private TextView lbllongitude;
+	private TextView lbldatetime;
+	private TextView lblbearing;
+	private TextView lblspeed;
 
 	private SimpleExoPlayer player;
 
@@ -108,6 +115,12 @@ public class PlaybackActivity extends AppCompatActivity implements OnMapReadyCal
 
 		fullscreenButton = playerView.findViewById(R.id.exo_fullscreen_icon);
 
+		lbllatitude = findViewById(R.id.latitude2);
+		lbllongitude = findViewById(R.id.longitude2);
+		lbldatetime = findViewById(R.id.date2);
+		lblbearing = findViewById(R.id.bearing2);
+		lblspeed = findViewById(R.id.speed2);
+
 
 		fullscreenButton.setOnClickListener(this::toggleFullscreen);
 
@@ -133,7 +146,6 @@ public class PlaybackActivity extends AppCompatActivity implements OnMapReadyCal
 				Date date = new Date(geoTags.get(0).timestamp);
 				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				setTitle(format.format(date));
-
 				setUpMap();
 			});
 		});
@@ -173,6 +185,12 @@ public class PlaybackActivity extends AppCompatActivity implements OnMapReadyCal
 		startUpdatingMap();
 	}
 
+	public static String TimestampConverter(Long timestamp) {
+		SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm:ss", Locale.US);
+		Date resultdate = new Date(timestamp);
+		return sdf.format(resultdate);
+	}
+
 	/**
 	 * start asynctask to update map
 	 */
@@ -209,6 +227,13 @@ public class PlaybackActivity extends AppCompatActivity implements OnMapReadyCal
 				if (mapUpdateIndex + 1 >= geoTags.size()) {
 					mapUpdateIndex = 0;
 				}
+				lbldatetime.setText(geoTags.get(mapUpdateIndex).videoTime.toString());
+				lblspeed.setText(String.format("%d km/hr", new Float(geoTags.get(mapUpdateIndex).speed).intValue()));
+				lbllatitude.setText(String.format("Lat: %f", geoTags.get(mapUpdateIndex).latitude));
+				lbllongitude.setText(String.format("Long: %f", geoTags.get(mapUpdateIndex).longitude));
+				lbldatetime.setText(String.format("%s", TimestampConverter(geoTags.get(mapUpdateIndex).timestamp)));
+				lblbearing.setText(String.format("Bearing: %d degrees w.r.t. North", geoTags.get(mapUpdateIndex).bearing));
+
 			});
 		};
 

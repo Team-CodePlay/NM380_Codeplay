@@ -14,6 +14,75 @@
         app:controller_layout_id="@layout/playback_control"
         app:resize_mode="fixed_height" />
 
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/latitude2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:background="#4D000000"
+            android:padding="3dp"
+            android:text="Latitude"
+            android:textColor="#FFFFFF"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/speed2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:background="#4D000000"
+            android:padding="3dp"
+            android:text="@string/speed"
+            android:textColor="#FFFFFF"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/longitude2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_toEndOf="@id/latitude2"
+            android:background="#4D000000"
+            android:padding="3dp"
+            android:text="Longitude"
+            android:textColor="#FFFFFF"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/date2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/latitude2"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="5dp"
+            android:background="#4D000000"
+            android:padding="3dp"
+            android:text="Date-Time"
+            android:textColor="#FFFFFF"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/bearing2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/date2"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="5dp"
+            android:background="#4D000000"
+            android:padding="3dp"
+            android:text="Bearing"
+            android:textColor="#FFFFFF"
+            android:visibility="visible" />
+    </RelativeLayout>
+
     <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
@@ -21,7 +90,6 @@
         android:layout_height="match_parent"
         android:layout_below="@id/video_view"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="10dp"
         tools:context=".activity.PlaybackActivity" />
 
 </RelativeLayout>
