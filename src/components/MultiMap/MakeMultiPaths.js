@@ -23,10 +23,10 @@ const haversine_distance = (mk1, mk2) => {
     Math.asin(
       Math.sqrt(
         Math.sin(difflat / 2) * Math.sin(difflat / 2) +
-          Math.cos(rlat1) *
-            Math.cos(rlat2) *
-            Math.sin(difflon / 2) *
-            Math.sin(difflon / 2)
+        Math.cos(rlat1) *
+        Math.cos(rlat2) *
+        Math.sin(difflon / 2) *
+        Math.sin(difflon / 2)
       )
     );
   return d;
@@ -235,6 +235,7 @@ const MakeMultiPaths = (props) => {
               borderRadius: "0.5rem",
             }}
           >
+            {/* Dummy Data */}
             <Card.Body>
               <Card.Title>Path 10</Card.Title>
               <Card.Text>
@@ -288,17 +289,19 @@ const MakeMultiPaths = (props) => {
                 <strong>Recoding Time : </strong>
                 {Date(selectedPoint.timestamp * 1000)}
               </p>
-              <Button id="viewInWindow"
-                    variant="light"
-                    onClick={() => exportToKml(selectedPath, "view")}
-                  >
-                    View KML
+              <Button
+                id="viewInWindow"
+                variant="light"
+                onClick={() => exportToKml(selectedPath, "view")}
+              >
+                View KML
               </Button>
-              <Button id="downloadInWindow"
-                    variant="light"
-                    onClick={() => exportToKml(selectedPath, "download")}
-                  >
-                    Download KML
+              <Button
+                id="downloadInWindow"
+                variant="light"
+                onClick={() => exportToKml(selectedPath, "download")}
+              >
+                Download KML
               </Button>
             </div>
           </InfoWindow>
