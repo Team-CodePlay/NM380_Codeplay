@@ -25,9 +25,9 @@ function App() {
   }, []);
 
   return (
-    <div className="App">;
+    <div className="App">
+      <Header />
       <Router>
-        <Header />
         <Switch>
           <Route exact path='/'>
             {data ? <MultiMap data={data} /> : <Spinner />}
