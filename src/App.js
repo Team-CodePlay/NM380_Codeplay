@@ -13,7 +13,10 @@ function App() {
       const videosRef = firebase
         .database()
         .ref("videos");
-      setData((await videosRef.once("value")).val());
+      const videosData = (await videosRef.once("value")).val();
+      console.log("Firebase date:");
+      console.log(videosData);
+      setData(videosData);
     };
     fetchData();
   }, []);
