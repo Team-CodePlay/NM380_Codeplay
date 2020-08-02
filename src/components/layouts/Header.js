@@ -1,11 +1,13 @@
 import React from 'react';
-import { Navbar, Nav,NavLink } from 'react-bootstrap';
-// import favicon from '../assets/fa'
+import { Navbar, Nav, NavLink } from 'react-bootstrap';
+
 const Header = () => {
   return (
     <div>
       <Navbar bg="primary" variant="dark" expand="lg">
-        <Navbar.Brand href="/"><img src={process.env.PUBLIC_URL  + "favicon.ico"} width="30" alt="Product Logo"/></Navbar.Brand>
+        <Navbar.Brand href="/">
+          <img src="/favicon.ico" width="30" alt="Product Logo" />
+        </Navbar.Brand>
         <Navbar.Brand href="/">GeoPlay</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
