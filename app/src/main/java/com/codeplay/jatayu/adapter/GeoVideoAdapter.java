@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -20,15 +22,17 @@ import java.io.File;
 import java.text.CharacterIterator;
 import java.text.SimpleDateFormat;
 import java.text.StringCharacterIterator;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-public class GeoVideoAdapter extends RecyclerView.Adapter<GeoVideoAdapter.GeoVideoViewHolder> {
+public class GeoVideoAdapter extends RecyclerView.Adapter<GeoVideoAdapter.GeoVideoViewHolder> implements Filterable {
 
 	private Context context;
 	private List<GeoVideo> dataset;
+	private List<GeoVideo> datasetFull;
 	private OnClickListener onClickListener;
 	private OnDeleteListener onDeleteListener;
 	private OnUploadListener onUploadListener;
@@ -37,6 +41,7 @@ public class GeoVideoAdapter extends RecyclerView.Adapter<GeoVideoAdapter.GeoVid
 	public GeoVideoAdapter(Context context, List<GeoVideo> dataset) {
 		this.context = context;
 		this.dataset = dataset;
+		datasetFull = new ArrayList<>(dataset);
 	}
 
 	private static final int detailedVideoCard = 1;
@@ -184,5 +189,38 @@ public class GeoVideoAdapter extends RecyclerView.Adapter<GeoVideoAdapter.GeoVid
 		void onClick(GeoVideo geoVideo);
 	}
 
+	@Override
+	public Filter getFilter() {
+		return datasetFilter;
+	}
 
+	private Filter datasetFilter = new Filter() {
+		@Override
+		protected FilterResults performFiltering(CharSequence constraint) {
+			List<GeoVideo> filteredList = new ArrayList<>();
+
+			if (constraint == null || constraint.length() == 0) {
+				filteredList.addAll(datasetFull);
+			} else {
+				String filterPattern = constraint.toString().toLowerCase().trim();
+
+				for (GeoVideo geoVideo : datasetFull) {
+					if (TitleGenerator(geoVideo.videoStartTime).toLowerCase().contains(filterPattern) ||
+							TimestampConverter(geoVideo.videoStartTime).toLowerCase().contains(filterPattern)) {
+						filteredList.add(geoVideo);
+					}
+				}
+			}
+			FilterResults results = new FilterResults();
+			results.values = filteredList;
+			return  results;
+		}
+
+		@Override
+		protected void publishResults(CharSequence constraint, FilterResults results) {
+			dataset.clear();
+			dataset.addAll((List) results.values);
+			notifyDataSetChanged();
+		}
+	};
 }

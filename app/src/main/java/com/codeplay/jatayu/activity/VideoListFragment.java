@@ -3,6 +3,7 @@ package com.codeplay.jatayu.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -34,6 +35,7 @@ public class VideoListFragment extends Fragment {
 	private static final String TAG = "VideoListFragment";
 
 	private RecyclerView lstVideos;
+	private SearchView searchVideos;
 
 	private GeoVideoAdapter videoAdapter;
 	List<GeoVideo> videos = new ArrayList<>();
@@ -48,7 +50,19 @@ public class VideoListFragment extends Fragment {
 
 		lstVideos = view.findViewById(R.id.lstVideos);
 		lstVideos.setLayoutManager(new LinearLayoutManager(getActivity()));
+		searchVideos = view.findViewById(R.id.search);
+		searchVideos.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+				return false;
+			}
 
+			@Override
+			public boolean onQueryTextChange(String newText) {
+				videoAdapter.getFilter().filter(newText);
+				return false;
+			}
+		});
 		refresh();
 	}
 
