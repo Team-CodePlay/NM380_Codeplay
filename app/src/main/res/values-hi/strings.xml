@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">GeoPlay</string>
+    <string name="library">संग्रह</string>
+    <string name="record">मुद्रित करे</string>
+    <string name="settings">" सेटिंग्ज"</string>
+    <string name="uploading_files">फाइल अपलोड हो रही हे</string>
+    <string name="resolution">रिझोल्यूशन</string>
+    <string name="title">शीर्षक</string>
+    <string name="date">" तारीख"</string>
+    <string name="duration">कालावधि</string>
+    <string name="location">" स्थान"</string>
+    <string name="send_otp">OTP भेजे</string>
+    <string name="phone_placeholder">आपका फोन नंबर</string>
+    <string name="verification_code">सत्यापन कोड</string>
+    <string name="check_verification_note">" कृपया भेजा गया सत्यापन कोड टाइप करें"</string>
+    <string name="verify">" सत्यापित करें"</string>
+    <string name="speed">गति</string>
+    <string name="tracking">मार्ग</string>
+    <string name="send_otp_note">" हम आपको एक बार एसएमएस संदेश भेजेंगे वाहक दरें लागू हो सकती हैं"</string>
+    <string name="size">" माप"</string>
+</resources>
