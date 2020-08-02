@@ -287,7 +287,7 @@ const MakeMultiPaths = (props) => {
                 {selectedPoint.video_time / 1000} Seconds
                 <br />
                 <strong>Recoding Time : </strong>
-                {new Date(selectedPoint.timestamp).toLocaleTimeString("en-GB")}
+                {new Date(selectedPoint.timestamp).toLocaleString("en-GB")}
               </p>
               <Button
                 id="viewInWindow"
