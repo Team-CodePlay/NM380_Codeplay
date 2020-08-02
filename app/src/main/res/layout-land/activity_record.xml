@@ -14,7 +14,7 @@
 
         <fragment
             android:id="@+id/cameraFragment"
-            android:name="com.codeplay.jatayu.activity.CameraFragment"
+            android:name="com.codeplay.geoplay.activity.CameraFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="50dp"
@@ -90,7 +90,7 @@
         android:orientation="vertical"
         app:behavior_hideable="false"
         app:behavior_peekHeight="50dp"
-        app:layout_behavior="com.codeplay.jatayu.ui.LockBottomSheetBehaviour">
+        app:layout_behavior="com.codeplay.geoplay.ui.LockBottomSheetBehaviour">
 
         <TextView
             android:layout_width="match_parent"
