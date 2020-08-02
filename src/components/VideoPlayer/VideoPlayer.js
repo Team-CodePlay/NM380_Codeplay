@@ -24,8 +24,6 @@ var flagToFitBound = 0;
 export default class VideoPlayer extends Component {
   constructor(props, context) {
     super(props, context);
-    console.log("Video data");
-    console.log(this.props.data);
     this.state = {
       source: sources.walkingVideo,
     };
@@ -183,14 +181,12 @@ export default class VideoPlayer extends Component {
             }
 
             // return average loction if time data doesnt exist
-            console.log("return undefined");
             return {
               lat: (prev.lat + next.lat) / 2,
               lng: (prev.lng + next.lng) / 2,
             };
           }
           // return data
-          console.log("return defined");
           return {
             lat: this.timeloc[Math.floor(this.state.player.currentTime)].lat,
             lng: this.timeloc[Math.floor(this.state.player.currentTime)].lng,
@@ -200,7 +196,7 @@ export default class VideoPlayer extends Component {
       };
 
       // if no data is found
-      if (this.markerPoints[0] == undefined) {
+      if (this.markerPoints[0] === undefined) {
         return <div></div>;
       }
 
