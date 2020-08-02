@@ -3,6 +3,7 @@ package com.codeplay.geoplay.activity;
 import androidx.annotation.DrawableRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.preference.PreferenceManager;
 
 import android.content.Context;
 import android.content.pm.ActivityInfo;
@@ -24,6 +25,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codeplay.geoplay.R;
+import com.codeplay.geoplay.map.BingTileProvider;
+import com.codeplay.geoplay.map.OsmTileProvider;
 import com.codeplay.geoplay.model.GeoTag;
 import com.codeplay.geoplay.util.GeoTagUtil;
 import com.codeplay.geoplay.util.VideoUtil;
@@ -51,6 +54,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.maps.model.TileOverlay;
+import com.google.android.gms.maps.model.TileOverlayOptions;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -156,10 +161,11 @@ public class PlaybackActivity extends AppCompatActivity implements OnMapReadyCal
 			geoTags = VideoUtil.readMetaData(videoPath);
 
 			new Handler(Looper.getMainLooper()).post(() -> {
-//				options.addAll(GeoTagUtil.getLatLngFromList(geoTags));
-				Date date = new Date(geoTags.get(0).timestamp);
-				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-				setTitle(format.format(date));
+				if(!geoTags.isEmpty()) {
+					Date date = new Date(geoTags.get(0).timestamp);
+					SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					setTitle(format.format(date));
+				}
 				setUpMap();
 			});
 		});
@@ -174,6 +180,26 @@ public class PlaybackActivity extends AppCompatActivity implements OnMapReadyCal
 	@Override
 	public void onMapReady(GoogleMap googleMap) {
 		mMap = googleMap;
+		mMap.clear();
+		switch (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+				.getString("choose_map", "google")) {
+			case "google":
+				break;
+			case "bing":
+				mMap.setMapType(GoogleMap.MAP_TYPE_NONE);
+				TileOverlay tileOverlay1 = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(new BingTileProvider(256, 256)));
+				tileOverlay1.setZIndex(-1);
+				break;
+			case "osm":
+				mMap.setMapType(GoogleMap.MAP_TYPE_NONE);
+				TileOverlay tileOverlay2 = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(new OsmTileProvider(256, 256)));
+				tileOverlay2.setZIndex(-1);
+				break;
+			default:
+				break;
+		}
+
+
 		if(!geoTags.isEmpty()) {
 			mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(geoTags.get(0).getLatLng(), 15f));
 		}
@@ -217,7 +243,6 @@ public class PlaybackActivity extends AppCompatActivity implements OnMapReadyCal
 	 * start asynctask to update map
 	 */
 	private void startUpdatingMap() {
-		mMap.clear();
 
 		if(!geoTags.isEmpty()) {
 			mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(geoTags.get(0).getLatLng(), 17f));

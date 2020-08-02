@@ -1,11 +1,15 @@
 package com.codeplay.geoplay.activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.Menu;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -83,6 +87,11 @@ public class MainActivity extends ActivityBase {
 
 		if (!PermissionUtil.areAllPermissionsGranted(MainActivity.this)) {
 			PermissionUtil.requestAllPermissions(MainActivity.this);
+		}else{
+			if (getLocationMode(MainActivity.this) == 0) {
+				Toast.makeText(MainActivity.this, "Turn on location to use this app", Toast.LENGTH_SHORT).show();
+				startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), 2);
+			}
 		}
 	}
 
@@ -100,6 +109,32 @@ public class MainActivity extends ActivityBase {
 				Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
 				PermissionUtil.showPermissionsRationale(MainActivity.this);
 			}
+		} else {
+			if (getLocationMode(MainActivity.this) == 0) {
+				Toast.makeText(MainActivity.this, "Turn on location to use this app", Toast.LENGTH_SHORT).show();
+				startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), 2);
+			}
 		}
 	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if(requestCode == 2){
+			if(getLocationMode(MainActivity.this) == 0){
+				Toast.makeText(MainActivity.this, "Turn on location to use this app", Toast.LENGTH_SHORT).show();
+				startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), 2);
+			}
+		}
+	}
+
+	public int getLocationMode(Context context) {
+		try {
+			return Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE);
+		} catch (Settings.SettingNotFoundException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
 }

@@ -2,6 +2,7 @@ package com.codeplay.geoplay.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
 import android.annotation.SuppressLint;
 import android.content.pm.ActivityInfo;
@@ -148,10 +149,22 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 
 		if (PermissionUtil.areAllPermissionsGranted(RecordActivity.this)) {
 			mMap.clear();
-			mMap.setMapType(GoogleMap.MAP_TYPE_NONE);
-			TileOverlay tileOverlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(new OsmTileProvider(256, 256)));
-//			TileOverlay tileOverlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(new BingTileProvider(256, 256)));
-			tileOverlay.setZIndex(0);
+			switch (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+					.getString("choose_map", "google")) {
+				case "google":
+					break;
+				case "bing":
+					mMap.setMapType(GoogleMap.MAP_TYPE_NONE);
+					TileOverlay tileOverlay1 = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(new BingTileProvider(256, 256)));
+					tileOverlay1.setZIndex(0);
+					break;
+				case "osm":
+					mMap.setMapType(GoogleMap.MAP_TYPE_NONE);
+					TileOverlay tileOverlay2 = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(new OsmTileProvider(256, 256)));
+					tileOverlay2.setZIndex(0);
+					break;
+			}
+
 			mMap.setMyLocationEnabled(true);
 			polyline = mMap.addPolyline(new PolylineOptions().visible(true)
 					.jointType(JointType.ROUND)
