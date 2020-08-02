@@ -41,8 +41,11 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -65,6 +68,10 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 	private LinearLayout bottomSheet;
 	private TextView lblSpeed;
 	private ImageView rcdIndicator;
+	private TextView lbllatitude;
+	private TextView lbllongitude;
+	private TextView lbldatetime;
+	private TextView lblbearing;
 	private LockBottomSheetBehaviour behavior;
 
 	private Boolean isRecording = false;
@@ -88,6 +95,10 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 		btnStart = findViewById(R.id.btnStart);
 		btnStop = findViewById(R.id.btnStop);
 		rcdIndicator = findViewById(R.id.recording_indicator);
+		lbllatitude = findViewById(R.id.latitude);
+		lbllongitude = findViewById(R.id.longitude);
+		lbldatetime = findViewById(R.id.date);
+		lblbearing = findViewById(R.id.bearing);
 		cameraFragment = (CameraFragment) getSupportFragmentManager().findFragmentById(R.id.cameraFragment);
 
 		btnStart.setOnClickListener(v -> {
@@ -187,6 +198,10 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 		if (!isRecording) {
 			lblSpeed.setVisibility(View.VISIBLE);
 			rcdIndicator.setVisibility(View.VISIBLE);
+			lbllongitude.setVisibility(View.VISIBLE);
+			lbllatitude.setVisibility(View.VISIBLE);
+			lbldatetime.setVisibility(View.VISIBLE);
+			lblbearing.setVisibility(View.VISIBLE);
 			int currentOrientation = getResources().getConfiguration().orientation;
 			if (currentOrientation == Configuration.ORIENTATION_LANDSCAPE) {
 				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
@@ -218,11 +233,21 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 		if (isRecording) {
 			lblSpeed.setVisibility(View.GONE);
 			rcdIndicator.setVisibility(View.GONE);
+			lbllongitude.setVisibility(View.GONE);
+			lbllatitude.setVisibility(View.GONE);
+			lbldatetime.setVisibility(View.GONE);
+			lblbearing.setVisibility(View.GONE);
 			locationProviderClient.removeLocationUpdates(locationCallback);
 			cameraFragment.stopRecording();
 			isRecording = false;
 			setResult(RESULT_OK);
 		}
+	}
+
+	public static String TimestampConverter(Long timestamp) {
+		SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm", Locale.US);
+		Date resultdate = new Date(timestamp);
+		return sdf.format(resultdate);
 	}
 
 	private LocationCallback locationCallback = new LocationCallback() {
@@ -249,6 +274,11 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 						results);
 				geoTag.speed = (int) (location.getSpeed() * 18 / 5);
 				lblSpeed.setText(String.format("%d km/hr", new Float(geoTag.speed).intValue()));
+				lbllatitude.setText(String.format("Lat: %f", geoTag.latitude));
+				lbllongitude.setText(String.format("Lat: %f", geoTag.longitude));
+				lbldatetime.setText(String.format("%s", TimestampConverter(geoTag.timestamp)));
+				lblbearing.setText(String.format("Bearing: %d", geoTag.bearing));
+
 			}
 
 			// update the map with the new location

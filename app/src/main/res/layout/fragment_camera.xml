@@ -12,25 +12,6 @@
         android:layout_height="match_parent"
         app:scaleType="fitCenter" />
 
-    <Button
-        android:id="@+id/btnResolution"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="15dp"
-        android:background="#00FFFFFF"
-        android:text="@string/resolution"
-        android:textColor="@color/lb" />
-
-    <Button
-        android:id="@+id/btnCameraSwitch"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="15dp"
-        android:background="@drawable/camera_rotate"
-        android:visibility="visible" />
-
     <TextView
         android:id="@+id/lblTime"
         android:layout_width="match_parent"
@@ -42,5 +23,84 @@
         android:textAlignment="center"
         android:textColor="@color/lb"
         android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/btnResolution"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="15dp"
+        android:background="#00FFFFFF"
+        android:text="@string/resolution"
+        android:textColor="@color/lb"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/btnCameraSwitch"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="15dp"
+        android:background="@drawable/camera_rotate"
+        android:textColor="#FFFFFF"
+        android:textColorHighlight="@color/colorAccent"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/latitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lblTime"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        android:background="#4D000000"
+        android:padding="3dp"
+        android:text="Latitude"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/longitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lblTime"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_toEndOf="@id/latitude"
+        android:background="#4D000000"
+        android:padding="3dp"
+        android:text="Longitude"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/latitude"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:background="#4D000000"
+        android:padding="3dp"
+        android:text="Date-Time"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/bearing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/date"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:background="#4D000000"
+        android:padding="3dp"
+        android:text="Bearing"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:visibility="gone" />
 
 </RelativeLayout>
