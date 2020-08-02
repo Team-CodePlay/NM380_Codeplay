@@ -75,13 +75,6 @@ const MakeMultiPaths = (props) => {
     return pathpoints;
   };
 
-  // fitBounds zoom
-  const seePath = (path) => {
-    props.zoomOnPath(
-      createPathPoints(path.geotags, path.start_location, path.end_location)
-    );
-  };
-
   const pathClicked = (path) => {
     setselectedPath(path);
   };
@@ -126,75 +119,7 @@ const MakeMultiPaths = (props) => {
             path.start_location,
             path.end_location
           );
-          cardsArray.push(
-            <Card
-              key={pathKey}
-              border="primary"
-              style={{
-                margin: "10px",
-                width: "18rem",
-                borderLeft: "1px solid",
-                borderRadius: "0.5rem",
-              }}
-            >
-              <Card.Body>
-                <Card.Title>Path{path.videoname}</Card.Title>
-                <Card.Text>
-                  <strong>User :</strong> {path.username}
-                  <br />
-                  <strong>Data Collection Time :</strong>{" "}
-                  {new Date(path.upload_timestamp).toLocaleString("en-GB")}
-                  <br />
-                  <strong>Video Duration :</strong> {path.duration}
-                  {/* <br />
-                  <strong>Video Link :</strong> {path.video_path} */}
-                </Card.Text>
-
-                <Button
-                  style={{ margin: "0.25rem" }}
-                  onClick={() => {
-                    seePath(path);
-                    window.scrollTo({
-                      top: 0,
-                      behavior: "smooth",
-                    });
-                  }}
-                  variant="primary"
-                >
-                  See Path
-                </Button>
-
-                <Button style={{ margin: "0.25rem" }} variant="primary">
-                  <Link
-                    to={`/player/${path.username}/${path.videoname}`}
-                    style={{ color: "black" }}
-                  >
-                    Watch Video
-                  </Link>
-                </Button>
-                <DropdownButton
-                  style={{ margin: "0.25rem" }}
-                  variant="success"
-                  title="Export To KML"
-                >
-                  <Dropdown.Item
-                    id={"view" + pathKey}
-                    variant="light"
-                    onClick={() => exportToKml(path, "view")}
-                  >
-                    View KML
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    id={"download" + pathKey}
-                    variant="light"
-                    onClick={() => exportToKml(path, "download")}
-                  >
-                    Download KML
-                  </Dropdown.Item>
-                </DropdownButton>
-              </Card.Body>
-            </Card>
-          );
+          
           return (
             <Polyline
               path={pathpoints}
@@ -241,9 +166,6 @@ const MakeMultiPaths = (props) => {
             />
           );
         })}
-        <CardGroup>
-          {cardsArray}
-        </CardGroup>
 
         {selectedPoint && selectedPath && (
           <InfoWindow

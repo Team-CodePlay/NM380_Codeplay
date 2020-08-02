@@ -4,6 +4,7 @@ import { withGoogleMap, GoogleMap, withScriptjs } from "react-google-maps";
 import data from "../../data/dummy.json";
 import MakeMarkers from "../utils/MakeMarkers";
 import MakeMultiPaths from "./MakeMultiPaths";
+import CardsView from './CardsView'
 
 // var flagToFitBound = 0;
 
@@ -63,7 +64,7 @@ const MultiMap = (props) => {
           data={props.data}
           parent="MultiMap"
         />
-        <MakeMultiPaths zoomOnPath={zoomOnPath} markerPoints={markerPoints} data={props.data} />
+        <MakeMultiPaths  markerPoints={markerPoints} data={props.data} />
       </GoogleMap>
     );
   };
@@ -71,12 +72,15 @@ const MultiMap = (props) => {
   const MyMap = withScriptjs(withGoogleMap(MapWithPaths));
 
   return (
+    <>
     <MyMap
       googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&v=3.exp&libraries=geometry,drawing,places`}
       loadingElement={<div style={{ height: `100%` }} />}
       containerElement={<div style={{ height: `60vh` }} />}
       mapElement={<div style={{ height: `100%` }} />}
     />
+    <CardsView zoomOnPath={zoomOnPath} markerPoints={markerPoints} data={props.data} />
+    </>
   );
 };
 
