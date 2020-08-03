@@ -1,10 +1,9 @@
 /* global google */
 import React, { useState, useEffect } from "react";
 import { withGoogleMap, GoogleMap, withScriptjs } from "react-google-maps";
-import data from "../../data/dummy.json";
 import MakeMarkers from "../utils/MakeMarkers";
 import MakeMultiPaths from "./MakeMultiPaths";
-import CardsView from './CardsView'
+import CardsView from './CardsView';
 
 // var flagToFitBound = 0;
 
@@ -24,13 +23,13 @@ const MultiMap = (props) => {
         tempMarkerPoints.push(rawData[user][video].end_location);
       });
       setMarkerPoints(tempMarkerPoints);
-      setfitb(tempMarkerPoints)
+      setfitb(tempMarkerPoints);
     });
   }, []);
 
-  const zoomOnPath = path =>{
+  const zoomOnPath = path => {
     setfitb(path);
-  }
+  };
 
   // Create Map Bounds makes sure all points in markerPoints are visible in map ie sets zoom accordingly
   const fitBounds = (map) => {
@@ -57,14 +56,14 @@ const MultiMap = (props) => {
           }
         }}
         defaultZoom={15}
-        // defaultCenter={{ lat: 14, lng: 71 }}
+      // defaultCenter={{ lat: 14, lng: 71 }}
       >
         <MakeMarkers
           markerPoints={markerPoints}
           data={props.data}
           parent="MultiMap"
         />
-        <MakeMultiPaths  markerPoints={markerPoints} data={props.data} />
+        <MakeMultiPaths markerPoints={markerPoints} data={props.data} />
       </GoogleMap>
     );
   };
@@ -73,13 +72,13 @@ const MultiMap = (props) => {
 
   return (
     <>
-    <MyMap
-      googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&v=3.exp&libraries=geometry,drawing,places`}
-      loadingElement={<div style={{ height: `100%` }} />}
-      containerElement={<div style={{ height: `60vh` }} />}
-      mapElement={<div style={{ height: `100%` }} />}
-    />
-    <CardsView zoomOnPath={zoomOnPath} markerPoints={markerPoints} data={props.data} />
+      <MyMap
+        googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&v=3.exp&libraries=geometry,drawing,places`}
+        loadingElement={<div style={{ height: `100%` }} />}
+        containerElement={<div style={{ height: `60vh` }} />}
+        mapElement={<div style={{ height: `100%` }} />}
+      />
+      <CardsView zoomOnPath={zoomOnPath} markerPoints={markerPoints} data={props.data} />
     </>
   );
 };

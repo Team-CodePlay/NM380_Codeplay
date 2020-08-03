@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import data from "./data/dummy.json";
 import MultiMap from "./components/MultiMap/MultiMap";
 import Header from "./components/layouts/Header";
 import Spinner from "./components/utils/Spinner";
 import firebase from './components/utils/firebase';
 import Dashboard from './components/Dashboard/Dashboard';
 import LoadVideo from "./components/VideoPlayer/LoadVideo";
-import videoData from './data/dummyVideo.json';
 
 function App() {
   const [data, setData] = useState();
