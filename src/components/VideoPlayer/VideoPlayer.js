@@ -14,11 +14,6 @@ import MakeMarkers from "./MakeVideoMarkers";
 import MakePaths from "./MakeVideoPaths";
 import axios from "axios";
 
-const sources = {
-  //   bunnyTrailer: "http://media.w3.org/2010/05/bunny/trailer.mp4",
-  walkingVideo: "assets/video.mp4",
-};
-
 var flagToFitBound = 0;
 
 export default class VideoPlayer extends Component {
@@ -123,9 +118,6 @@ export default class VideoPlayer extends Component {
 
   changeSource(name) {
     return () => {
-      this.setState({
-        source: sources[name],
-      });
       this.player.load();
     };
   }
