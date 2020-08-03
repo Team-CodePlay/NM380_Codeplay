@@ -37,6 +37,12 @@
         android:layout_marginBottom="0dp"
         android:background="@color/colorBackground" >
 
+        <TextView
+            android:id="@+id/dummyView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical" />
+
         <SearchView
             android:id="@+id/dummySearch"
             android:layout_width="wrap_content"

@@ -6,6 +6,7 @@ import androidx.preference.PreferenceManager;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -99,6 +100,8 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_record);
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		SharedPreferences.Editor editor = prefs.edit();
 
 		final TapTargetSequence sequence = new TapTargetSequence(this)
 				.targets(
@@ -113,12 +116,12 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 								.outerCircleColor(R.color.colorPrimaryDark)
 								.targetCircleColor(R.color.colorPrimaryLight)
 								.drawShadow(true)
-								.cancelable(false)
+								.cancelable(true)
 								.targetRadius(40)
 								.transparentTarget(true)
 								.id(1),
 						TapTarget.forView(findViewById(R.id.btm_sheet_header), "Map",
-								"This is a draggable map. Slide it up to view it.")
+								"The map is under this tab. You can slide it up to view it.")
 								.outerCircleAlpha(0.96f)
 								.titleTextSize(30)
 								.titleTextColor(R.color.colorAccent)
@@ -128,12 +131,12 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 								.outerCircleColor(R.color.colorPrimaryDark)
 								.targetCircleColor(R.color.colorPrimaryLight)
 								.drawShadow(true)
-								.cancelable(false)
-								.targetRadius(40)
+								.cancelable(true)
+								.targetRadius(50)
 								.transparentTarget(true)
 								.id(2),
 						TapTarget.forView(findViewById(R.id.dummyResolution), "Resolution",
-								"Change the resolution before recording your video.")
+								"Use this to change the resolution before recording a video.")
 								.outerCircleAlpha(0.96f)
 								.titleTextSize(30)
 								.titleTextColor(R.color.colorAccent)
@@ -143,12 +146,12 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 								.outerCircleColor(R.color.colorPrimaryDark)
 								.targetCircleColor(R.color.colorPrimaryLight)
 								.drawShadow(true)
-								.cancelable(false)
+								.cancelable(true)
 								.targetRadius(40)
 								.transparentTarget(true)
 								.id(3),
 						TapTarget.forView(findViewById(R.id.dummyCameraSwitch), "Switch Camera",
-								"You can switch to the front or back camera when needed.")
+								"Use this to switch to the front or back camera when needed.")
 								.outerCircleAlpha(0.96f)
 								.titleTextSize(30)
 								.titleTextColor(R.color.colorAccent)
@@ -158,7 +161,7 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 								.outerCircleColor(R.color.colorPrimaryDark)
 								.targetCircleColor(R.color.colorPrimaryLight)
 								.drawShadow(true)
-								.cancelable(false)
+								.cancelable(true)
 								.targetRadius(40)
 								.transparentTarget(true)
 								.id(4),
@@ -173,13 +176,15 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 								.outerCircleColor(R.color.colorPrimaryDark)
 								.targetCircleColor(R.color.colorPrimaryLight)
 								.drawShadow(true)
-								.cancelable(false)
-								.targetRadius(40)
+								.cancelable(true)
+								.targetRadius(50)
 								.transparentTarget(false)
 								.id(5)
 				).listener(new TapTargetSequence.Listener() {
 					@Override
 					public void onSequenceFinish() {
+						editor.putBoolean("SHOW_TUTORIAL_2", false);
+						editor.apply();
 						Intent j = new Intent(RecordActivity.this, MainActivity.class);
 						startActivity(j);
 					}
@@ -194,9 +199,9 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 
 					}
 				});
-
-		sequence.start();
-
+		if (prefs.getBoolean("SHOW_TUTORIAL_2", true)){
+			sequence.start();
+		}
 
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 

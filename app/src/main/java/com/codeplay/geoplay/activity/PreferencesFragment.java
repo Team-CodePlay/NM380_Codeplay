@@ -2,6 +2,7 @@ package com.codeplay.geoplay.activity;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -49,6 +50,8 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
 		mapList = findPreference("choose_map");
 		language = findPreference("language");
 
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+		SharedPreferences.Editor editor = prefs.edit();
 
 		if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
 			getActivity().setTheme(R.style.AppTheme_AppBarOverlay);
@@ -62,10 +65,20 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
 		}
 		display_mode.setOnPreferenceChangeListener((preference, newValue) -> {
 			if (display_mode.isChecked()) {
-				AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+				editor.putBoolean("NIGHT_MODE", false);
+				editor.apply();
+				Intent intent = getActivity().getIntent();
+				getActivity().finish();
+				intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+				startActivity(intent);
 				return false;
 			} else {
-				AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+				editor.putBoolean("NIGHT_MODE", true);
+				editor.apply();
+				Intent intent = getActivity().getIntent();
+				getActivity().finish();
+				intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+				startActivity(intent);
 				return true;
 			}
 		});
