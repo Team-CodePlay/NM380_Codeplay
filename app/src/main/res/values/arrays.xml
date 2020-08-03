@@ -36,6 +36,7 @@
         <item>@string/hindi_lang</item>
         <item>@string/gujarati_lang</item>
         <item>@string/marathi_lang</item>
+        <item>@string/bengali_lang</item>
     </string-array>
 
     <string-array name="language_values">
@@ -43,6 +44,7 @@
         <item>hi</item>
         <item>gu</item>
         <item>mr</item>
+        <item>bn</item>
     </string-array>
 
     <string-array name="upload_entries">

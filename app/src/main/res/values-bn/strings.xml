@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Geoplay</string>
+    <string name="library">ভাণ্ডার</string>
+    <string name="record">রেকর্ড</string>
+    <string name="settings">সেটিংস</string>
+    <string name="uploading_files">ফাইল আপলোড হচ্ছে</string>
+    <string name="resolution">রেজল্যুশন</string>
+    <string name="title">শিরনাম</string>
+    <string name="date">তারিখ</string>
+    <string name="size">আয়তন</string>
+    <string name="duration">স্থিতিকাল</string>
+    <string name="location">স্থান</string>
+    <string name="send_otp">OTP পাঠাও</string>
+    <string name="send_otp_note">আমরা আপনাকে এককালীন এসএমএস বার্তা পাঠাব। ক্যারিয়ারের হার প্রযোজ্য হতে পারে</string>
+    <string name="phone_placeholder">আপনার ফোন নম্বর</string>
+    <string name="check_verification_note">দয়া করে প্রেরিত যাচাইকরণ কোডটি টাইপ করুন</string>
+    <string name="verify">যাচাই</string>
+    <string name="speed">গতি</string>
+    <string name="tracking">রাস্তা</string>
+    <string name="verification_code">" যাচাইকরণ কোড"</string>
+    <string name="change_bitrate">বিটরেট পরিবর্তন করুন</string>
+    <string name="select_power_mode">শক্তি মোড নির্বাচন করুন</string>
+    <string name="dark_mode">ডার্ক মোড</string>
+    <string name="select_app_language">অ্যাপ্লিকেশন ভাষা</string>
+    <string name="upload_settings">আপলোড সেটিংস</string>
+    <string name="other_settings">অন্যান্য</string>
+    <string name="about_application">অ্যাপ্লিকেশন সম্পর্কে</string>
+    <string name="help">সহায়তা</string>
+    <string name="logout">লগ আউট</string>
+    <string name="power_settings">পাওয়ার সেটিংস</string>
+    <string name="video_settings">ভিডিও সেটিংস</string>
+    <string name="app_settings">অ্যাপ্লিকেশন সেটিংস</string>
+    <string name="map_settings">ভূচিত্র সেটিংস</string>
+    <string name="custom_map">কাস্টম ভূচিত্র</string>
+    <string name="choose_map">ভূচিত্র চয়ন করুন</string>
+    <string name="wifi">শুধুমাত্র ওয়াইফাই-এর মাধ্যমে আপলোড করুন</string>
+    <string name="both">য়াইফাই বা মোবাইল ডেটা আপলোড করুন</string>
+    <string name="english_lang">ইংরেজি</string>
+    <string name="hindi_lang">হিন্দী</string>
+    <string name="gujarati_lang">গুজরাটি</string>
+    <string name="marathi_lang">মারাঠি</string>
+    <string name="bengali_lang">বাংলা</string>
+</resources>
