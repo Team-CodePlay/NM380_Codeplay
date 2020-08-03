@@ -56,27 +56,13 @@ public class LoginTest {
 					"android.permission.WRITE_EXTERNAL_STORAGE");
 
 
+
 	@Test
 	public void loginActivitiesTest() {
 		ViewInteraction appCompatEditText = onView(
 				allOf(withId(R.id.phone),
-						childAtPosition(
-								childAtPosition(
-										withClassName(is("android.widget.RelativeLayout")),
-										1),
-								1),
 						isDisplayed()));
 		appCompatEditText.perform(replaceText("9999988888"), closeSoftKeyboard());
-
-		ViewInteraction appCompatEditText2 = onView(
-				allOf(withId(R.id.phone), withText("9999988888"),
-						childAtPosition(
-								childAtPosition(
-										withClassName(is("android.widget.RelativeLayout")),
-										1),
-								1),
-						isDisplayed()));
-		appCompatEditText2.perform(pressImeActionButton());
 
 		ViewInteraction appCompatButton = onView(
 				allOf(withId(R.id.send_otp), withText("SEND OTP"),
@@ -95,15 +81,15 @@ public class LoginTest {
 						isDisplayed()));
 		appCompatEditText3.perform(replaceText("123456"), closeSoftKeyboard());
 
+		ViewInteraction appCompatEditText4 = onView(
+				allOf(withId(R.id.name),
+						isDisplayed()));
+		appCompatEditText4.perform(replaceText("test_user"), closeSoftKeyboard());
+
 
 		Intents.init();
 		ViewInteraction appCompatButton2 = onView(
 				allOf(withId(R.id.verify), withText("VERIFY"),
-						childAtPosition(
-								childAtPosition(
-										withClassName(is("android.widget.RelativeLayout")),
-										1),
-								2),
 						isDisplayed()));
 		appCompatButton2.perform(click());
 
