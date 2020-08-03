@@ -165,7 +165,7 @@ public class CameraFragment extends Fragment {
 						.setTargetRotation(previewView.getDisplay().getRotation())
 						.setTargetResolution(tempSize)
 						.setCameraSelector(cameraSelector)
-						.setBitRate(AppClass.getSP().getInt("bitrate", 1 * 1024 * 1024))
+						.setBitRate(Integer.parseInt(AppClass.getSP().getString("bitrate", "1000000")))
 						.build();
 
 				// sets up the preview
