@@ -20,7 +20,7 @@
     <string name="logo">Logo</string>
     <string name="logo_title">GEOPLAY</string>
     <string name="phone_placeholder">Your Phone Number</string>
-    <string name="check_verification_note">Please type the verification code sent\nto</string>
+    <string name="check_verification_note">Please type the verification code sent to</string>
     <string name="verify">VERIFY</string>
     <string name="hint">number</string>
     <string name="speed">Speed</string>
@@ -58,6 +58,7 @@
     <string name="hindi_lang">Hindi</string>
     <string name="gujarati_lang">Gujarati</string>
     <string name="marathi_lang">Marathi</string>
+    <string name="bengali_lang">Bengali</string>
     <string name="enter_name">Enter Name</string>
     <string name="enter_otp">Enter OTP</string>
 </resources>
