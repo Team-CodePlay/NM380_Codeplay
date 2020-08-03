@@ -48,6 +48,9 @@ export default class VideoPlayer extends Component {
     this.playerMarker = null;
     this.playerBearing = null;
     this.playerSpeed = null;
+    this.label = null;
+
+    this.extractLabel = this.extractLabel.bind(this)
   }
 
   async loadVideo() {
@@ -189,6 +192,16 @@ export default class VideoPlayer extends Component {
     .then(()=> window.location.reload())
   };
 
+
+  extractLabel = data =>{
+    let res= ""
+    data.map(lbl=>{
+      console.log(lbl)
+      res = res + lbl.split(':')[0] +","
+    })
+    return res;
+  }  
+
   // Builds Map Component
   MyMap = withScriptjs(
     withGoogleMap(() => {
@@ -308,6 +321,31 @@ export default class VideoPlayer extends Component {
         return parseInt(0);
       };
 
+
+      // const fetchLabel = () => {
+
+      //   // console.log(this.timeloc[Math.floor(this.state.player.currentTime)].label)
+      //   if (Math.floor(this.state.player.currentTime) > 0) {
+      //     if (
+      //       this.timeloc[Math.floor(this.state.player.currentTime)] ===
+      //       undefined
+      //     ) {return ;} 
+
+      //     if(this.timeloc[Math.floor(this.state.player.currentTime)].label !== undefined){
+      //       let res = ""
+      //       this.timeloc[Math.floor(this.state.player.currentTime)].label.map(pt=>{
+      //         console.log(pt)
+      //         res = res + (pt["label"]) +", "
+      //       })
+      //       return res;
+      //   }else{ return ;}
+          
+      //   }
+      //   return ;
+      // };
+
+          
+
       // Function to return Location Marker
       const markerLoc = () => {
         this.playerMarker = fetchPosition();
@@ -375,6 +413,7 @@ export default class VideoPlayer extends Component {
             <ListGroup.Item>
               {JSON.stringify(this.playerSpeed)} km/hr
             </ListGroup.Item>
+
             <ListGroup.Item
               action
               variant="primary"
@@ -412,6 +451,15 @@ export default class VideoPlayer extends Component {
               )}
             </Col>
           </Row>
+        </Container>
+        <Container>
+        <ListGroup.Item variant="success">Top Labels</ListGroup.Item>
+
+  {this.props.data.labels &&
+  <ListGroup.Item>
+    {this.extractLabel(this.props.data.labels)}
+  </ListGroup.Item>
+}
         </Container>
       </div>
     );
