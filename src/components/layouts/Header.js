@@ -13,8 +13,8 @@ const Header = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <NavLink href="/"><i class="fas fa-home"></i> Home</NavLink>
-            <NavLink href="https://console.firebase.google.com/u/0/project/geoplay-codeplay/overview" target="_blank"><span style={{ marginBottom: "5px" }} class="iconify" data-icon="mdi:monitor-dashboard" data-inline="false"></span> Admin Panel</NavLink>
+            <NavLink href="/"><i className="fas fa-home"></i> Home</NavLink>
+            <NavLink href="https://console.firebase.google.com/u/0/project/geoplay-codeplay/overview" target="_blank"><span style={{ marginBottom: "5px" }} className="iconify" data-icon="mdi:monitor-dashboard" data-inline="false"></span> Admin Panel</NavLink>
             {/* <NavLink href="/dashboard">Dashboard</NavLink> */}
           </Nav>
         </Navbar.Collapse>
