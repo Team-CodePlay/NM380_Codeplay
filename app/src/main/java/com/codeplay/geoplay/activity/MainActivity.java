@@ -148,8 +148,8 @@ public class MainActivity extends ActivityBase {
 								.targetCircleColor(R.color.colorPrimaryLight)
 								.drawShadow(true)
 								.cancelable(false)
-								.targetRadius(40)
-								.transparentTarget(true)
+								.targetRadius(30)
+								.transparentTarget(false)
 								.id(1),
 						TapTarget.forView(findViewById(R.id.nav_library), "Video Library",
 								"All recorded videos will be available here. You can play, upload to cloud, or delete these videos.")
@@ -163,7 +163,7 @@ public class MainActivity extends ActivityBase {
 								.targetCircleColor(R.color.colorPrimaryLight)
 								.drawShadow(true)
 								.cancelable(false)
-								.targetRadius(40)
+								.targetRadius(30)
 								.transparentTarget(true)
 								.id(2),
 						TapTarget.forView(findViewById(R.id.nav_record), "Record Videos",
@@ -178,7 +178,7 @@ public class MainActivity extends ActivityBase {
 								.targetCircleColor(R.color.colorPrimaryLight)
 								.drawShadow(true)
 								.cancelable(false)
-								.targetRadius(40)
+								.targetRadius(30)
 								.transparentTarget(true)
 								.id(3),
 						TapTarget.forView(findViewById(R.id.nav_settings), "Settings",
@@ -192,7 +192,7 @@ public class MainActivity extends ActivityBase {
 								.outerCircleColor(R.color.colorPrimaryDark)
 								.targetCircleColor(R.color.colorPrimaryLight)
 								.drawShadow(true)
-								.targetRadius(40)
+								.targetRadius(30)
 								.cancelable(false)
 								.transparentTarget(true)
 								.id(4),
@@ -207,7 +207,7 @@ public class MainActivity extends ActivityBase {
 								.outerCircleColor(R.color.colorPrimaryDark)
 								.targetCircleColor(R.color.colorPrimaryLight)
 								.drawShadow(true)
-								.targetRadius(40)
+								.targetRadius(30)
 								.cancelable(false)
 								.transparentTarget(true)
 								.id(5),
@@ -222,7 +222,7 @@ public class MainActivity extends ActivityBase {
 								.outerCircleColor(R.color.colorPrimaryDark)
 								.targetCircleColor(R.color.colorPrimaryLight)
 								.drawShadow(true)
-								.targetRadius(40)
+								.targetRadius(30)
 								.cancelable(false)
 								.transparentTarget(true)
 								.id(6),
@@ -238,7 +238,7 @@ public class MainActivity extends ActivityBase {
 								.targetCircleColor(R.color.colorPrimaryLight)
 								.drawShadow(true)
 								.cancelable(false)
-								.targetRadius(40)
+								.targetRadius(30)
 								.transparentTarget(true)
 								.id(7)
 				).listener(new TapTargetSequence.Listener() {

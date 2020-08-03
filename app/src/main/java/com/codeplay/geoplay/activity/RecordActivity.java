@@ -441,7 +441,7 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 
 	private void startOnBoarding() throws Exception {
 
-		if (AppClass.getSP().getBoolean("SHOW_TUTORIAL_2", true)) {
+		if (AppClass.getSP().getBoolean("SHOW_TUTORIAL_2", true)){
 			final TapTargetSequence sequence = new TapTargetSequence(this)
 					.targets(
 							TapTarget.forView(findViewById(R.id.btnStart), "Start / Stop Record",
@@ -501,11 +501,12 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 									.targetCircleColor(R.color.colorPrimaryLight)
 									.drawShadow(true)
 									.cancelable(false)
-									.targetRadius(40)
+									.targetRadius(30)
 									.transparentTarget(true)
 									.id(4),
 							TapTarget.forView(findViewById(R.id.dummyPlaceholder), "Congratulations!",
-									"You have completed the tutorial of the basic functions.")
+									"You have completed the tutorial of the basic functions.\n" +
+											"You can play this tutorial again by pressing 'Help' in the Settings menu.")
 									.outerCircleAlpha(0.96f)
 									.titleTextSize(30)
 									.titleTextColor(R.color.colorAccent)
@@ -516,7 +517,7 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 									.targetCircleColor(R.color.colorPrimaryLight)
 									.drawShadow(true)
 									.cancelable(false)
-									.targetRadius(50)
+									.targetRadius(30)
 									.transparentTarget(false)
 									.id(5)
 					).listener(new TapTargetSequence.Listener() {
