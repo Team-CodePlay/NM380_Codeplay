@@ -226,3 +226,8 @@ yarn-error.log*
 .vscode
 
 .env
+
+# Cloud cache
+*.cache
+.firebaserc
+firebase.json
