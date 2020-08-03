@@ -142,7 +142,7 @@ const CardsView = (props) => {
                 <Button style={{ margin: "0.25rem" }} variant="primary">
                   <Link
                     to={`/player/${path.username}/${path.videoname}`}
-                    style={{ color: "black" }}
+                    style={{ color: "white" }}
                   >
                     Watch Video
                   </Link>
