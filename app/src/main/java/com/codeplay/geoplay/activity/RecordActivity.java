@@ -5,11 +5,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
@@ -68,7 +73,7 @@ import static com.codeplay.geoplay.util.BottomSheetUtil.interpolateColor;
 /**
  * For location and video recording
  */
-public class RecordActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class RecordActivity extends AppCompatActivity implements OnMapReadyCallback, SensorEventListener {
 
 	private static final String TAG = "RecordActivity";
 
@@ -95,6 +100,16 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 	private Polyline polyline;
 	private Long startTime;
 
+	private SensorManager sensorManager;
+	private final float[] accelerometerReading = new float[3];
+	private final float[] magnetometerReading = new float[3];
+
+	private final float[] rotationMatrix = new float[9];
+	private final float[] orientationAngles = new float[3];
+
+	private Sensor accelerometer;
+	private Sensor magneticField;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +117,7 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 		setContentView(R.layout.activity_record);
 
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+		sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
 		bottomSheet = findViewById(R.id.bottom_sheet);
 		lblSpeed = findViewById(R.id.lblSpeed);
@@ -139,7 +155,11 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 		cameraFragment = (CameraFragment) getSupportFragmentManager().findFragmentById(R.id.cameraFragment);
 		backgoundExecutor = Executors.newSingleThreadExecutor();
 
-		startOnBoarding();
+		try {
+			startOnBoarding();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void setUpMap() {
@@ -238,9 +258,10 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 
 			cameraFragment.startRecording(this::saveMetaData);
 
+
 			int locationAccuracy;
 
-			switch(AppClass.getSP().getString("location_accuracy", "medium")){
+			switch (AppClass.getSP().getString("location_accuracy", "medium")) {
 				case "high":
 					locationAccuracy = LocationRequest.PRIORITY_HIGH_ACCURACY;
 					break;
@@ -291,10 +312,27 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 			Location location = locationResult.getLastLocation();
 			LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
+			Log.d(TAG, "onLocationResult: Location callback");
+
 			GeoTag geoTag = new GeoTag();
 			geoTag.latitude = latLng.latitude;
 			geoTag.longitude = latLng.longitude;
-			geoTag.bearing = (int) location.getBearing();
+
+			if (accelerometer != null && magneticField != null) {
+				updateOrientationAngles();
+
+				int currentOrientation = getResources().getConfiguration().orientation;
+				if (currentOrientation == Configuration.ORIENTATION_LANDSCAPE) {
+//					geoTag.bearing = (((int) Math.round(Math.toDegrees(orientationAngles[0])) + 90)%360)-180;
+					geoTag.bearing = ((((int) Math.round(Math.toDegrees(orientationAngles[0])))+ 180 +90)%360)-180;
+
+				} else {
+					geoTag.bearing = (int) Math.round(Math.toDegrees(orientationAngles[0]));
+				}
+			} else {
+				geoTag.bearing = (int) location.getBearing();
+			}
+
 			geoTag.videoTime = cameraFragment.getCurrentTime();
 			geoTag.timestamp = System.currentTimeMillis();
 
@@ -387,109 +425,147 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 		isRecording = false;
 		btnStart.setVisibility(View.VISIBLE);
 		btnStop.setVisibility(View.GONE);
+
+		accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+		if (accelerometer != null) {
+			sensorManager.registerListener(this, accelerometer,
+					SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_UI);
+		}
+		magneticField = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+		if (magneticField != null) {
+			sensorManager.registerListener(this, magneticField,
+					SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_UI);
+		}
 	}
 
 
-	private void startOnBoarding(){
+	private void startOnBoarding() throws Exception {
 
-		final TapTargetSequence sequence = new TapTargetSequence(this)
-				.targets(
-						TapTarget.forView(findViewById(R.id.btnStart), "Start / Stop Record",
-								"Click here to start or stop recording videos")
-								.outerCircleAlpha(0.96f)
-								.titleTextSize(30)
-								.titleTextColor(R.color.colorAccent)
-								.descriptionTextSize(20)
-								.descriptionTextColor(android.R.color.white)
-								.dimColor(android.R.color.black)
-								.outerCircleColor(R.color.colorPrimaryDark)
-								.targetCircleColor(R.color.colorPrimaryLight)
-								.drawShadow(true)
-								.cancelable(false)
-								.targetRadius(40)
-								.transparentTarget(true)
-								.id(1),
-						TapTarget.forView(findViewById(R.id.btm_sheet_header), "Map",
-								"The map is under this tab. You can slide it up to view it.")
-								.outerCircleAlpha(0.96f)
-								.titleTextSize(30)
-								.titleTextColor(R.color.colorAccent)
-								.descriptionTextSize(20)
-								.descriptionTextColor(android.R.color.white)
-								.dimColor(android.R.color.black)
-								.outerCircleColor(R.color.colorPrimaryDark)
-								.targetCircleColor(R.color.colorPrimaryLight)
-								.drawShadow(true)
-								.cancelable(false)
-								.targetRadius(50)
-								.transparentTarget(true)
-								.id(2),
-						TapTarget.forView(findViewById(R.id.dummyResolution), "Resolution",
-								"Use this to change the resolution before recording a video.")
-								.outerCircleAlpha(0.96f)
-								.titleTextSize(30)
-								.titleTextColor(R.color.colorAccent)
-								.descriptionTextSize(20)
-								.descriptionTextColor(android.R.color.white)
-								.dimColor(android.R.color.black)
-								.outerCircleColor(R.color.colorPrimaryDark)
-								.targetCircleColor(R.color.colorPrimaryLight)
-								.drawShadow(true)
-								.cancelable(false)
-								.targetRadius(40)
-								.transparentTarget(true)
-								.id(3),
-						TapTarget.forView(findViewById(R.id.dummyCameraSwitch), "Switch Camera",
-								"Use this to switch to the front or back camera when needed.")
-								.outerCircleAlpha(0.96f)
-								.titleTextSize(30)
-								.titleTextColor(R.color.colorAccent)
-								.descriptionTextSize(20)
-								.descriptionTextColor(android.R.color.white)
-								.dimColor(android.R.color.black)
-								.outerCircleColor(R.color.colorPrimaryDark)
-								.targetCircleColor(R.color.colorPrimaryLight)
-								.drawShadow(true)
-								.cancelable(false)
-								.targetRadius(40)
-								.transparentTarget(true)
-								.id(4),
-						TapTarget.forView(findViewById(R.id.dummyPlaceholder), "Congratulations!",
-								"You have completed the tutorial of the basic functions.")
-								.outerCircleAlpha(0.96f)
-								.titleTextSize(30)
-								.titleTextColor(R.color.colorAccent)
-								.descriptionTextSize(20)
-								.descriptionTextColor(android.R.color.white)
-								.dimColor(android.R.color.black)
-								.outerCircleColor(R.color.colorPrimaryDark)
-								.targetCircleColor(R.color.colorPrimaryLight)
-								.drawShadow(true)
-								.cancelable(false)
-								.targetRadius(50)
-								.transparentTarget(false)
-								.id(5)
-				).listener(new TapTargetSequence.Listener() {
-					@Override
-					public void onSequenceFinish() {
-						AppClass.getSP().edit().putBoolean("SHOW_TUTORIAL_2", false).apply();
-						Intent j = new Intent(RecordActivity.this, MainActivity.class);
-						startActivity(j);
-					}
+		if (AppClass.getSP().getBoolean("SHOW_TUTORIAL_2", true)) {
+			final TapTargetSequence sequence = new TapTargetSequence(this)
+					.targets(
+							TapTarget.forView(findViewById(R.id.btnStart), "Start / Stop Record",
+									"Click here to start or stop recording videos")
+									.outerCircleAlpha(0.96f)
+									.titleTextSize(30)
+									.titleTextColor(R.color.colorAccent)
+									.descriptionTextSize(20)
+									.descriptionTextColor(android.R.color.white)
+									.dimColor(android.R.color.black)
+									.outerCircleColor(R.color.colorPrimaryDark)
+									.targetCircleColor(R.color.colorPrimaryLight)
+									.drawShadow(true)
+									.cancelable(false)
+									.targetRadius(40)
+									.transparentTarget(true)
+									.id(1),
+							TapTarget.forView(findViewById(R.id.btm_sheet_header), "Map",
+									"The map is under this tab. You can slide it up to view it.")
+									.outerCircleAlpha(0.96f)
+									.titleTextSize(30)
+									.titleTextColor(R.color.colorAccent)
+									.descriptionTextSize(20)
+									.descriptionTextColor(android.R.color.white)
+									.dimColor(android.R.color.black)
+									.outerCircleColor(R.color.colorPrimaryDark)
+									.targetCircleColor(R.color.colorPrimaryLight)
+									.drawShadow(true)
+									.cancelable(false)
+									.targetRadius(50)
+									.transparentTarget(true)
+									.id(2),
+							TapTarget.forView(findViewById(R.id.dummyResolution), "Resolution",
+									"Use this to change the resolution before recording a video.")
+									.outerCircleAlpha(0.96f)
+									.titleTextSize(30)
+									.titleTextColor(R.color.colorAccent)
+									.descriptionTextSize(20)
+									.descriptionTextColor(android.R.color.white)
+									.dimColor(android.R.color.black)
+									.outerCircleColor(R.color.colorPrimaryDark)
+									.targetCircleColor(R.color.colorPrimaryLight)
+									.drawShadow(true)
+									.cancelable(false)
+									.targetRadius(40)
+									.transparentTarget(true)
+									.id(3),
+							TapTarget.forView(findViewById(R.id.dummyCameraSwitch), "Switch Camera",
+									"Use this to switch to the front or back camera when needed.")
+									.outerCircleAlpha(0.96f)
+									.titleTextSize(30)
+									.titleTextColor(R.color.colorAccent)
+									.descriptionTextSize(20)
+									.descriptionTextColor(android.R.color.white)
+									.dimColor(android.R.color.black)
+									.outerCircleColor(R.color.colorPrimaryDark)
+									.targetCircleColor(R.color.colorPrimaryLight)
+									.drawShadow(true)
+									.cancelable(false)
+									.targetRadius(40)
+									.transparentTarget(true)
+									.id(4),
+							TapTarget.forView(findViewById(R.id.dummyPlaceholder), "Congratulations!",
+									"You have completed the tutorial of the basic functions.")
+									.outerCircleAlpha(0.96f)
+									.titleTextSize(30)
+									.titleTextColor(R.color.colorAccent)
+									.descriptionTextSize(20)
+									.descriptionTextColor(android.R.color.white)
+									.dimColor(android.R.color.black)
+									.outerCircleColor(R.color.colorPrimaryDark)
+									.targetCircleColor(R.color.colorPrimaryLight)
+									.drawShadow(true)
+									.cancelable(false)
+									.targetRadius(50)
+									.transparentTarget(false)
+									.id(5)
+					).listener(new TapTargetSequence.Listener() {
+						@Override
+						public void onSequenceFinish() {
+							AppClass.getSP().edit().putBoolean("SHOW_TUTORIAL_2", false).apply();
+							Intent j = new Intent(RecordActivity.this, MainActivity.class);
+							startActivity(j);
+						}
 
-					@Override
-					public void onSequenceStep(TapTarget lastTarget, boolean targetClicked) {
+						@Override
+						public void onSequenceStep(TapTarget lastTarget, boolean targetClicked) {
 
-					}
+						}
 
-					@Override
-					public void onSequenceCanceled(TapTarget lastTarget) {
+						@Override
+						public void onSequenceCanceled(TapTarget lastTarget) {
 
-					}
-				});
-		if (AppClass.getSP().getBoolean("SHOW_TUTORIAL_2", true)){
+						}
+					});
 			sequence.start();
 		}
 
 	}
+
+	@Override
+	public void onSensorChanged(SensorEvent event) {
+		if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+			System.arraycopy(event.values, 0, accelerometerReading,
+					0, accelerometerReading.length);
+		} else if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
+			System.arraycopy(event.values, 0, magnetometerReading,
+					0, magnetometerReading.length);
+		}
+//		Log.d(TAG, "onSensorChanged: Updating values");
+	}
+
+	@Override
+	public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+	}
+
+	public void updateOrientationAngles() {
+		SensorManager.getRotationMatrix(rotationMatrix, null,
+				accelerometerReading, magnetometerReading);
+
+		SensorManager.getOrientation(rotationMatrix, orientationAngles);
+//		Log.d(TAG, "updateOrientationAngles: " + orientationAngles[0]);
+	}
+
+
 }

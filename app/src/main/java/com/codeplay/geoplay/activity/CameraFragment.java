@@ -129,73 +129,79 @@ public class CameraFragment extends Fragment {
 	@SuppressLint("RestrictedApi")
 	private void setUpCamera(){
 
-		ListenableFuture<ProcessCameraProvider> cameraProviderFuture = ProcessCameraProvider.getInstance(getContext());
+		try {
 
-		cameraProviderFuture.addListener(() -> {
+			ListenableFuture<ProcessCameraProvider> cameraProviderFuture = ProcessCameraProvider.getInstance(getContext());
 
-			try {
-				ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
+			cameraProviderFuture.addListener(() -> {
 
-				if (lensFacing == null) {
-					if (CameraX.hasCamera(CameraSelector.DEFAULT_BACK_CAMERA) && CameraX.hasCamera(CameraSelector.DEFAULT_FRONT_CAMERA)) {
-						cameraSwitchAvailable = true;
-						btnCameraSwitch.setVisibility(View.VISIBLE);
-					} else {
-						cameraSwitchAvailable = false;
-						btnCameraSwitch.setVisibility(View.GONE);
+				try {
+					ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
+
+					if (lensFacing == null) {
+						if (CameraX.hasCamera(CameraSelector.DEFAULT_BACK_CAMERA) && CameraX.hasCamera(CameraSelector.DEFAULT_FRONT_CAMERA)) {
+							cameraSwitchAvailable = true;
+							btnCameraSwitch.setVisibility(View.VISIBLE);
+						} else {
+							cameraSwitchAvailable = false;
+							btnCameraSwitch.setVisibility(View.GONE);
+						}
+						lensFacing = CameraSelector.LENS_FACING_BACK;
 					}
-					lensFacing = CameraSelector.LENS_FACING_BACK;
-				}
 
-				Size tempSize;
-				if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-					tempSize = availableResolutions[selectedResolution];
-				} else {
-					tempSize = new Size(
-							availableResolutions[selectedResolution].getHeight(),
-							availableResolutions[selectedResolution].getWidth()
+					Size tempSize;
+					if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+						tempSize = availableResolutions[selectedResolution];
+					} else {
+						tempSize = new Size(
+								availableResolutions[selectedResolution].getHeight(),
+								availableResolutions[selectedResolution].getWidth()
+						);
+					}
+
+
+					CameraSelector cameraSelector = new CameraSelector.Builder().requireLensFacing(lensFacing).build();
+
+
+					videoCapture = new VideoCapture.Builder()
+							.setTargetRotation(previewView.getDisplay().getRotation())
+							.setTargetResolution(tempSize)
+							.setCameraSelector(cameraSelector)
+							.setBitRate(Integer.parseInt(AppClass.getSP().getString("bitrate", "1000000")))
+							.build();
+
+					// sets up the preview
+					Preview preview = new Preview.Builder()
+							.setTargetRotation(previewView.getDisplay().getRotation())
+							.setTargetResolution(tempSize)
+							.setCameraSelector(cameraSelector)
+							.build();
+
+					// which camera to select rear or front
+
+					cameraProvider.unbindAll();
+
+					Camera camera = cameraProvider.bindToLifecycle(
+							getActivity(),
+							cameraSelector,
+							preview,
+							videoCapture
 					);
+
+					preview.setSurfaceProvider(previewView.createSurfaceProvider());
+
+					Log.d(TAG, "setUpCamera: Setup complete");
+				} catch (Exception e) {
+					Log.d(TAG, "setUpCamera: Cannot setup camera");
+					Toast.makeText(getContext(), "Cannot start camera: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+					e.printStackTrace();
 				}
 
-
-				CameraSelector cameraSelector = new CameraSelector.Builder().requireLensFacing(lensFacing).build();
-
-
-				videoCapture = new VideoCapture.Builder()
-						.setTargetRotation(previewView.getDisplay().getRotation())
-						.setTargetResolution(tempSize)
-						.setCameraSelector(cameraSelector)
-						.setBitRate(Integer.parseInt(AppClass.getSP().getString("bitrate", "1000000")))
-						.build();
-
-				// sets up the preview
-				Preview preview = new Preview.Builder()
-						.setTargetRotation(previewView.getDisplay().getRotation())
-						.setTargetResolution(tempSize)
-						.setCameraSelector(cameraSelector)
-						.build();
-
-				// which camera to select rear or front
-
-				cameraProvider.unbindAll();
-
-				Camera camera = cameraProvider.bindToLifecycle(
-						getActivity(),
-						cameraSelector,
-						preview,
-						videoCapture
-				);
-
-				preview.setSurfaceProvider(previewView.createSurfaceProvider());
-
-				Log.d(TAG, "setUpCamera: Setup complete");
-			} catch (Exception e) {
-				Log.d(TAG, "setUpCamera: Cannot setup camera");
-				Toast.makeText(getContext(), "Cannot start camera: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-				e.printStackTrace();
-			}
-
-		}, ContextCompat.getMainExecutor(getContext()));
+			}, ContextCompat.getMainExecutor(getContext()));
+		}catch (Exception e){
+			e.printStackTrace();
+//			Toast.makeText(getContext(), "", Toast.LENGTH_SHORT).show();
+		}
 
 		Log.d(TAG, "setUpCamera: Setting up");
 	}
@@ -308,5 +314,11 @@ public class CameraFragment extends Fragment {
 
 	public interface AfterSaveCallback {
 		void afterSave(File videoFile);
+	}
+
+	@Override
+	public void onConfigurationChanged(@NonNull Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		previewView.post(this::setUpCamera);
 	}
 }
