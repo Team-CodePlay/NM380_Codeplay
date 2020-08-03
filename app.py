@@ -14,11 +14,6 @@ service_account_info = json.loads(credentials_raw)
 credentials = service_account.Credentials.from_service_account_info(
     service_account_info)
 
-# service_account_info2 = json.loads(credentials_raw)
-# credentials2 = service_account.Credentials.from_service_account_info(
-#     service_account_info)
-
-
 credentials_raw2 = json.loads(os.environ.get("FIREBASE_CREDENTIALS"))
 
 firebase_creds = firebase_admin.credentials.Certificate(credentials_raw2)
@@ -50,14 +45,6 @@ def get_video_intelligence(gs_uri):
     segment_labels = result.annotation_results[0].segment_label_annotations
     labels = []
     for i, segment_label in enumerate(segment_labels):
-        # print("Video label description: {}".format(segment_label.entity.description))
-        # for category_entity in segment_label.category_entities:
-        #     break
-        #     # print(
-        #     #     "\tLabel category description: {}".format(category_entity.description)
-        #     # )
-        # else:
-        #     continue
 
         for i, segment in enumerate(segment_label.segments):
             start_time = (
@@ -70,48 +57,14 @@ def get_video_intelligence(gs_uri):
             )
             positions = "{}s to {}s".format(start_time, end_time)
             confidence = segment.confidence
-            # print("\tSegment {}: {}".format(i, positions))
-            # print("\tConfidence: {}".format(confidence))
 
             labels.append('{} : {}'.format(segment_label.entity.description, confidence))
             break
-
-    # # Process shot level label annotations
-    # shot_labels = result.annotation_results[0].shot_label_annotations
-    # for i, shot_label in enumerate(shot_labels):
-    #     print("Shot label description: {}".format(shot_label.entity.description))
-    #     for category_entity in shot_label.category_entities:
-    #         print(
-    #             "\tLabel category description: {}".format(category_entity.description)
-    #         )
-    #
-    #     for i, shot in enumerate(shot_label.segments):
-    #         start_time = (
-    #                 shot.segment.start_time_offset.seconds
-    #                 + shot.segment.start_time_offset.nanos / 1e9
-    #         )
-    #         end_time = (
-    #                 shot.segment.end_time_offset.seconds
-    #                 + shot.segment.end_time_offset.nanos / 1e9
-    #         )
-    #         positions = "{}s to {}s".format(start_time, end_time)
-    #         confidence = shot.confidence
-    #         print("\tSegment {}: {}".format(i, positions))
-    #         print("\tConfidence: {}".format(confidence))
-    #     print("\n")
 
     # Process frame level label annotations
     frame_labels = result.annotation_results[0].frame_label_annotations
     frame_lab = []
     for i, frame_label in enumerate(frame_labels):
-        # print("Frame label description: {}".format(frame_label.entity.description))
-        # for category_entity in frame_label.category_entities:
-        #     print(
-        #         "\tLabel category description: {}".format(category_entity.description)
-        #     )
-
-        # Each frame_label_annotation has many frames,
-        # here we print information only about the first frame.
         frame = frame_label.frames[0]
         time_offset = frame.time_offset.seconds + frame.time_offset.nanos / 1e9
 
@@ -121,18 +74,12 @@ def get_video_intelligence(gs_uri):
                 {"label": frame_label.entity.description, "confidence": frame.confidence}
             )
         )
-
-        # print("\tFirst frame time offset: {}s".format(time_offset))
-        # print("\tFirst frame confidence: {}".format(frame.confidence))
-        # print("\n")
-
     return labels, frame_lab
 
 
 @app.route('/')
 def object_detect():
     db_path = request.args.get('db_path', '')
-    # sample db_path = videos/92skWnE7fxSRpazoHmQeFlBSssX2/-MDhoTowjzImvZYcsmCM
 
     if db_path == '':
         return "Bad request " + db_path
@@ -143,8 +90,6 @@ def object_detect():
     ref = db.reference(db_path + '/geotags')
     geotags = ref.get()
 
-    # return json.dumps(geotags)
-    # print()
 
     labels, frame_labels = get_video_intelligence(gs_uri)
     print(len(labels), len(frame_labels))
@@ -160,32 +105,11 @@ def object_detect():
             index += 1
 
         while index < len(frame_labels) and int(geotag['video_time']/1000) == int(frame_labels[index][0]) :
-            if frame_labels[index][1]['confidence'] > 0.85:
+            if frame_labels[index][1]['confidence'] > 0.80:
                 labels_to_add.append(frame_labels[index][1])
             index += 1
 
         geotag['labels'] = labels_to_add
-
-
-    # index = 0
-    # for second, data in frame_labels:
-    #     t = second * 1000
-    #
-    #     labels_to_add = []
-    #
-    #     try:
-    #         while t > geotags[index]['video_time'] and index < len(geotags):
-    #             index += 1
-    #
-    #         if data['confidence'] > 0.85:
-    #             labels_to_add.append(data)
-    #             # geotags[index]['label'] = data['label']
-    #             # geotags[index]['confidence'] = data['confidence']
-    #             # labels
-    #     except Exception:
-    #         pass
-    #
-    #     geotags[index]['labels'] = labels_to_add
 
 
     ref = db.reference(db_path + '/geotags')
