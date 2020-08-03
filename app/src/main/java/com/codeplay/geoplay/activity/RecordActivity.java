@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -31,6 +32,8 @@ import com.codeplay.geoplay.util.GeoTagUtil;
 import com.codeplay.geoplay.util.PermissionUtil;
 import com.codeplay.geoplay.util.TileProviderUtil;
 import com.codeplay.geoplay.util.VideoUtil;
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -96,6 +99,104 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_record);
+
+		final TapTargetSequence sequence = new TapTargetSequence(this)
+				.targets(
+						TapTarget.forView(findViewById(R.id.btnStart), "Start / Stop Record",
+								"Click here to start or stop recording videos")
+								.outerCircleAlpha(0.96f)
+								.titleTextSize(30)
+								.titleTextColor(R.color.colorAccent)
+								.descriptionTextSize(20)
+								.descriptionTextColor(android.R.color.white)
+								.dimColor(android.R.color.black)
+								.outerCircleColor(R.color.colorPrimaryDark)
+								.targetCircleColor(R.color.colorPrimaryLight)
+								.drawShadow(true)
+								.cancelable(false)
+								.targetRadius(40)
+								.transparentTarget(true)
+								.id(1),
+						TapTarget.forView(findViewById(R.id.btm_sheet_header), "Map",
+								"This is a draggable map. Slide it up to view it.")
+								.outerCircleAlpha(0.96f)
+								.titleTextSize(30)
+								.titleTextColor(R.color.colorAccent)
+								.descriptionTextSize(20)
+								.descriptionTextColor(android.R.color.white)
+								.dimColor(android.R.color.black)
+								.outerCircleColor(R.color.colorPrimaryDark)
+								.targetCircleColor(R.color.colorPrimaryLight)
+								.drawShadow(true)
+								.cancelable(false)
+								.targetRadius(40)
+								.transparentTarget(true)
+								.id(2),
+						TapTarget.forView(findViewById(R.id.dummyResolution), "Resolution",
+								"Change the resolution before recording your video.")
+								.outerCircleAlpha(0.96f)
+								.titleTextSize(30)
+								.titleTextColor(R.color.colorAccent)
+								.descriptionTextSize(20)
+								.descriptionTextColor(android.R.color.white)
+								.dimColor(android.R.color.black)
+								.outerCircleColor(R.color.colorPrimaryDark)
+								.targetCircleColor(R.color.colorPrimaryLight)
+								.drawShadow(true)
+								.cancelable(false)
+								.targetRadius(40)
+								.transparentTarget(true)
+								.id(3),
+						TapTarget.forView(findViewById(R.id.dummyCameraSwitch), "Switch Camera",
+								"You can switch to the front or back camera when needed.")
+								.outerCircleAlpha(0.96f)
+								.titleTextSize(30)
+								.titleTextColor(R.color.colorAccent)
+								.descriptionTextSize(20)
+								.descriptionTextColor(android.R.color.white)
+								.dimColor(android.R.color.black)
+								.outerCircleColor(R.color.colorPrimaryDark)
+								.targetCircleColor(R.color.colorPrimaryLight)
+								.drawShadow(true)
+								.cancelable(false)
+								.targetRadius(40)
+								.transparentTarget(true)
+								.id(4),
+						TapTarget.forView(findViewById(R.id.dummyPlaceholder), "Congratulations!",
+								"You have completed the tutorial of the basic functions.")
+								.outerCircleAlpha(0.96f)
+								.titleTextSize(30)
+								.titleTextColor(R.color.colorAccent)
+								.descriptionTextSize(20)
+								.descriptionTextColor(android.R.color.white)
+								.dimColor(android.R.color.black)
+								.outerCircleColor(R.color.colorPrimaryDark)
+								.targetCircleColor(R.color.colorPrimaryLight)
+								.drawShadow(true)
+								.cancelable(false)
+								.targetRadius(40)
+								.transparentTarget(false)
+								.id(5)
+				).listener(new TapTargetSequence.Listener() {
+					@Override
+					public void onSequenceFinish() {
+						Intent j = new Intent(RecordActivity.this, MainActivity.class);
+						startActivity(j);
+					}
+
+					@Override
+					public void onSequenceStep(TapTarget lastTarget, boolean targetClicked) {
+
+					}
+
+					@Override
+					public void onSequenceCanceled(TapTarget lastTarget) {
+
+					}
+				});
+
+		sequence.start();
+
 
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 
