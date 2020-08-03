@@ -156,29 +156,36 @@ def object_detect():
     for geotag in geotags:
         labels_to_add = []
 
-        # todo
-        # try:
-        #     while geotag['video_time'] < frame_labels[index][0] and index < len()
+        while index < len(frame_labels) and int(geotag['video_time']/1000) != int(frame_labels[index][0]) :
+            index += 1
 
-    index = 0
-    for second, data in frame_labels:
-        t = second * 1000
+        while index < len(frame_labels) and int(geotag['video_time']/1000) == int(frame_labels[index][0]) :
+            if frame_labels[index][1]['confidence'] > 0.85:
+                labels_to_add.append(frame_labels[index][1])
+            index += 1
 
-        labels_to_add = []
+        geotag['labels'] = labels_to_add
 
-        try:
-            while t > geotags[index]['video_time'] and index < len(geotags):
-                index += 1
 
-            if data['confidence'] > 0.85:
-                labels_to_add.append(data)
-                # geotags[index]['label'] = data['label']
-                # geotags[index]['confidence'] = data['confidence']
-                # labels
-        except Exception:
-            pass
-
-        geotags[index]['labels'] = labels_to_add
+    # index = 0
+    # for second, data in frame_labels:
+    #     t = second * 1000
+    #
+    #     labels_to_add = []
+    #
+    #     try:
+    #         while t > geotags[index]['video_time'] and index < len(geotags):
+    #             index += 1
+    #
+    #         if data['confidence'] > 0.85:
+    #             labels_to_add.append(data)
+    #             # geotags[index]['label'] = data['label']
+    #             # geotags[index]['confidence'] = data['confidence']
+    #             # labels
+    #     except Exception:
+    #         pass
+    #
+    #     geotags[index]['labels'] = labels_to_add
 
 
     # ref = db.reference(db_path + '/geotags')
@@ -188,3 +195,4 @@ def object_detect():
     # ref.set(labels)
 
     return str(geotags) + '\n' + str(labels) + "\n\n" + str(frame_labels)
+
