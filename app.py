@@ -188,11 +188,11 @@ def object_detect():
     #     geotags[index]['labels'] = labels_to_add
 
 
-    # ref = db.reference(db_path + '/geotags')
-    # ref.set(geotags)
-    #
-    # ref = db.reference(db_path + '/labels')
-    # ref.set(labels)
+    ref = db.reference(db_path + '/geotags')
+    ref.set(geotags)
+
+    ref = db.reference(db_path + '/labels')
+    ref.set(labels)
 
     return str(geotags) + '\n' + str(labels) + "\n\n" + str(frame_labels)
 
