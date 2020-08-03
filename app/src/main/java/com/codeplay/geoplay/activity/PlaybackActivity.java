@@ -237,6 +237,7 @@ public class PlaybackActivity extends AppCompatActivity implements OnMapReadyCal
 			currentLocationMarker = mMap.addMarker(
 					new MarkerOptions().icon(bitmapDescriptorFromVector(PlaybackActivity.this, R.drawable.navigation))
 							.zIndex(3)
+							.anchor(0.5f, 0.5f)
 							.rotation(geoTags.get(0).bearing)
 							.position(geoTags.get(0).getLatLng())
 			);

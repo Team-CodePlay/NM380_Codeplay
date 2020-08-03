@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.preference.PreferenceManager;
 
+import com.codeplay.geoplay.AppClass;
 import com.codeplay.geoplay.R;
 import com.codeplay.geoplay.util.PermissionUtil;
 import com.getkeepsafe.taptargetview.TapTarget;
@@ -34,6 +35,7 @@ public class MainActivity extends ActivityBase {
 	TextView lblVideoSize;
 	TextView lblUploadCount;
 	ProgressBar progressBar;
+	Toolbar myToolbar;
 
 	int currentFragment = 0;
 
@@ -41,9 +43,8 @@ public class MainActivity extends ActivityBase {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-		SharedPreferences.Editor editor = prefs.edit();
-		if (prefs.getBoolean("NIGHT_MODE", false)) {
+
+		if (AppClass.getSP().getBoolean("NIGHT_MODE", false)) {
 			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
 		} else {
 			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
@@ -51,8 +52,87 @@ public class MainActivity extends ActivityBase {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+		myToolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(myToolbar);
+
+		progressCard = findViewById(R.id.progress_card);
+		lblVideoTitle = findViewById(R.id.lblVideoTitle);
+		lblVideoSize = findViewById(R.id.lblVideoSize);
+		lblUploadCount = findViewById(R.id.lblUploadCount);
+		progressBar = findViewById(R.id.progressBar);
+
+		bottomNavigation = findViewById(R.id.bottom_navigation);
+		BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
+				menuItem -> {
+					switch (menuItem.getItemId()) {
+						case R.id.nav_library:
+							if (currentFragment != 0) {
+								getSupportFragmentManager().beginTransaction()
+										.replace(R.id.container, new VideoListFragment())
+										.commit();
+								currentFragment = 0;
+							}
+							return true;
+
+						case R.id.nav_record:
+							if (getLocationMode(MainActivity.this) == 0) {
+								Toast.makeText(MainActivity.this, "Turn on location services to record geo tagged videos. High accuracy preferred.", Toast.LENGTH_SHORT).show();
+								startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+							} else {
+								Intent j = new Intent(MainActivity.this, RecordActivity.class);
+								startActivity(j);
+							}
+							return false;
+
+						case R.id.nav_settings: //1
+							if (currentFragment != 1) {
+								getSupportFragmentManager().beginTransaction()
+										.replace(R.id.container, new PreferencesFragment())
+										.commit();
+								currentFragment = 1;
+							}
+							return true;
+					}
+					return false;
+				};
+
+		bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
+		bottomNavigation.setSelectedItemId(R.id.nav_library);
+		getSupportFragmentManager().beginTransaction()
+				.replace(R.id.container, new VideoListFragment())
+				.commit();
+		currentFragment = 0;
+
+
+		if (!PermissionUtil.areAllPermissionsGranted(MainActivity.this)) {
+			PermissionUtil.requestAllPermissions(MainActivity.this);
+		}
+		showOnBoarding();
+	}
+
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		if (requestCode == PermissionUtil.PERMISSION_REQUEST_CODE) {
+			if (!PermissionUtil.areAllPermissionsGranted(MainActivity.this)) {
+				Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
+				PermissionUtil.showPermissionsRationale(MainActivity.this);
+			}
+		}
+	}
+
+
+	public int getLocationMode(Context context) {
+		try {
+			return Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE);
+		} catch (Settings.SettingNotFoundException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	private void showOnBoarding() {
 
 		final TapTargetSequence sequence = new TapTargetSequence(this)
 				.targets(
@@ -161,11 +241,10 @@ public class MainActivity extends ActivityBase {
 								.targetRadius(40)
 								.transparentTarget(true)
 								.id(7)
-						).listener(new TapTargetSequence.Listener() {
+				).listener(new TapTargetSequence.Listener() {
 					@Override
 					public void onSequenceFinish() {
-						editor.putBoolean("SHOW_TUTORIAL_1", false);
-						editor.apply();
+						AppClass.getSP().edit().putBoolean("SHOW_TUTORIAL_1", false).apply();
 						Intent j = new Intent(MainActivity.this, RecordActivity.class);
 						startActivity(j);
 					}
@@ -180,87 +259,9 @@ public class MainActivity extends ActivityBase {
 
 					}
 				});
-		if (prefs.getBoolean("SHOW_TUTORIAL_1", true)){
+		if (AppClass.getSP().getBoolean("SHOW_TUTORIAL_1", false)) {
 			sequence.start();
-
 		}
-
-		progressCard = findViewById(R.id.progress_card);
-		lblVideoTitle = findViewById(R.id.lblVideoTitle);
-		lblVideoSize = findViewById(R.id.lblVideoSize);
-		lblUploadCount = findViewById(R.id.lblUploadCount);
-		progressBar = findViewById(R.id.progressBar);
-
-		bottomNavigation = findViewById(R.id.bottom_navigation);
-		BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
-				menuItem -> {
-					switch (menuItem.getItemId()) {
-						case R.id.nav_library:
-							if (currentFragment != 0) {
-								getSupportFragmentManager().beginTransaction()
-										.replace(R.id.container, new VideoListFragment())
-										.commit();
-								currentFragment = 0;
-							}
-							return true;
-
-						case R.id.nav_record:
-							if (getLocationMode(MainActivity.this) == 0) {
-								Toast.makeText(MainActivity.this, "Turn on location services to record geo tagged videos. High accuracy preferred.", Toast.LENGTH_SHORT).show();
-								startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-							}else {
-								Intent j = new Intent(MainActivity.this, RecordActivity.class);
-								startActivity(j);
-							}
-							return false;
-
-						case R.id.nav_settings: //1
-							if (currentFragment != 1) {
-								getSupportFragmentManager().beginTransaction()
-										.replace(R.id.container, new PreferencesFragment())
-										.commit();
-								currentFragment = 1;
-							}
-							return true;
-					}
-					return false;
-				};
-
-		bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
-		bottomNavigation.setSelectedItemId(R.id.nav_library);
-		getSupportFragmentManager().beginTransaction()
-				.replace(R.id.container, new VideoListFragment())
-				.commit();
-		currentFragment = 0;
-
-
-
-		if (!PermissionUtil.areAllPermissionsGranted(MainActivity.this)) {
-			PermissionUtil.requestAllPermissions(MainActivity.this);
-		}
-	}
-
-
-
-	@Override
-	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-		if (requestCode == PermissionUtil.PERMISSION_REQUEST_CODE) {
-			if (!PermissionUtil.areAllPermissionsGranted(MainActivity.this)) {
-				Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
-				PermissionUtil.showPermissionsRationale(MainActivity.this);
-			}
-		}
-	}
-
-
-	public int getLocationMode(Context context) {
-		try {
-			return Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE);
-		} catch (Settings.SettingNotFoundException e) {
-			e.printStackTrace();
-		}
-		return 0;
 	}
 
 }
