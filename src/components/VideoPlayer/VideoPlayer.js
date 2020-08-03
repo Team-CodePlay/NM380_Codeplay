@@ -338,16 +338,20 @@ export default class VideoPlayer extends Component {
   render() {
     return (
       <div>
-        <ListGroup horizontal style={{ marginLeft: "1%" }} variant="flush">
-          <ListGroup.Item variant="success">Location</ListGroup.Item>
-          <ListGroup.Item>{JSON.stringify(this.playerMarker)}</ListGroup.Item>
-          <ListGroup.Item variant="success">Bearing</ListGroup.Item>
-          <ListGroup.Item>{JSON.stringify(this.playerBearing)}</ListGroup.Item>
-          <ListGroup.Item variant="success">Speed</ListGroup.Item>
-          <ListGroup.Item>
-            {JSON.stringify(this.playerSpeed)} km/hr
-          </ListGroup.Item>
-        </ListGroup>
+
+          {this.playerMarker &&
+              <ListGroup horizontal style={{ marginLeft: "1%" }} variant="flush">
+                <ListGroup.Item variant="success">Location</ListGroup.Item>
+                <ListGroup.Item>Lat:{JSON.stringify(this.playerMarker.lat)} Lng:{JSON.stringify(this.playerMarker.lng)}</ListGroup.Item>
+                <ListGroup.Item variant="success">Bearing</ListGroup.Item>
+                <ListGroup.Item>{JSON.stringify(this.playerBearing)}</ListGroup.Item>
+                <ListGroup.Item variant="success">Speed</ListGroup.Item>
+                <ListGroup.Item>
+                    {JSON.stringify(this.playerSpeed)} km/hr
+                </ListGroup.Item>
+            </ListGroup>
+          }
+        
 
         <Container fluid className="rootLayout">
           <Row>
