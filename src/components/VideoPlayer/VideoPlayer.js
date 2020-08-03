@@ -12,6 +12,7 @@ import {
 } from "react-google-maps";
 import MakeMarkers from "./MakeVideoMarkers";
 import MakePaths from "./MakeVideoPaths";
+import axios from "axios";
 
 const sources = {
   //   bunnyTrailer: "http://media.w3.org/2010/05/bunny/trailer.mp4",
@@ -42,6 +43,7 @@ export default class VideoPlayer extends Component {
     this.MyMap = this.MyMap.bind(this);
     this.fitBounds = this.fitBounds.bind(this);
     this.updateTimeFromMap = this.updateTimeFromMap.bind(this);
+    this.fetchLabels = this.fetchLabels.bind(this);
 
     this.playerMarker = null;
     this.playerBearing = null;
@@ -165,6 +167,26 @@ export default class VideoPlayer extends Component {
       return "";
     });
     map.fitBounds(bounds);
+  };
+
+  fetchLabels = () => {
+    let url = new URL(window.location.href);
+    url =
+      `http://127.0.0.1:5000/?db_path=videos` +
+      url.pathname.substring(7, url.pathname.length);
+    
+    console.log(url)
+
+    axios.get(url, {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers":
+          "Origin, X-Requested-With, Content-Type, Accept",
+        "Content-Type": "application/json",
+        Authorisation: null,
+      },
+    })
+    .then(()=> window.location.reload())
   };
 
   // Builds Map Component
@@ -338,23 +360,31 @@ export default class VideoPlayer extends Component {
   render() {
     return (
       <div>
-
-        {this.playerMarker &&
-          <ListGroup horizontal style={{ marginLeft: "1%" }} variant="flush">
+        {this.playerMarker && (
+          <ListGroup horizontal style={{ marginLeft: "1%" }}>
             <ListGroup.Item variant="success">Location</ListGroup.Item>
-            <ListGroup.Item>Lat:{JSON.stringify(this.playerMarker.lat)} Lng:{JSON.stringify(this.playerMarker.lng)}</ListGroup.Item>
+            <ListGroup.Item>
+              Lat:{JSON.stringify(this.playerMarker.lat)} Lng:
+              {JSON.stringify(this.playerMarker.lng)}
+            </ListGroup.Item>
             <ListGroup.Item variant="success">Bearing</ListGroup.Item>
-            <ListGroup.Item>{JSON.stringify(this.playerBearing)}</ListGroup.Item>
+            <ListGroup.Item>
+              {JSON.stringify(this.playerBearing)}
+            </ListGroup.Item>
             <ListGroup.Item variant="success">Speed</ListGroup.Item>
             <ListGroup.Item>
               {JSON.stringify(this.playerSpeed)} km/hr
             </ListGroup.Item>
-            <ListGroup.Item action variant="primary" style={{ width: "auto", borderRadius: "0.5rem" }}>
+            <ListGroup.Item
+              action
+              variant="primary"
+              onClick={this.fetchLabels}
+              style={{ width: "auto", borderRadius: "0.5rem" }}
+            >
               <i className="fa fa-eye"></i> Process this Video
             </ListGroup.Item>
           </ListGroup>
-        }
-
+        )}
 
         <Container fluid className="rootLayout">
           <Row>
