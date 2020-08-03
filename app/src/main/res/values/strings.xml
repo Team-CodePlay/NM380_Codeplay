@@ -58,4 +58,6 @@
     <string name="hindi_lang">Hindi</string>
     <string name="gujarati_lang">Gujarati</string>
     <string name="marathi_lang">Marathi</string>
+    <string name="enter_name">Enter Name</string>
+    <string name="enter_otp">Enter OTP</string>
 </resources>

@@ -2,14 +2,18 @@ package com.codeplay.geoplay.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.codeplay.geoplay.AppClass;
 import com.codeplay.geoplay.R;
 import com.codeplay.geoplay.ui.OtpEditText;
 import com.google.android.gms.tasks.TaskExecutors;
@@ -26,6 +30,9 @@ public class OtpVerificationActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private ProgressBar progressBar;
     private OtpEditText otpEditText;
+    private EditText nameEditText;
+    String username;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +40,7 @@ public class OtpVerificationActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progress_circular_2);
 
         otpEditText = findViewById(R.id.et_otp);
+        nameEditText = findViewById(R.id.name);
 
         TextView checkVerificationCode = findViewById(R.id.check_verification_note);
 
@@ -47,10 +55,16 @@ public class OtpVerificationActivity extends AppCompatActivity {
         findViewById(R.id.verify).setOnClickListener(v -> {
 
             String otp = otpEditText.getText().toString();
+            username = nameEditText.getText().toString();
 
             if (otp.length() == 0 || otp.length() < 6) {
                 otpEditText.setError("Enter OTP!");
                 otpEditText.requestFocus();
+                return;
+            }
+            if (username.isEmpty() || username.length() < 4) {
+                nameEditText.setError("Please Enter your Name");
+                nameEditText.requestFocus();
                 return;
             }
             progressBar.setVisibility(View.VISIBLE);
@@ -75,6 +89,7 @@ public class OtpVerificationActivity extends AppCompatActivity {
                 Intent intent = new Intent(OtpVerificationActivity.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
+                AppClass.getSP().edit().putString("username", username).apply();
             } else {
                 Toast.makeText(OtpVerificationActivity.this,
                         task.getException().getMessage(),

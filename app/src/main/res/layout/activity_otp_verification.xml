@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -50,49 +49,54 @@
 
         </LinearLayout>
 
-<!--        <RelativeLayout-->
-<!--            android:id="@+id/second_ll"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_below="@+id/first_ll"-->
-<!--            android:layout_centerHorizontal="true"-->
-<!--            android:layout_marginTop="60dp"-->
-<!--            android:orientation="horizontal">-->
+        <com.codeplay.geoplay.ui.OtpEditText
+            android:id="@+id/et_otp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/first_ll"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginRight="32dp"
+            android:cursorVisible="true"
+            android:digits="1234567890"
+            android:hint="@string/enter_otp"
+            android:inputType="number"
+            android:maxLength="6"
+            android:text=""
+            android:textColor="#FFFFFF"
+            android:textSize="24sp" />
 
-            <com.codeplay.geoplay.ui.OtpEditText
-                android:id="@+id/et_otp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:cursorVisible="true"
-                android:digits="1234567890"
-                android:layout_below="@id/first_ll"
-                android:layout_marginLeft="32dp"
-                android:layout_marginRight="32dp"
-                android:layout_marginTop="64dp"
-                android:inputType="number"
-                android:maxLength="6"
-                android:textColor="#FFFFFF"
-
-                android:hint="Enter OTP"
-                android:text=""
-                android:textSize="20sp"/>
-
-<!--        </RelativeLayout>-->
+        <EditText
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_below="@+id/et_otp"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="30dp"
+            android:autofillHints=""
+            android:background="@drawable/et_style"
+            android:gravity="center"
+            android:hint="@string/enter_name"
+            android:inputType="text"
+            android:paddingHorizontal="10dp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#D3D3D3"
+            android:textSize="25sp" />
 
         <Button
             android:id="@+id/verify"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/et_otp"
+            android:layout_below="@id/name"
             android:layout_gravity="center"
-            android:layout_marginHorizontal="50dp"
-            android:layout_marginTop="60dp"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="30dp"
             android:background="@drawable/button"
             android:elevation="10dp"
             android:letterSpacing="0.2"
             android:text="@string/verify"
             android:textColor="#FFFFFF"
-            android:textSize="20sp" />
+            android:textSize="24sp" />
 
     </RelativeLayout>
 
