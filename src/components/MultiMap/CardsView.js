@@ -175,7 +175,7 @@ const CardsView = (props) => {
             </Card>
           );
         })}
-        {cardsArray.map((cardRow) => <CardGroup>{cardRow}</CardGroup>)}
+        {cardsArray.map((cardRow, groupKey) => <CardGroup key={groupKey}>{cardRow}</CardGroup>)}
       </div>
     );
   }
