@@ -21,7 +21,7 @@ Video : https://vedas.sac.gov.in/vcms/static/SIH-2020/VID-20191229-WA0174.mp4
 ## Features
 - Cloud upload (database and storage)
 - WSM url (Bing, OSM) supported alongwith custom url support for WSM
-- Regional language support (Marathi, Hindi, Gujrati)
+- Regional language support (Marathi, Hindi, Gujarati, Bengali)
 - Automatic Video labelling using Machie Learning
 - Video Playback with Map 
     - As discussed, location marker rotates as per bearing
@@ -30,10 +30,10 @@ Video : https://vedas.sac.gov.in/vcms/static/SIH-2020/VID-20191229-WA0174.mp4
 - Filterable search view in video library.
     -As discussed, latitude, longitude, speed, bearing, dateTime is displayed on recording videos and on playback.
 - Dark mode implemented (Saves power)
+- First time tutorial for new users
 
 ### Features under implementation
 - Resumable upload to cloud while offline.
-- First time tutorial for new users
 - Video size control (bitrate),  custom file store location, power saving settings , upload settings
 - Export to KML in app. (Web app implemented)
 
