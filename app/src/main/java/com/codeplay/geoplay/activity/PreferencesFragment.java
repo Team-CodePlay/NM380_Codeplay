@@ -139,6 +139,14 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
 		});
 
 		findPreference("help").setOnPreferenceClickListener(preference -> {
+			editor.putBoolean("SHOW_TUTORIAL_2", true);
+			editor.apply();
+			editor.putBoolean("SHOW_TUTORIAL_1", true);
+			editor.apply();
+			Intent intent = getActivity().getIntent();
+			getActivity().finish();
+			intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+			startActivity(intent);
 			// TODO: 03-08-2020 add help
 			return true;
 		});
