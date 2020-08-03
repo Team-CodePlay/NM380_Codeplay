@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -63,6 +64,9 @@ public class VideoListFragment extends Fragment {
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+
+		viewType = AppClass.getSP().getInt("toggle_view", 1);
+
 
 		setHasOptionsMenu(true);
 
@@ -221,6 +225,7 @@ public class VideoListFragment extends Fragment {
 		switch (id) {
 			case R.id.toggle_view:
 				viewType = viewType ^ 1;
+				AppClass.getSP().edit().putInt("toggle_view", viewType).apply();
 				refresh();
 				return true;
 		}
