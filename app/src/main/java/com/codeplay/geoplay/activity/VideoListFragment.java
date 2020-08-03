@@ -1,5 +1,6 @@
 package com.codeplay.geoplay.activity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,11 +17,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.codeplay.geoplay.AppClass;
 import com.codeplay.geoplay.R;
 import com.codeplay.geoplay.adapter.GeoVideoAdapter;
 import com.codeplay.geoplay.database.AppDatabase;
 import com.codeplay.geoplay.model.GeoVideo;
 import com.codeplay.geoplay.util.GeoTagUtil;
+import com.codeplay.geoplay.util.NetworkUtil;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -47,6 +51,10 @@ public class VideoListFragment extends Fragment {
 	List<GeoVideo> videos = new ArrayList<>();
 
 	private int viewType = 0;
+	private StorageReference mStorageRef;
+
+	private boolean ongoingTask = false;
+
 
 	public VideoListFragment(){
 		super(R.layout.fragment_video_list);
@@ -99,58 +107,82 @@ public class VideoListFragment extends Fragment {
 		videoAdapter.setOnUploadListener(video -> {
 			if(video.isUploaded){
 				Toast.makeText(getContext(), "Already uploaded: " + video.uploadPath, Toast.LENGTH_SHORT).show();
-				return;
+			}else if(ongoingTask){
+				Toast.makeText(getContext(), "An upload task is ongoing already. Please try after it finishes", Toast.LENGTH_SHORT).show();
+			}else if(!NetworkUtil.isConnected(getContext())){
+				Toast.makeText(getContext(), "Not connected to internet", Toast.LENGTH_SHORT).show();
+			}else if(NetworkUtil.isMetered(getContext())){
+
+				AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
+				adb.setTitle("Connection is metered");
+				adb.setMessage("Data charges may apply. Continue with upload?");
+				adb.setPositiveButton("Yes", (dialog, which) -> startUpload(video));
+				adb.setNegativeButton("No", null);
+				adb.create().show();
+			}else{
+				startUpload(video);
 			}
-			String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-			DatabaseReference videoRef = FirebaseDatabase.getInstance().getReference("videos/"+userId).push();
-			StorageReference fileRef = FirebaseStorage.getInstance().getReference("videos/"+userId).child(videoRef.getKey() + ".mp4");
 
-			mainActivity.progressCard.setVisibility(View.VISIBLE);
-			mainActivity.lblVideoTitle.setText(new File(video.videoPath).getName());
-			mainActivity.lblUploadCount.setText("");
-			mainActivity.progressBar.setMax(100);
-			mainActivity.progressBar.setProgress(0);
-			mainActivity.lblVideoSize.setText("0 / " + video.size/1024/1024);
-
-
-			fileRef.putFile(FileProvider.getUriForFile(getContext(), "com.codeplay.geoplay.provider", new File(video.videoPath)))
-					.addOnSuccessListener(taskSnapshot -> {
-						Toast.makeText(getContext(), "Success", Toast.LENGTH_SHORT).show();
-
-						Map<String, Object> values = GeoTagUtil.getMapFromGeoVideo(getContext(), video.id);
-						values.put("video_path", taskSnapshot.getMetadata().getReference().toString());
-						values.put("upload_timestamp", System.currentTimeMillis()); // bad practice
-						videoRef.setValue(values, (error, ref) -> {
-							if (error != null) {
-								Toast.makeText(getContext(), "Error:"+error.getDetails(), Toast.LENGTH_SHORT).show();
-							} else {
-								Toast.makeText(getContext(), "Success", Toast.LENGTH_SHORT).show();
-								video.isUploaded = true;
-								video.uploadPath = videoRef.toString();
-								AppDatabase.getInstance(getContext()).geoVideoDao().update(video);
-							}
-						});
-
-						mainActivity.progressBar.setProgress(100);
-						mainActivity.lblVideoSize.setText("Video uploaded: " + video.size/1024/1024 + " MB");
-
-					})
-					.addOnProgressListener(taskSnapshot -> {
-						mainActivity.progressBar.setProgress((int)(taskSnapshot.getBytesTransferred() * 100 / taskSnapshot.getTotalByteCount()));
-						mainActivity.lblVideoSize.setText(String.format("%d MB / %d MB",
-								taskSnapshot.getBytesTransferred()/1024/1024,
-								taskSnapshot.getTotalByteCount()/1024/1024
-						));
-					})
-					.addOnFailureListener(e -> {
-						Toast.makeText(getContext(), "Error:"+e.getMessage(), Toast.LENGTH_SHORT).show();
-						mainActivity.progressBar.setProgress(0);
-						mainActivity.lblVideoSize.setText("Error occurred when uploading");
-					});
-
-			Toast.makeText(getContext(), "Uploading...", Toast.LENGTH_SHORT).show();
 		});
 		lstVideos.setAdapter(videoAdapter);
+	}
+
+
+
+	private void startUpload(GeoVideo video){
+
+		String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+		DatabaseReference videoRef = FirebaseDatabase.getInstance().getReference("videos/"+userId).push();
+		mStorageRef = FirebaseStorage.getInstance().getReference("videos/"+userId).child(videoRef.getKey() + ".mp4");
+
+		mainActivity.progressCard.setVisibility(View.VISIBLE);
+		mainActivity.lblVideoTitle.setText(new File(video.videoPath).getName());
+		mainActivity.lblUploadCount.setText("");
+		mainActivity.progressBar.setMax(100);
+		mainActivity.progressBar.setProgress(0);
+		mainActivity.lblVideoSize.setText("0 / " + video.size/1024/1024);
+
+		ongoingTask = true;
+
+		mStorageRef.putFile(FileProvider.getUriForFile(getContext(), "com.codeplay.geoplay.provider", new File(video.videoPath)))
+				.addOnSuccessListener(taskSnapshot -> {
+					Toast.makeText(getContext(), "Success", Toast.LENGTH_SHORT).show();
+
+					Map<String, Object> values = GeoTagUtil.getMapFromGeoVideo(getContext(), video.id);
+					values.put("video_path", taskSnapshot.getMetadata().getReference().toString());
+					values.put("upload_timestamp", System.currentTimeMillis()); // bad practice
+					values.put("username", AppClass.getSP().getString("username", "unspecified"));
+					videoRef.setValue(values, (error, ref) -> {
+						if (error != null) {
+							Toast.makeText(getContext(), "Error:"+error.getDetails(), Toast.LENGTH_SHORT).show();
+						} else {
+							Toast.makeText(getContext(), "Success", Toast.LENGTH_SHORT).show();
+							video.isUploaded = true;
+							video.uploadPath = videoRef.toString();
+							AppDatabase.getInstance(getContext()).geoVideoDao().update(video);
+						}
+					});
+
+					mainActivity.progressBar.setProgress(100);
+					mainActivity.lblVideoSize.setText("Video uploaded: " + video.size/1024/1024 + " MB");
+					ongoingTask = false;
+
+				})
+				.addOnProgressListener(taskSnapshot -> {
+					mainActivity.progressBar.setProgress((int)(taskSnapshot.getBytesTransferred() * 100 / taskSnapshot.getTotalByteCount()));
+					mainActivity.lblVideoSize.setText(String.format("%d MB / %d MB",
+							taskSnapshot.getBytesTransferred()/1024/1024,
+							taskSnapshot.getTotalByteCount()/1024/1024
+					));
+				})
+				.addOnFailureListener(e -> {
+					Toast.makeText(getContext(), "Error:"+e.getMessage(), Toast.LENGTH_SHORT).show();
+					mainActivity.progressBar.setProgress(0);
+					mainActivity.lblVideoSize.setText("Error occurred when uploading");
+					ongoingTask = false;
+				});
+
+		Toast.makeText(getContext(), "Uploading...", Toast.LENGTH_SHORT).show();
 	}
 
 
