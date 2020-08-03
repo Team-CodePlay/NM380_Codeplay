@@ -54,3 +54,5 @@ Video : https://vedas.sac.gov.in/vcms/static/SIH-2020/VID-20191229-WA0174.mp4
 
 ## You can find the latest apk in the [Actions Tab](https://github.com/stacks13/NM380_Codeplay/actions)
 
+## Presentation link [here](https://www.canva.com/design/DAED0ScGbBg/dxEp9j_2iyn6uDoMkts3zQ/view?utm_content=DAED0ScGbBg&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink)
+
