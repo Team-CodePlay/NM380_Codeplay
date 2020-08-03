@@ -155,7 +155,9 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
 			// TODO: 03-08-2020 add some more text here
 			AlertDialog adb = new AlertDialog.Builder(getContext())
 					.setTitle("About the app")
-					.setMessage("Created by Team Codeplay")
+					.setMessage("Created by Team Codeplay\n\nThis app is used to record and play Geo-tagged videos.\n\n" +
+							"Features:\n - Video Playback with Map\n - Cloud upload (database and storage)\n - Regional language support (Marathi, Hindi, Gujrati)\n - " +
+							"Geotags encoded into video metadata (to preserve the location data)\n - WSM url (Google, Bing, OSM and Custom) supported.")
 					.setPositiveButton("Ok", null)
 					.create();
 			adb.show();

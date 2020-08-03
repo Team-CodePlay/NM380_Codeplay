@@ -12,11 +12,11 @@
             app:title="@string/change_bitrate"
             app:useSimpleSummaryProvider="true" />
 
-        <Preference
-            android:icon="@drawable/folder"
-            app:key="storage_location"
-            app:title="@string/select_file_storage_location"
-            app:useSimpleSummaryProvider="true" />
+<!--        <Preference-->
+<!--            android:icon="@drawable/folder"-->
+<!--            app:key="storage_location"-->
+<!--            app:title="@string/select_file_storage_location"-->
+<!--            app:useSimpleSummaryProvider="true" />-->
 
         <!--        <ListPreference-->
         <!--            android:icon="@drawable/camera_switch"-->
@@ -85,14 +85,14 @@
             app:title="@string/select_app_language"
             app:useSimpleSummaryProvider="true" />
 
-        <ListPreference
-            android:icon="@drawable/upload"
-            app:defaultValue="wifi"
-            app:entries="@array/upload_entries"
-            app:entryValues="@array/upload_values"
-            app:key="wifi"
-            app:title="@string/upload_settings"
-            app:useSimpleSummaryProvider="true" />
+<!--        <ListPreference-->
+<!--            android:icon="@drawable/upload"-->
+<!--            app:defaultValue="wifi"-->
+<!--            app:entries="@array/upload_entries"-->
+<!--            app:entryValues="@array/upload_values"-->
+<!--            app:key="wifi"-->
+<!--            app:title="@string/upload_settings"-->
+<!--            app:useSimpleSummaryProvider="true" />-->
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/other_settings">

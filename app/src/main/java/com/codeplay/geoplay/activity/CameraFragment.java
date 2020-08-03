@@ -205,18 +205,20 @@ public class CameraFragment extends Fragment {
 	 * @return
 	 */
 	private File getMp4Directory(){
-		String folderPath = AppClass.getSP().getString("storage_location", "");
-		return new File(folderPath);
+//		String folderPath = AppClass.getSP().getString("storage_location", "");
+//		return new File(folderPath);
+		return getContext().getExternalFilesDir("videos");
 	}
+
 
 	/**
 	 * get file name .mp4
 	 * @return
 	 */
 	private String getMp4Name(){
-		SimpleDateFormat sdf = new SimpleDateFormat("GEOVID-yyyyMMdd-HHmmss", Locale.US);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd-HHmmss", Locale.US);
 		Date resultdate = new Date();
-		return sdf.format(resultdate) + ".mp4";
+		return "GEOVID-"+sdf.format(resultdate) + ".mp4";
 	}
 
 	@SuppressLint("RestrictedApi")
