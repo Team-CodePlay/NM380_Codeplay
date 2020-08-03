@@ -35,7 +35,20 @@
         android:layout_below="@id/appbar"
         android:layout_marginTop="0dp"
         android:layout_marginBottom="0dp"
-        android:background="@color/colorBackground" />
+        android:background="@color/colorBackground" >
+
+        <TextView
+            android:id="@+id/dummyView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical" />
+
+        <SearchView
+            android:id="@+id/dummySearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible" />
+    </FrameLayout>
 
     <RelativeLayout
         android:id="@+id/progress_card"
@@ -116,7 +129,6 @@
         android:layout_alignParentBottom="true"
         android:background="@color/colorBackgroundLight"
         android:elevation="5dp"
-        app:itemBackground="@color/colorBackgroundLight"
         app:itemTextColor="@color/colorPrimaryText"
         app:menu="@menu/navigation">
 

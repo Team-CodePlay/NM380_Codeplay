@@ -1,13 +1,8 @@
 package com.codeplay.geoplay.activity;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.Menu;
@@ -16,8 +11,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.Toolbar;
+import androidx.preference.PreferenceManager;
+
 import com.codeplay.geoplay.R;
 import com.codeplay.geoplay.util.PermissionUtil;
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 /**
@@ -39,10 +41,149 @@ public class MainActivity extends ActivityBase {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		SharedPreferences.Editor editor = prefs.edit();
+		if (prefs.getBoolean("NIGHT_MODE", false)) {
+			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+		} else {
+			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+		}
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(myToolbar);
+
+		final TapTargetSequence sequence = new TapTargetSequence(this)
+				.targets(
+						TapTarget.forView(findViewById(R.id.dummyView), "Welcome to GeoPlay!",
+								"This is a small tutorial to help you get started.")
+								.outerCircleAlpha(0.96f)
+								.titleTextSize(30)
+								.titleTextColor(R.color.colorAccent)
+								.descriptionTextSize(20)
+								.descriptionTextColor(android.R.color.white)
+								.dimColor(android.R.color.black)
+								.outerCircleColor(R.color.colorPrimaryDark)
+								.targetCircleColor(R.color.colorPrimaryLight)
+								.drawShadow(true)
+								.cancelable(false)
+								.targetRadius(40)
+								.transparentTarget(true)
+								.id(1),
+						TapTarget.forView(findViewById(R.id.nav_library), "Video Library",
+								"All recorded videos will be available here. You can play, upload to cloud, or delete these videos.")
+								.outerCircleAlpha(0.96f)
+								.titleTextSize(30)
+								.titleTextColor(R.color.colorAccent)
+								.descriptionTextSize(20)
+								.descriptionTextColor(android.R.color.white)
+								.dimColor(android.R.color.black)
+								.outerCircleColor(R.color.colorPrimaryDark)
+								.targetCircleColor(R.color.colorPrimaryLight)
+								.drawShadow(true)
+								.cancelable(false)
+								.targetRadius(40)
+								.transparentTarget(true)
+								.id(2),
+						TapTarget.forView(findViewById(R.id.nav_record), "Record Videos",
+								"Click here to record new geo tagged videos.")
+								.outerCircleAlpha(0.96f)
+								.titleTextSize(30)
+								.titleTextColor(R.color.colorAccent)
+								.descriptionTextSize(20)
+								.descriptionTextColor(android.R.color.white)
+								.dimColor(android.R.color.black)
+								.outerCircleColor(R.color.colorPrimaryDark)
+								.targetCircleColor(R.color.colorPrimaryLight)
+								.drawShadow(true)
+								.cancelable(false)
+								.targetRadius(40)
+								.transparentTarget(true)
+								.id(3),
+						TapTarget.forView(findViewById(R.id.nav_settings), "Settings",
+								"There are many useful settings here. Tinker around with the different app settings and find whats best for you!")
+								.outerCircleAlpha(0.96f)
+								.titleTextSize(30)
+								.titleTextColor(R.color.colorAccent)
+								.descriptionTextSize(20)
+								.descriptionTextColor(android.R.color.white)
+								.dimColor(android.R.color.black)
+								.outerCircleColor(R.color.colorPrimaryDark)
+								.targetCircleColor(R.color.colorPrimaryLight)
+								.drawShadow(true)
+								.targetRadius(40)
+								.cancelable(false)
+								.transparentTarget(true)
+								.id(4),
+						TapTarget.forToolbarOverflow(myToolbar, "Toggle View",
+								" This toggles the view between detailed video cards and large thumbnail video cards.")
+								.outerCircleAlpha(0.96f)
+								.titleTextSize(30)
+								.titleTextColor(R.color.colorAccent)
+								.descriptionTextSize(20)
+								.descriptionTextColor(android.R.color.white)
+								.dimColor(android.R.color.black)
+								.outerCircleColor(R.color.colorPrimaryDark)
+								.targetCircleColor(R.color.colorPrimaryLight)
+								.drawShadow(true)
+								.targetRadius(40)
+								.cancelable(false)
+								.transparentTarget(true)
+								.id(5),
+						TapTarget.forView(findViewById(R.id.dummySearch), "Search",
+								"You can search through your recorded videos here. Use terms from the video title and date.")
+								.outerCircleAlpha(0.96f)
+								.titleTextSize(30)
+								.titleTextColor(R.color.colorAccent)
+								.descriptionTextSize(20)
+								.descriptionTextColor(android.R.color.white)
+								.dimColor(android.R.color.black)
+								.outerCircleColor(R.color.colorPrimaryDark)
+								.targetCircleColor(R.color.colorPrimaryLight)
+								.drawShadow(true)
+								.targetRadius(40)
+								.cancelable(false)
+								.transparentTarget(true)
+								.id(6),
+						TapTarget.forView(findViewById(R.id.nav_record), "Great!",
+								"Lets move to the Record Screen. Click the record button to begin")
+								.outerCircleAlpha(0.96f)
+								.titleTextSize(30)
+								.titleTextColor(R.color.colorAccent)
+								.descriptionTextSize(20)
+								.descriptionTextColor(android.R.color.white)
+								.dimColor(android.R.color.black)
+								.outerCircleColor(R.color.colorPrimaryDark)
+								.targetCircleColor(R.color.colorPrimaryLight)
+								.drawShadow(true)
+								.cancelable(false)
+								.targetRadius(40)
+								.transparentTarget(true)
+								.id(7)
+						).listener(new TapTargetSequence.Listener() {
+					@Override
+					public void onSequenceFinish() {
+						editor.putBoolean("SHOW_TUTORIAL_1", false);
+						editor.apply();
+						Intent j = new Intent(MainActivity.this, RecordActivity.class);
+						startActivity(j);
+					}
+
+					@Override
+					public void onSequenceStep(TapTarget lastTarget, boolean targetClicked) {
+
+					}
+
+					@Override
+					public void onSequenceCanceled(TapTarget lastTarget) {
+
+					}
+				});
+		if (prefs.getBoolean("SHOW_TUTORIAL_1", true)){
+			sequence.start();
+
+		}
 
 		progressCard = findViewById(R.id.progress_card);
 		lblVideoTitle = findViewById(R.id.lblVideoTitle);
@@ -91,6 +232,8 @@ public class MainActivity extends ActivityBase {
 				.replace(R.id.container, new VideoListFragment())
 				.commit();
 		currentFragment = 0;
+
+
 
 		if (!PermissionUtil.areAllPermissionsGranted(MainActivity.this)) {
 			PermissionUtil.requestAllPermissions(MainActivity.this);

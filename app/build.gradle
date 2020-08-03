@@ -91,4 +91,7 @@ dependencies {
 
     // video meta tag data
     implementation 'org.jcodec:jcodec:0.2.5'
+
+    // on boarding
+    implementation 'com.getkeepsafe.taptargetview:taptargetview:1.13.0'
 }
