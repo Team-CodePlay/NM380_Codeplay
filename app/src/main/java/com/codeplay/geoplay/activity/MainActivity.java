@@ -259,7 +259,7 @@ public class MainActivity extends ActivityBase {
 
 					}
 				});
-		if (AppClass.getSP().getBoolean("SHOW_TUTORIAL_1", false)) {
+		if (AppClass.getSP().getBoolean("SHOW_TUTORIAL_1", true)) {
 			sequence.start();
 		}
 	}
