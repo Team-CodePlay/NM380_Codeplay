@@ -339,19 +339,22 @@ export default class VideoPlayer extends Component {
     return (
       <div>
 
-          {this.playerMarker &&
-              <ListGroup horizontal style={{ marginLeft: "1%" }} variant="flush">
-                <ListGroup.Item variant="success">Location</ListGroup.Item>
-                <ListGroup.Item>Lat:{JSON.stringify(this.playerMarker.lat)} Lng:{JSON.stringify(this.playerMarker.lng)}</ListGroup.Item>
-                <ListGroup.Item variant="success">Bearing</ListGroup.Item>
-                <ListGroup.Item>{JSON.stringify(this.playerBearing)}</ListGroup.Item>
-                <ListGroup.Item variant="success">Speed</ListGroup.Item>
-                <ListGroup.Item>
-                    {JSON.stringify(this.playerSpeed)} km/hr
-                </ListGroup.Item>
-            </ListGroup>
-          }
-        
+        {this.playerMarker &&
+          <ListGroup horizontal style={{ marginLeft: "1%" }} variant="flush">
+            <ListGroup.Item variant="success">Location</ListGroup.Item>
+            <ListGroup.Item>Lat:{JSON.stringify(this.playerMarker.lat)} Lng:{JSON.stringify(this.playerMarker.lng)}</ListGroup.Item>
+            <ListGroup.Item variant="success">Bearing</ListGroup.Item>
+            <ListGroup.Item>{JSON.stringify(this.playerBearing)}</ListGroup.Item>
+            <ListGroup.Item variant="success">Speed</ListGroup.Item>
+            <ListGroup.Item>
+              {JSON.stringify(this.playerSpeed)} km/hr
+            </ListGroup.Item>
+            <ListGroup.Item action variant="primary" style={{ width: "auto", borderRadius: "0.5rem" }}>
+              <i className="fa fa-eye"></i> Process this Video
+            </ListGroup.Item>
+          </ListGroup>
+        }
+
 
         <Container fluid className="rootLayout">
           <Row>
