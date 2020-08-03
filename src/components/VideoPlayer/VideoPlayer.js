@@ -1,7 +1,7 @@
 /* global google */
 import React, { Component } from "react";
 import { Player, ControlBar } from "video-react";
-import { Container, Row, Col, ListGroup } from "react-bootstrap";
+import { Container, Row, Col, ListGroup, Spinner } from "react-bootstrap";
 import firebase from "../utils/firebase";
 
 import {
@@ -28,6 +28,7 @@ export default class VideoPlayer extends Component {
     console.log(this.props.data);
     this.state = {
       source: "",
+      videoProcessing: false
     };
 
     this.play = this.play.bind(this);
@@ -174,8 +175,11 @@ export default class VideoPlayer extends Component {
     url =
       `http://127.0.0.1:5000/?db_path=videos` +
       url.pathname.substring(7, url.pathname.length);
-    
-    console.log(url)
+
+    console.log(url);
+    this.setState({
+      videoProcessing: true,
+    });
 
     axios.get(url, {
       headers: {
@@ -186,7 +190,7 @@ export default class VideoPlayer extends Component {
         Authorisation: null,
       },
     })
-    .then(()=> window.location.reload())
+      .then(() => window.location.reload());
   };
 
   // Builds Map Component
@@ -381,7 +385,10 @@ export default class VideoPlayer extends Component {
               onClick={this.fetchLabels}
               style={{ width: "auto", borderRadius: "0.5rem" }}
             >
-              <i className="fa fa-eye"></i> Process this Video
+              {this.state.videoProcessing ?
+                <span><Spinner animation="border" size="sm" /> Processing...</span> :
+                <span><i className="fa fa-eye"></i> Process this Video</span>
+              }
             </ListGroup.Item>
           </ListGroup>
         )}
