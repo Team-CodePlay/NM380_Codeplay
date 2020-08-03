@@ -67,7 +67,7 @@ public class MainActivity extends ActivityBase {
 								.outerCircleColor(R.color.colorPrimaryDark)
 								.targetCircleColor(R.color.colorPrimaryLight)
 								.drawShadow(true)
-								.cancelable(true)
+								.cancelable(false)
 								.targetRadius(40)
 								.transparentTarget(true)
 								.id(1),
@@ -82,7 +82,7 @@ public class MainActivity extends ActivityBase {
 								.outerCircleColor(R.color.colorPrimaryDark)
 								.targetCircleColor(R.color.colorPrimaryLight)
 								.drawShadow(true)
-								.cancelable(true)
+								.cancelable(false)
 								.targetRadius(40)
 								.transparentTarget(true)
 								.id(2),
@@ -97,7 +97,7 @@ public class MainActivity extends ActivityBase {
 								.outerCircleColor(R.color.colorPrimaryDark)
 								.targetCircleColor(R.color.colorPrimaryLight)
 								.drawShadow(true)
-								.cancelable(true)
+								.cancelable(false)
 								.targetRadius(40)
 								.transparentTarget(true)
 								.id(3),
@@ -113,7 +113,7 @@ public class MainActivity extends ActivityBase {
 								.targetCircleColor(R.color.colorPrimaryLight)
 								.drawShadow(true)
 								.targetRadius(40)
-								.cancelable(true)
+								.cancelable(false)
 								.transparentTarget(true)
 								.id(4),
 						TapTarget.forToolbarOverflow(myToolbar, "Toggle View",
@@ -128,7 +128,7 @@ public class MainActivity extends ActivityBase {
 								.targetCircleColor(R.color.colorPrimaryLight)
 								.drawShadow(true)
 								.targetRadius(40)
-								.cancelable(true)
+								.cancelable(false)
 								.transparentTarget(true)
 								.id(5),
 						TapTarget.forView(findViewById(R.id.dummySearch), "Search",
@@ -143,7 +143,7 @@ public class MainActivity extends ActivityBase {
 								.targetCircleColor(R.color.colorPrimaryLight)
 								.drawShadow(true)
 								.targetRadius(40)
-								.cancelable(true)
+								.cancelable(false)
 								.transparentTarget(true)
 								.id(6),
 						TapTarget.forView(findViewById(R.id.nav_record), "Great!",
@@ -157,7 +157,7 @@ public class MainActivity extends ActivityBase {
 								.outerCircleColor(R.color.colorPrimaryDark)
 								.targetCircleColor(R.color.colorPrimaryLight)
 								.drawShadow(true)
-								.cancelable(true)
+								.cancelable(false)
 								.targetRadius(40)
 								.transparentTarget(true)
 								.id(7)

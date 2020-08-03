@@ -116,7 +116,7 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 								.outerCircleColor(R.color.colorPrimaryDark)
 								.targetCircleColor(R.color.colorPrimaryLight)
 								.drawShadow(true)
-								.cancelable(true)
+								.cancelable(false)
 								.targetRadius(40)
 								.transparentTarget(true)
 								.id(1),
@@ -131,7 +131,7 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 								.outerCircleColor(R.color.colorPrimaryDark)
 								.targetCircleColor(R.color.colorPrimaryLight)
 								.drawShadow(true)
-								.cancelable(true)
+								.cancelable(false)
 								.targetRadius(50)
 								.transparentTarget(true)
 								.id(2),
@@ -146,7 +146,7 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 								.outerCircleColor(R.color.colorPrimaryDark)
 								.targetCircleColor(R.color.colorPrimaryLight)
 								.drawShadow(true)
-								.cancelable(true)
+								.cancelable(false)
 								.targetRadius(40)
 								.transparentTarget(true)
 								.id(3),
@@ -161,7 +161,7 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 								.outerCircleColor(R.color.colorPrimaryDark)
 								.targetCircleColor(R.color.colorPrimaryLight)
 								.drawShadow(true)
-								.cancelable(true)
+								.cancelable(false)
 								.targetRadius(40)
 								.transparentTarget(true)
 								.id(4),
@@ -176,7 +176,7 @@ public class RecordActivity extends AppCompatActivity implements OnMapReadyCallb
 								.outerCircleColor(R.color.colorPrimaryDark)
 								.targetCircleColor(R.color.colorPrimaryLight)
 								.drawShadow(true)
-								.cancelable(true)
+								.cancelable(false)
 								.targetRadius(50)
 								.transparentTarget(false)
 								.id(5)
