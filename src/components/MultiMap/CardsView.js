@@ -24,10 +24,10 @@ const haversine_distance = (mk1, mk2) => {
     Math.asin(
       Math.sqrt(
         Math.sin(difflat / 2) * Math.sin(difflat / 2) +
-          Math.cos(rlat1) *
-            Math.cos(rlat2) *
-            Math.sin(difflon / 2) *
-            Math.sin(difflon / 2)
+        Math.cos(rlat1) *
+        Math.cos(rlat2) *
+        Math.sin(difflon / 2) *
+        Math.sin(difflon / 2)
       )
     );
   return d;
@@ -97,11 +97,15 @@ const CardsView = (props) => {
   };
 
   if (mapData !== undefined) {
+    const cardsInOneRow = 4;
     let cardsArray = [];
+    let count = 0;
+    for (let i = 0; i < mapData.length; i++)
+      cardsArray[i] = [];
     return (
       <div>
         {mapData.map((path, pathKey) => {
-          cardsArray.push(
+          cardsArray[Math.floor(count++ / cardsInOneRow)].push(
             <Card
               key={pathKey}
               border="primary"
@@ -171,8 +175,7 @@ const CardsView = (props) => {
             </Card>
           );
         })}
-
-        <CardGroup>{cardsArray}</CardGroup>
+        {cardsArray.map((cardRow) => <CardGroup>{cardRow}</CardGroup>)}
       </div>
     );
   }
