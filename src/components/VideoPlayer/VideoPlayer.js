@@ -412,6 +412,9 @@ export default class VideoPlayer extends Component {
             </Col>
           </Row>
         </Container>
+        <Container>
+          <h5>All labels:</h5>
+        </Container>
       </div>
     );
   }
