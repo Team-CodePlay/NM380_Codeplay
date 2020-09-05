@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory app:title="@string/video_settings">
+
+        <ListPreference
+            android:icon="@drawable/bitrate"
+            app:defaultValue="2500000"
+            app:entries="@array/bitrate_entries"
+            app:entryValues="@array/bitrate_values"
+            app:key="bitrate"
+            app:title="@string/change_bitrate"
+            app:useSimpleSummaryProvider="true" />
+
+<!--        <Preference-->
+<!--            android:icon="@drawable/folder"-->
+<!--            app:key="storage_location"-->
+<!--            app:title="@string/select_file_storage_location"-->
+<!--            app:useSimpleSummaryProvider="true" />-->
+
+        <!--        <ListPreference-->
+        <!--            android:icon="@drawable/camera_switch"-->
+        <!--            app:defaultValue="rear"-->
+        <!--            app:entries="@array/camera_mode"-->
+        <!--            app:entryValues="@array/camera_mode_values"-->
+        <!--            app:key="camera"-->
+        <!--            app:title="Select Camera Mode"-->
+        <!--            app:useSimpleSummaryProvider="true" />-->
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/map_settings">
+
+        <SwitchPreferenceCompat
+            app:key="custom_map_switch"
+            android:defaultValue="false"
+            android:icon="@drawable/ic_custom_map"
+            android:title="@string/custom_map" />
+
+        <EditTextPreference
+            android:key="custom_map_string_input"
+            android:icon="@drawable/ic_custom_map_input"
+            app:defaultValue="https://maps.wikimedia.org/osm-intl/${z}/${x}/${y}.png"
+            app:title="@string/custom_map_string"
+            app:useSimpleSummaryProvider="true" />
+
+        <ListPreference
+            android:key="choose_map"
+            android:icon="@drawable/ic_choose_map"
+            app:defaultValue="google"
+            app:entries="@array/map_entries"
+            app:entryValues="@array/map_values"
+            app:title="@string/choose_map"
+            app:isPreferenceVisible="true"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/power_settings">
+
+        <ListPreference
+            android:icon="@drawable/power"
+            app:defaultValue="medium"
+            app:entries="@array/battery_consumption"
+            app:entryValues="@array/battery_consumption_values"
+            app:key="location_accuracy"
+            app:title="@string/select_power_mode"
+            app:useSimpleSummaryProvider="true" />
+
+        <SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:icon="@drawable/night_mode"
+            android:key="display_mode"
+            android:title="@string/dark_mode" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/app_settings">
+        <ListPreference
+            android:icon="@drawable/translate_language"
+            app:defaultValue="en"
+            app:entries="@array/language_entries"
+            app:entryValues="@array/language_values"
+            app:key="language"
+            app:title="@string/select_app_language"
+            app:useSimpleSummaryProvider="true" />
+
+<!--        <ListPreference-->
+<!--            android:icon="@drawable/upload"-->
+<!--            app:defaultValue="wifi"-->
+<!--            app:entries="@array/upload_entries"-->
+<!--            app:entryValues="@array/upload_values"-->
+<!--            app:key="wifi"-->
+<!--            app:title="@string/upload_settings"-->
+<!--            app:useSimpleSummaryProvider="true" />-->
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/other_settings">
+
+        <Preference
+            android:icon="@drawable/help"
+            android:key="help"
+            android:title="@string/help" />
+        <Preference
+            android:icon="@drawable/information"
+            android:key="about"
+            android:title="@string/about_application" />
+        <Preference
+            android:icon="@drawable/ic_logout"
+            android:key="logout"
+            android:title="@string/logout" />
+
+    </PreferenceCategory>
+</PreferenceScreen>
