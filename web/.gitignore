@@ -65,7 +65,7 @@ captures/
 .cxx/
 
 # Google Services (e.g. APIs or Firebase)
-google-services.json
+# google-services.json
 
 # Freeline
 freeline.py
@@ -201,15 +201,15 @@ sketch
 # End of https://www.toptal.com/developers/gitignore/api/react,android,jetbrains+all# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-node_modules
-.pnp
+/node_modules
+/.pnp
 .pnp.js
 
 # testing
-coverage
+/coverage
 
 # production
-build
+/build
 
 # misc
 .DS_Store
@@ -231,7 +231,3 @@ yarn-error.log*
 *.cache
 .firebaserc
 firebase.json
-=======
-# End of https://www.toptal.com/developers/gitignore/api/react,android,jetbrains+all
-
-google_maps_api.xml
